@@ -32,4 +32,8 @@ private String email;
 @OneToOne (mappedBy = "person") 
 private User user; 
 
+
+
+
+
 }

@@ -26,5 +26,4 @@ public class Inventory extends BaseModel{
     @OneToMany (mappedBy =  "inventory") 
     private List<Product> products; 
     
-
 }

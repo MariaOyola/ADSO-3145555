@@ -1,10 +1,9 @@
 package com.Sena.Proyecto.model;
 
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,11 +23,11 @@ public class Role extends BaseModel {
         private String  nameRole; 
 
         @Column(length = 50)
-        private String description; 
+        private String descripcion; 
 
-        @ManyToMany (mappedBy = "role")
-        private List<User>users;  
-        
+        @ManyToOne
+        @JoinColumn (name = "id_user")
+        private User user; 
 
      
 }

@@ -13,6 +13,7 @@ public interface IProductRepository extends JpaRepository <Product, Integer> {
     List<Product> findByDescription (String description); 
     
     List<Product> findByCategory (Integer category); 
+    List<Product> findByName_Category (String name_Category); 
 
 
 

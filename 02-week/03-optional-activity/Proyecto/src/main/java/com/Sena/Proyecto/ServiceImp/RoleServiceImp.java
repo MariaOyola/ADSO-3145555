@@ -60,7 +60,7 @@ public class RoleServiceImp implements RoleIService {
         }
 
          role.setNameRole(R.getNameRole());
-         role.setDescription(R.getDescription());
+         role.setDescripcion(R.getDescripcion());
           repository.save(role); 
 
           return modelTodto(role); 
@@ -72,7 +72,7 @@ public class RoleServiceImp implements RoleIService {
     public Role dtoToModel(RoleRequestDto R) {
         Role role = new Role(); 
         role.setNameRole(R.getNameRole());
-        role.setDescription(R.getDescription());
+        role.setDescripcion(R.getDescripcion());
 
         return role; 
 
@@ -82,7 +82,7 @@ public class RoleServiceImp implements RoleIService {
         RoleResponse dto = new RoleResponse(); 
         dto.setId(role.getId());
         dto.setNameRole(role.getNameRole());
-        dto.setDescripcion(role.getDescription());
+        dto.setDescripcion(role.getDescripcion());
 
         return dto; 
     }
