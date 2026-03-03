@@ -1,5 +1,7 @@
 package com.Sena.Proyecto.RequestDto;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +11,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleRequestDto {
-     // Request  es lo que nos envia el usuario, en este caso el usuario  nos envia (nombre rol, descripcion )
+public class ProductRequetDto {
 
-     private String nameRole;
-     private String description; 
+  private String name_Product; 
+  private BigDecimal price; 
+  private String description;
+  
+  private Integer category; 
+
 
 
 }

@@ -1,10 +1,11 @@
 package com.Sena.Proyecto.model;
 
+
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,20 +17,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "role")
+@Table (name = "inventory")
+public class Inventory extends BaseModel{
 
-public class Role extends BaseModel {
+    @Column (nullable = false) 
+    private Integer stok; 
 
-    @Column (length = 50) 
-        private String  nameRole; 
+    @OneToMany (mappedBy =  "inventory") 
+    private List<Product> products; 
+    
 
-        @Column(length = 50)
-        private String description; 
-
-        @ManyToMany (mappedBy = "role")
-        private List<User>users;  
-        
-
-     
 }
-

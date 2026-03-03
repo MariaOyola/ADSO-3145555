@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,22 +14,20 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "category")
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "role")
+public class Category extends BaseModel {
 
-public class Role extends BaseModel {
+    @Column (length = 50 ) 
+    private String name_Category; 
 
     @Column (length = 50) 
-        private String  nameRole; 
+    private String description;
 
-        @Column(length = 50)
-        private String description; 
+    @OneToMany (mappedBy = "category")
+    private List<Product> products; 
 
-        @ManyToMany (mappedBy = "role")
-        private List<User>users;  
-        
 
-     
+
 }
-

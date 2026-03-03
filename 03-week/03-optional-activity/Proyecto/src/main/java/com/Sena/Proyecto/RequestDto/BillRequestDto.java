@@ -9,11 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleRequestDto {
-     // Request  es lo que nos envia el usuario, en este caso el usuario  nos envia (nombre rol, descripcion )
+public class BillRequestDto {
 
-     private String nameRole;
-     private String description; 
-
+    private Integer id_order; 
+  
 
 }
