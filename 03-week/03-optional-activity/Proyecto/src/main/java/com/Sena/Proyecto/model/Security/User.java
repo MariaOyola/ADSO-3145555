@@ -1,7 +1,9 @@
-package com.Sena.Proyecto.model;
+package com.Sena.Proyecto.model.Security;
 
 import java.util.List;
 
+import com.Sena.Proyecto.model.BaseModel;
+import com.Sena.Proyecto.model.Bill.Order;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

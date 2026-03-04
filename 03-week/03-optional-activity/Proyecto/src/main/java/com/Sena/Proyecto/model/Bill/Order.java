@@ -1,9 +1,11 @@
-package com.Sena.Proyecto.model;
+package com.Sena.Proyecto.model.Bill;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.Sena.Proyecto.model.BaseModel;
+import com.Sena.Proyecto.model.Security.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -30,9 +32,12 @@ public class Order extends BaseModel {
     @Column (precision = 10, scale = 2, nullable = false)
     private BigDecimal total;
 
+    @Column ()
+    private User user;
+
    @ManyToOne
    @JoinColumn(name = "id_user")
-    private User user;
+   
 
      @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;

@@ -9,7 +9,7 @@ import com.Sena.Proyecto.IService.UserIService;
 import com.Sena.Proyecto.Repository.IUserRepository;
 import com.Sena.Proyecto.RequestDto.UserRequestDto;
 import com.Sena.Proyecto.ResponseDto.UserResponse;
-import com.Sena.Proyecto.model.User;
+import com.Sena.Proyecto.model.Security.User;
 
 @Service
 public class UserServiceImp implements UserIService {

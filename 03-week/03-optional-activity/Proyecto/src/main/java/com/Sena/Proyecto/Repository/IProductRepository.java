@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.Sena.Proyecto.model.Product;
+
+import com.Sena.Proyecto.model.Inventory.Product;
 
 public interface IProductRepository extends JpaRepository <Product, Integer> {
 

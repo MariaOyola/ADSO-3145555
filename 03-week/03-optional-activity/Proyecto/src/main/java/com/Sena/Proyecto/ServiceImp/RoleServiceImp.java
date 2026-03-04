@@ -9,7 +9,7 @@ import com.Sena.Proyecto.IService.RoleIService;
 import com.Sena.Proyecto.Repository.IRoleRepository;
 import com.Sena.Proyecto.RequestDto.RoleRequestDto;
 import com.Sena.Proyecto.ResponseDto.RoleResponse;
-import com.Sena.Proyecto.model.Role;
+import com.Sena.Proyecto.model.Security.Role;
 
 
 @Service

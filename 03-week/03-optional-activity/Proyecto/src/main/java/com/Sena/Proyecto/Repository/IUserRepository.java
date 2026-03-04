@@ -1,8 +1,10 @@
 package com.Sena.Proyecto.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.Sena.Proyecto.model.Security.User;
+
 import java.util.List;
-import com.Sena.Proyecto.model.User;
 
 public interface IUserRepository  extends JpaRepository <User, Integer> {
 

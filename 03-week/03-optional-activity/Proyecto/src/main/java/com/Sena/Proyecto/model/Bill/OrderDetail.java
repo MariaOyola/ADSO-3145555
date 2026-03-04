@@ -1,7 +1,10 @@
-package com.Sena.Proyecto.model;
+package com.Sena.Proyecto.model.Bill;
 
 
 import java.math.BigDecimal;
+
+import com.Sena.Proyecto.model.BaseModel;
+import com.Sena.Proyecto.model.Inventory.Product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

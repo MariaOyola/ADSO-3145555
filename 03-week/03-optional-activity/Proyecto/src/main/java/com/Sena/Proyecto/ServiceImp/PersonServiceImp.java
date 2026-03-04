@@ -9,7 +9,7 @@ import com.Sena.Proyecto.IService.PersonIService;
 import com.Sena.Proyecto.Repository.IPersonRepository;
 import com.Sena.Proyecto.RequestDto.PersonRequestDto;
 import com.Sena.Proyecto.ResponseDto.PersonResponse;
-import com.Sena.Proyecto.model.Person;
+import com.Sena.Proyecto.model.Security.Person;
 
 @Service  // es una clase service
 public class PersonServiceImp implements PersonIService  {

@@ -1,6 +1,8 @@
-package com.Sena.Proyecto.model;
+package com.Sena.Proyecto.model.Inventory;
 
 import java.util.List;
+
+import com.Sena.Proyecto.model.BaseModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,9 +23,6 @@ public class Category extends BaseModel {
 
     @Column (length = 50 ) 
     private String name_Category; 
-
-    @Column (length = 50) 
-    private String description;
 
     @OneToMany (mappedBy = "category")
     private List<Product> products; 

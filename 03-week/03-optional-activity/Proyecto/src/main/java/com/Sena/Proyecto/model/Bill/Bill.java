@@ -1,9 +1,10 @@
-package com.Sena.Proyecto.model;
+package com.Sena.Proyecto.model.Bill;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.Sena.Proyecto.model.BaseModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

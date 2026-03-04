@@ -1,13 +1,13 @@
-package com.Sena.Proyecto.model;
+package com.Sena.Proyecto.model.Inventory;
 
 import java.math.BigDecimal;
-import java.util.List;
+
+import com.Sena.Proyecto.model.BaseModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,21 +29,24 @@ public class Product extends BaseModel{
     private  BigDecimal price;
 
     @Column (length = 50)
-    private String description; 
+    private String description;
+
+    @Column
+    private Boolean state; 
 
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
-
-    @ManyToOne
-    @JoinColumn ( name = "id_product")
-    private Inventory inventory;
-    
+/*
+ 
     @OneToMany(mappedBy = "product")
     private List<OrderDetail> orderDetails;
 
     @OneToMany(mappedBy = "product")
     private List<BillDetail> billDetails;
     
+}
+    */ 
+
 }
 
