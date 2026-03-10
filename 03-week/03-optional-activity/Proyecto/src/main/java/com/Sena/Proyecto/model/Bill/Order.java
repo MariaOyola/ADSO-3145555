@@ -32,11 +32,9 @@ public class Order extends BaseModel {
     @Column (precision = 10, scale = 2, nullable = false)
     private BigDecimal total;
 
-    @Column ()
-    private User user;
-
-   @ManyToOne
+    @ManyToOne
    @JoinColumn(name = "id_user")
+     private User user;
    
 
      @OneToMany(mappedBy = "order")

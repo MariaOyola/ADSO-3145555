@@ -1,13 +1,18 @@
 package com.Sena.Proyecto.model.Inventory;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.Sena.Proyecto.model.BaseModel;
+import com.Sena.Proyecto.model.Bill.BillDetail;
+
+import com.Sena.Proyecto.model.Bill.OrderDetail;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,16 +42,13 @@ public class Product extends BaseModel{
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
-/*
- 
+
     @OneToMany(mappedBy = "product")
     private List<OrderDetail> orderDetails;
 
     @OneToMany(mappedBy = "product")
     private List<BillDetail> billDetails;
-    
-}
-    */ 
 
+    
 }
 
