@@ -25,15 +25,14 @@ import lombok.Setter;
 public class Bill extends BaseModel {
    
   @Column (name = "date")
-    private LocalDate date_Bill; 
+    private LocalDate dateBill; 
 
   @Column (precision = 10, scale = 2, nullable = false)
-    private BigDecimal total_Bill;
+    private BigDecimal totalBill;
 
-   @OneToOne
-   @JoinColumn(name = "id_order", unique = true)
-   private Order order;
-
+    @OneToOne
+@JoinColumn(name = "id_order")
+private Order order;
     
    @OneToMany(mappedBy = "bill")
 private List<BillDetail> billDetails;

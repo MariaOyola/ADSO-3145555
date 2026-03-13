@@ -24,10 +24,10 @@ import lombok.Setter;
 public class BillDetail extends BaseModel {
 
 @Column (nullable = false)
- private Integer amount_BillDetail; 
+ private Integer amountBillDetail; 
  
  @Column (precision = 10, scale = 2, nullable = false)
- private BigDecimal subtotal_BillDetail; 
+ private BigDecimal subtotalBillDetail; 
 
 @ManyToOne
 @JoinColumn(name = "id_bill")

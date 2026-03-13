@@ -1,5 +1,7 @@
 package com.Sena.Proyecto.RequestDto.Bill;
 
+import java.math.BigDecimal;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BillDetailRequestDto {
 
+
+    private Integer amountBillDetail; 
+    private BigDecimal subtotalBillDetail; 
     private Integer id_bill; 
     private Integer id_product; 
 

@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProductRequetDto {
 
-  private String name_Product; 
+  private String nameProduct; 
   private BigDecimal price; 
   private String description;
   

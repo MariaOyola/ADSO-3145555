@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "role")
+@Table(name = "roles")
 
 public class Role extends BaseModel {
 
@@ -28,8 +28,8 @@ public class Role extends BaseModel {
         @Column(length = 50)
         private String description; 
 
-        @ManyToMany (mappedBy = "role")
-        private List<User>users;  
+        @ManyToMany (mappedBy = "roles")
+        private List<User> users;  
         
 
      

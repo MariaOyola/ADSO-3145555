@@ -14,8 +14,8 @@ import lombok.Setter;
 public class BillDetailResponse {
 
     private Integer id; 
-    private Integer amount_BillDetail; 
-    private BigDecimal subtotal_BillDetail; 
+    private Integer amountBillDetail; 
+    private BigDecimal subtotalBillDetail; 
 
     private Integer id_bill; 
     private Integer id_product; 

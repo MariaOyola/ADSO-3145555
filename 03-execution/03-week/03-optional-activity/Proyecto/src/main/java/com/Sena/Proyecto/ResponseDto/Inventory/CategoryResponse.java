@@ -14,7 +14,7 @@ import lombok.Setter;
 public class CategoryResponse {
 
     private Integer id; 
-    private String name_Category;
+    private String nameCategory;
     private String description;
 
     private List<ProductResponse> products; 

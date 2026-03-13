@@ -15,8 +15,8 @@ import lombok.Setter;
 public class BillResponse {
 
     private Integer id; 
-    private LocalDate date_Bill; 
-    private BigDecimal total_Bill; 
+    private LocalDate dateBill; 
+    private BigDecimal totalBill; 
 
     private Integer id_order; 
 }

@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CategoryRequestDto {
 
-  private String name_Category;
+  private String nameCategory;
   private String description;
 
 

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 
 public interface IBillRepository  extends JpaRepository < Bill, Integer>{
-    List<Bill> findByDate_Bill(LocalDate date_Bill);
-    List<Bill> findByTotal_Bill(BigDecimal total_Bill);
+    List<Bill> findByDateBill(LocalDate dateBill);
+    List<Bill> findByTotalBill(BigDecimal totalBill);
 
 }

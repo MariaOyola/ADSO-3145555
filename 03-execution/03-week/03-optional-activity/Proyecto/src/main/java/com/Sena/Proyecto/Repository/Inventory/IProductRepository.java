@@ -9,11 +9,11 @@ import com.Sena.Proyecto.model.Inventory.Product;
 
 public interface IProductRepository extends JpaRepository <Product, Integer> {
 
-    List<Product> findByName_Product (String name_Product); 
+    List<Product> findByNameProduct (String nameProduct); 
     List<Product> findByPrice (BigDecimal price); 
     List<Product> findByDescription (String description); 
     
-    List<Product> findByCategory (Integer category); 
+    List<Product> findByCategoryId(Integer id);
 
 
 

@@ -6,11 +6,10 @@ import java.util.List;
 
 import com.Sena.Proyecto.RequestDto.Bill.OrderRequestDto;
 import com.Sena.Proyecto.ResponseDto.Bill.OrderResponse;
-import com.Sena.Proyecto.ResponseDto.Inventory.ProductResponse;
 
 public interface OrderIService {
      List<OrderResponse> findAll();
-    ProductResponse findById (Integer id); 
+    OrderResponse findById (Integer id); 
     List<OrderResponse> findByDate (LocalDate date);
     List<OrderResponse> findByTotal (BigDecimal total); 
     OrderResponse save (OrderRequestDto O); 

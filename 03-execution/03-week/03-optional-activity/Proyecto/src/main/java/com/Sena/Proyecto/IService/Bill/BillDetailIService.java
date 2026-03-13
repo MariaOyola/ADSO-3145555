@@ -10,8 +10,8 @@ public interface BillDetailIService {
 
    List<BillDetailResponse> findAll();
    BillDetailResponse findById (Integer id); 
-   List<BillDetailResponse> findByAmount_BillDetail (Integer amount_BillDetail);
-   List<BillDetailResponse> findBySubtotal_BillDetail (BigDecimal subtotal_BillDetail); 
+   List<BillDetailResponse> findByAmountBillDetail (Integer amountBillDetail);
+   List<BillDetailResponse> findBySubtotalBillDetail (BigDecimal subtotalBillDetail); 
    BillDetailResponse save (BillDetailRequestDto Br); 
    BillDetailResponse update (Integer id, BillDetailRequestDto Br); 
    void deleteById (Integer id);

@@ -28,7 +28,7 @@ import lombok.Setter;
 public class Product extends BaseModel{
 
     @Column ( length = 50) 
-    private String name_Product; 
+    private String nameProduct; 
 
     @Column (name = "price", precision = 10, scale = 2)
     private  BigDecimal price;

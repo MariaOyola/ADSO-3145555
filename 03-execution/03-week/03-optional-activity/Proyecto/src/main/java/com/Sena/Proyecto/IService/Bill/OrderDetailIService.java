@@ -6,7 +6,7 @@ import java.util.List;
 import com.Sena.Proyecto.RequestDto.Bill.OrderDetailRequestDto;
 import com.Sena.Proyecto.ResponseDto.Bill.OrderDetailResponse;
 
-public interface OderDetailIService {
+public interface OrderDetailIService {
 
    List<OrderDetailResponse> findAll();
    OrderDetailResponse findById (Integer id); 

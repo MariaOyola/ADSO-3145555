@@ -22,7 +22,7 @@ import lombok.Setter;
 public class Category extends BaseModel {
 
     @Column (length = 50 ) 
-    private String name_Category; 
+    private String nameCategory; 
 
     @OneToMany (mappedBy = "category")
     private List<Product> products; 

@@ -1,6 +1,9 @@
 package com.Sena.Proyecto.RequestDto.Bill;
 
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderRequestDto {
 
-  private Integer id_user;
+
+    private LocalDate date;
+    private BigDecimal total;
+    private Integer id_user;
 
 
 }

@@ -13,8 +13,8 @@ import com.Sena.Proyecto.model.Inventory.Product;
 
 public interface IBillDetailRepository extends JpaRepository <BillDetail, Integer> {
 
-    List<BillDetail> findByAmount_BillDetail(Integer amount_BillDetail);
-    List<BillDetail> findBySubtotal_BillDetail(BigDecimal subtotal_BillDetail);
+    List<BillDetail> findByAmountBillDetail(Integer amountBillDetail);
+    List<BillDetail> findBySubtotalBillDetail(BigDecimal subtotalBillDetail);
     List<BillDetail> findByBill(Bill bill);
     List<BillDetail> findByProduct(Product product); 
 
