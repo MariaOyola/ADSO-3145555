@@ -1,15 +1,3 @@
-
--- Sistema de Cafetin
-
-/* Modelo 1: Parameter
-   - type_document
-   - person*/
--- Sistema de Cafetin
-
-/* Modelo 1: Parameter
-   - type_document
-   - person*/
-
 CREATE DATABASE Cafetin;
 
 \c Cafetin;
@@ -17,7 +5,7 @@ CREATE DATABASE Cafetin;
 -- Activar extensión para UUID
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
-DROP TABLE modules CASCADE;
+DROP TABLE person CASCADE;
 --------------------------------------------------------
 CREATE TABLE status (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -354,6 +342,8 @@ CREATE TABLE payment (
     CONSTRAINT fk_pay_method FOREIGN KEY (id_method) REFERENCES method_payment(id_method)
 );
 
+ALTER DATABASE cafeteria__db RENAME TO cafeteria_db;
+
 INSERT INTO status (id, name) VALUES
     ('00000001-0000-0000-0000-000000000001', 'activo'),
     ('00000001-0000-0000-0000-000000000002', 'inactivo'),
@@ -613,3 +603,29 @@ INSERT INTO payment (id_payment, id_invoice, id_method, amount, status, transact
     (gen_random_uuid(), '0000000d-0000-0000-0000-000000000008', '0000000c-0000-0000-0000-000000000003',  8000.00, 'pagado',      'VISA-20250302', NOW() - INTERVAL '2 days'),
     (gen_random_uuid(), '0000000d-0000-0000-0000-000000000009', '0000000c-0000-0000-0000-000000000001',  2500.00, 'pendiente',   NULL,            NULL),
     (gen_random_uuid(), '0000000d-0000-0000-0000-000000000010', '0000000c-0000-0000-0000-000000000001',  3000.00, 'reembolsado', NULL,            NOW() - INTERVAL '1 day');
+
+
+-- vistas sencillas
+CREATE VIEW View_product_name AS
+SELECT name_product, price 
+FROM product; 
+
+SELECT * FROM  View_product_name;
+---------------------------------------------------
+CREATE VIEW View_category_name AS 
+SELECT name_category, description
+FROM category;
+
+ SELECT * FROM View_category_name;
+
+---------------------------------------------------
+
+CREATE VIEW View_product_status AS
+SELECT name_product, price 
+FROM product
+WHERE status = "actico"; 
+
+SELECT * FROM  View_product_status;
+
+
+
