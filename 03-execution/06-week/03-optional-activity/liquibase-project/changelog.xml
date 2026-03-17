@@ -1,0 +1,8 @@
+<changeSet id="1" author="maria">
+    <createTable tableName="usuario">
+        <column name="id" type="SERIAL">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="nombre" type="VARCHAR(100)"/>
+    </createTable>
+</changeSet>
