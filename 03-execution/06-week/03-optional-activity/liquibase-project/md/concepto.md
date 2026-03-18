@@ -51,5 +51,28 @@ el flujo en general es
 #### 4. Se actualiza la BD. 
 
 
+-------------------------------------------
+
+
+docker run --rm ^
+-v %cd%:/liquibase/changelog ^
+liquibase/liquibase ^
+--defaultsFile=/liquibase/changelog/liquibase.properties update
+
+
+Le dice a Docker:
+
+- “Usa Liquibase”
+
+- “Mira mis archivos locales”
+
+- “Ejecuta los cambios en la BD”
+
+
+#### como se ejecuta liquibase segun la terminal que se use
+
+![alt text](image.png)
+
+
 
 
