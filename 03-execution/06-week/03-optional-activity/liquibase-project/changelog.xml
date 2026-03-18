@@ -5,14 +5,37 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-
-    <changeSet id="1" author="maria">
+  
+    <!-- creacion de tabla de usuarios -->
+    <changeSet id="1" author="maria">    <!--auto, quien hizo el cambio -->
         <createTable tableName="usuario">
             <column name="id" type="SERIAL">
                 <constraints primaryKey="true"/>
             </column>
             <column name="nombre" type="VARCHAR(100)"/>
+
+   <!--Cierres-->
         </createTable>
     </changeSet>
 
 </databaseChangeLog>
+
+ <!-- ...........................................      -->
+
+   <!-- Insertar datos -->
+
+<changeSet id="2" author="maria">     <!-- muestra la identificacion del usuario, quien lo creo -->
+   <insert tableName="usuario">      <!-- donde se inserta el dato -->
+    <column name="nombre" value="Paula"/>    <!-- la columna y el valor  -->
+    </insert>
+    </changeSet>
+
+ <!-- crear columnas nuevas -->
+<changeSet id="2" author="maria">
+ <addColumn tablaName="usuario">
+   <column name="email" type="VARCHAR(100)"/>
+   </addColumn>
+</changeSet>
+
+
+   
