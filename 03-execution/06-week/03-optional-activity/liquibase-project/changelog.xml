@@ -50,5 +50,27 @@
                              constraintName="fk_producto_usuario"/>
 </changeSet>
 
-    </databaseChangeLog>
+    
+<!--Modificar datos existentes  -->
 
+<changeSet id="6" author="maria">
+    <update tableName="usuario">
+        <column name="nombre" value="Paula Maria"/>
+        <where>id=1</where>
+    </update>
+</changeSet>
+
+
+<!-- eliminar datos  columna -->
+
+<changeSet id="7" author="maria">
+   <dropColumn tableName="usuario" columnName="email"/>
+</changeSet>
+
+<!-- eliminar datos  tabla -->
+<changeSet id="8" author="maria">
+  <dropTable tableName="producto"/>
+</changeSet>
+
+
+    </databaseChangeLog>
