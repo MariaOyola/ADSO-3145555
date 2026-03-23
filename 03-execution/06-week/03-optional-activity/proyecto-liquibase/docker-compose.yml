@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-liquibase-new
+    environment:
+      POSTGRES_DB: prueba_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  liquibase:
+    image: liquibase/liquibase
+    container_name: liquibase-runner-new
+    depends_on:
+      - postgres
+    volumes:
+      - ./liquibase:/liquibase/project
+    command: >
+      sh -c "sleep 10 &&
+      liquibase
+      --defaultsFile=/liquibase/project/liquibase.properties
+      --classpath=/liquibase/project/drivers/postgresql-42.7.10.jar
+      update"
+
+volumes:
+  postgres_data:

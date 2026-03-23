@@ -1,0 +1,12 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    logicalFilePath="changelog/changelog.xml"
+    xsi:schemaLocation="
+       http://www.liquibase.org/xml/ns/dbchangelog
+       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+ 
+ <include file="changelog/changes/HU-01/001-init.xml"/>
+<include file="changelog/changes/HU-02/002-usuario-update.xml"/>
+
+</databaseChangeLog>

@@ -20,4 +20,9 @@ https://github.com/MariaOyola/using-env-github-activity
 
 ## MR (Merge Request) = es una solicitud formal que dices "oye, tengo cambios en mi rama hija, revísalos y únelos a la rama padre". Es el único puente permitido entre hija y padre.
 
-( LO que tentedi )
+![alt text](image.png)
+
+- Cada vez que se mergea una rama por ejemplo HU-01-develop a develop, esa rama ya muere no se toca NUNCA JAMAS, y se crea HU-02-develop que es  la rama en la cual se hace la siguiente actualizacion, 
+
+
+
