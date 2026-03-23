@@ -1,5 +1,5 @@
 # Repositorio de la actividad 
-https://github.com/MariaOyola/using-env-github-activity
+https://github.com/MariaOyola/using-env-github-activity-1
 
 
 
@@ -24,5 +24,22 @@ https://github.com/MariaOyola/using-env-github-activity
 
 - Cada vez que se mergea una rama por ejemplo HU-01-develop a develop, esa rama ya muere no se toca NUNCA JAMAS, y se crea HU-02-develop que es  la rama en la cual se hace la siguiente actualizacion, 
 
+Comandos 
+
+![alt text](image-1.png)
 
 
+---------------------------------------------------
+## Flujo en Git Graph
+
+#### - Como se Visualiza el flujo con el primer HU-01 (primer historial de usuari)
+
+![alt text](image-2.png)
+
+- HU-02 (segundo historial de usuari)
+
+![alt text](image-3.png)
+
+- - HU-03 (tercer historial de usuari) develop, qa
+
+![alt text](image-4.png)
