@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 83202199-bc76-414b-a4e3-491a926c3aaa
+      author: mariaj_rodriguez32@soy.sena.edu.co
+      labels: HU-01
+      context: data
+      comment: Insert initial data into status
+      changes:
+        - sqlFile:
+            path: 09_inserts/0001_insert_status.sql
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: 11_rollbacks/09_inserts/0001_delete_status.sql
+            stripComments: false

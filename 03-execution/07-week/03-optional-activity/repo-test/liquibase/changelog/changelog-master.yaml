@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: 01_tables/00000_changelog.yaml
+  - include:
+      file: 09_inserts/00000_changelog.yaml

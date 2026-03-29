@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4572c6c0-4bed-4c90-afd9-ddc573859a99
+      author: mariaj_rodriguez32@soy.sena.edu.co
+      context: status
+      labels: HU-01
+      comment: Create table status
+      changes:
+        - tagDatabase:
+            tag: v1.0.0
+        - sqlFile:
+            path: 01_tables/0001_create_table_status.sql
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: 11_rollbacks/01_tables/0001_create_table_status.sql
+            stripComments: false
