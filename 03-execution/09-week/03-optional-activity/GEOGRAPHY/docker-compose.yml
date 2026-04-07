@@ -1,0 +1,22 @@
+name: geography
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: geography-postgres
+    environment:
+      POSTGRES_DB: GEOGRAPHY
+      POSTGRES_USER: geography_user
+      POSTGRES_PASSWORD: geography_password
+    ports:
+      - "5436:5432"
+    volumes:
+      - geography_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geography_user -d GEOGRAPHY"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  geography_data:
