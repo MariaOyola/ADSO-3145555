@@ -876,7 +876,7 @@ CREATE TABLE payment_method (
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT uq_payment_method_code UNIQUE (method_code),
-    CONSTRAINT uq_payment_method_name UNIQUE (method_name)
+    CONSTRAINT uq_payment_umethod_name UNIQUE (method_name)
 );
 
 CREATE TABLE payment (
@@ -1080,3 +1080,37 @@ CREATE INDEX idx_exchange_rate_from_to_date ON exchange_rate(from_currency_id, t
 CREATE INDEX idx_invoice_sale_id ON invoice(sale_id);
 CREATE INDEX idx_invoice_status_id ON invoice(invoice_status_id);
 CREATE INDEX idx_invoice_line_invoice_id ON invoice_line(invoice_id);
+
+
+
+INSERT INTO continent (continent_code, continent_name)
+VALUES ('SA', 'South America')
+RETURNING continent_id;
+
+
+INSERT INTO country (continent_id, iso_alpha2, iso_alpha3, country_name)
+VALUES ('cont_sa', 'CO', 'COL', 'Colombia')
+RETURNING country_id;
+
+INSERT INTO state_province (country_id, state_name)
+VALUES ('country_co', 'Huila')
+RETURNING state_province_id;
+
+INSERT INTO time_zone (time_zone_name, utc_offset_minutes)
+VALUES ('America/Bogota', -300)
+RETURNING time_zone_id;
+
+INSERT INTO city (state_province_id, time_zone_id, city_name)
+VALUES ('state_huila', 'tz_bogota', 'Neiva')
+RETURNING city_id;
+
+INSERT INTO district (city_id, district_name)
+VALUES ('city_neiva', 'Centro')
+RETURNING district_id;
+
+INSERT INTO address (district_id, address_line_1, latitude, longitude)
+VALUES ('district_centro', 'Calle 10 #5-20', 2.9273, -75.2819)
+RETURNING address_id;
+
+INSERT INTO currency (iso_currency_code, currency_name, currency_symbol)
+VALUES ('COP', 'Peso Colombiano', '$');
