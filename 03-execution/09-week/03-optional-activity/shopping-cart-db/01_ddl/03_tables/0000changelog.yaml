@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6bc8aa7a-4647-4e7a-a881-7bfe4cb7bf78
+      author: ariel5253
+      labels: "BD-01-dev,ddl,base,security"
+      comment: Creates the baseline tables for the security module.
+      changes:
+        - sqlFile:
+            path: 001_create_security_tables.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/001_create_security_tables.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: c0322451-ad79-40c9-8f50-79d97bd63793
+      author: jesus.gonzalez
+      labels: "BD-01-dev,ddl,base,inventory"
+      comment: Creates the baseline tables for the inventory module.
+      changes:
+        - sqlFile:
+            path: 002_create_inventory_tables.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/002_create_inventory_tables.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 2638c509-758a-4345-a2dc-51c00d909e41
+      author: jesus.gonzalez
+      labels: "BD-01-dev,ddl,base,billing"
+      comment: Creates the baseline tables for the billing module.
+      changes:
+        - sqlFile:
+            path: 003_create_billing_tables.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/003_create_billing_tables.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

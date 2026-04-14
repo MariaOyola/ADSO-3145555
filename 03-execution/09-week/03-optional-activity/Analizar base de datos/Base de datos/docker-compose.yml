@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: geography_user
       POSTGRES_PASSWORD: geography_password
     ports:
-      - "5436:5432"
+      - "5438:5432"
     volumes:
       - geography_data:/var/lib/postgresql/data
     healthcheck:

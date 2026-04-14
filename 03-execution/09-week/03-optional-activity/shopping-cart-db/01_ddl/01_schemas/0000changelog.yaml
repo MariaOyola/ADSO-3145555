@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 75a51c2b-c702-48dd-81d6-8b0ddc8032c1
+      author: ariel5253
+      labels: "BD-01-dev,ddl,base,schema"
+      comment: "Creates the baseline schemas: security, inventory, and bill."
+      changes:
+        - sqlFile:
+            path: 001_create_schemas.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/01_schemas/001_create_schemas.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
+  - changeSet:
+      id: 4903d3d3-c6d1-486b-81de-cf7ef48ee7fc
+      author: ariel5253
+      labels: "BD-01-dev,ddl,base,schema"
+      comment: "Creates the baseline schemas: ubication."
+      changes:
+        - sqlFile:
+            path: 002_create_schemas.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/01_schemas/002_create_schemas.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false

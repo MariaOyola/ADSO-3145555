@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9ec09d36-0d2b-42b1-b722-a014da3f0c59
+      author: ariel5253
+      labels: "insert data,dml,role,security"
+      comment: "Inserts the baseline roles into the security schema."
+      changes:
+        - sqlFile:
+            path: 001_insert_role.sql
+            relativeToChangelogFile: true
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/02_dml/00_inserts/001_insert_role.rollback.sql
+            relativeToChangelogFile: true
+            stripComments: false
