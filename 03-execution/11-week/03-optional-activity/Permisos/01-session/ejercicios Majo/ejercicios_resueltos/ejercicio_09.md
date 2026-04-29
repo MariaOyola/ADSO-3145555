@@ -1,285 +1,209 @@
-# Ejercicio 09 - Publicación de tarifas y análisis de reservas comercializadas
-
-# Modelo de datos base del sistema
+# Ejercicio 08 Resuelto - Auditoría de acceso y asignación de roles a usuarios
 
 ## 1. Descripción general del modelo
-El modelo de datos corresponde a un sistema integral de aerolínea, diseñado para soportar de forma relacional los procesos principales del negocio: gestión geográfica, identidad de personas, seguridad, clientes, fidelización, aeropuertos, aeronaves, operación de vuelos, reservas, tiquetes, abordaje, pagos y facturación.
 
-Se trata de un modelo amplio y normalizado, en el que las entidades están separadas por dominios funcionales y conectadas mediante llaves foráneas para garantizar trazabilidad, integridad y consistencia en todo el flujo operativo y comercial.
-
----
-
-## 2. Resumen previo del análisis realizado
-Como base de trabajo, previamente se identificó y organizó el script en dominios funcionales. A partir de esa revisión, se determinó que el modelo no corresponde a un caso pequeño o aislado, sino a una solución empresarial con múltiples áreas del negocio conectadas entre sí.
-
-También se verificó que:
-- el modelo contiene más de 60 entidades,
-- las relaciones entre tablas siguen una estructura consistente,
-- existen restricciones de integridad mediante `PRIMARY KEY`, `FOREIGN KEY`, `UNIQUE` y `CHECK`,
-- el diseño soporta trazabilidad end-to-end desde la reserva hasta el pago, abordaje y facturación.
+El modelo corresponde a un sistema integral de aerolínea con más de 60 entidades normalizadas. Soporta trazabilidad end-to-end desde la reserva hasta el pago, abordaje, facturación y control de acceso mediante roles y permisos.
 
 ---
 
-## 3. Dominios del modelo y propósito general
+## 2. Restricción general respetada
 
-### GEOGRAPHY AND REFERENCE DATA
-**Entidades:** `time_zone`, `continent`, `country`, `state_province`, `city`, `district`, `address`, `currency`  
-**Resumen:** Centraliza información geográfica y de referencia para ubicar aeropuertos, personas, proveedores y definir monedas operativas del sistema.
-
-### AIRLINE
-**Entidades:** `airline`  
-**Resumen:** Representa la aerolínea operadora del sistema, incluyendo sus códigos y país base.
-
-### IDENTITY
-**Entidades:** `person_type`, `document_type`, `contact_type`, `person`, `person_document`, `person_contact`  
-**Resumen:** Permite modelar la identidad de las personas, sus documentos y medios de contacto.
-
-### SECURITY
-**Entidades:** `user_status`, `security_role`, `security_permission`, `user_account`, `user_role`, `role_permission`  
-**Resumen:** Administra autenticación, autorización y control de acceso al sistema.
-
-### CUSTOMER AND LOYALTY
-**Entidades:** `customer_category`, `benefit_type`, `loyalty_program`, `loyalty_tier`, `customer`, `loyalty_account`, `loyalty_account_tier`, `miles_transaction`, `customer_benefit`  
-**Resumen:** Gestiona clientes, programas de fidelización, acumulación de millas, beneficios y niveles.
-
-### AIRPORT
-**Entidades:** `airport`, `terminal`, `boarding_gate`, `runway`, `airport_regulation`  
-**Resumen:** Modela la infraestructura aeroportuaria y las condiciones regulatorias asociadas a cada aeropuerto.
-
-### AIRCRAFT
-**Entidades:** `aircraft_manufacturer`, `aircraft_model`, `cabin_class`, `aircraft`, `aircraft_cabin`, `aircraft_seat`, `maintenance_provider`, `maintenance_type`, `maintenance_event`  
-**Resumen:** Gestiona aeronaves, fabricantes, configuración interna y procesos de mantenimiento.
-
-### FLIGHT OPERATIONS
-**Entidades:** `flight_status`, `delay_reason_type`, `flight`, `flight_segment`, `flight_delay`  
-**Resumen:** Controla la operación de vuelos, sus segmentos, estados y retrasos.
-
-### SALES, RESERVATION, TICKETING
-**Entidades:** `reservation_status`, `sale_channel`, `fare_class`, `fare`, `ticket_status`, `reservation`, `reservation_passenger`, `sale`, `ticket`, `ticket_segment`, `seat_assignment`, `baggage`  
-**Resumen:** Gestiona el flujo comercial principal: reserva, pasajero, venta, emisión de tiquetes, asignación de asiento y equipaje.
-
-### BOARDING
-**Entidades:** `boarding_group`, `check_in_status`, `check_in`, `boarding_pass`, `boarding_validation`  
-**Resumen:** Soporta el proceso de check-in, emisión de pase de abordar y validación final de embarque.
-
-### PAYMENT
-**Entidades:** `payment_status`, `payment_method`, `payment`, `payment_transaction`, `refund`  
-**Resumen:** Administra pagos, transacciones y devoluciones asociadas a las ventas.
-
-### BILLING
-**Entidades:** `tax`, `exchange_rate`, `invoice_status`, `invoice`, `invoice_line`  
-**Resumen:** Gestiona impuestos, tasas de cambio, facturas y detalle facturable.
+La solución no modifica ninguna tabla, columna, relación ni constraint del modelo base. Todos los objetos creados (función, trigger, procedimiento) operan únicamente sobre entidades y atributos existentes en el DDL entregado.
 
 ---
 
-## 4. Enfoque de los ejercicios
-Los ejercicios planteados sobre este modelo tendrán como propósito que el estudiante analice relaciones reales entre entidades y construya soluciones en PostgreSQL sin alterar la estructura base del sistema.
+## 3. Contexto del ejercicio
 
-Cada ejercicio se formulará para que el estudiante:
-- interprete correctamente los dominios involucrados,
-- construya consultas con múltiples relaciones,
-- diseñe automatizaciones con triggers,
-- implemente lógica reutilizable mediante procedimientos almacenados,
-- y demuestre técnicamente el funcionamiento con scripts de prueba.
+El equipo de seguridad necesita:
+
+1. Consultar el mapa completo de autorización: qué personas tienen qué cuentas, en qué estado, con qué roles y qué permisos heredan de esos roles.
+2. Automatizar una acción verificable sobre la cuenta de usuario cada vez que se le asigna un nuevo rol.
+3. Encapsular la asignación de roles en un procedimiento reutilizable con validaciones de integridad.
 
 ---
 
-## 5. Restricción general para todos los ejercicios
-Todos los ejercicios deben resolverse respetando estrictamente el modelo entregado.
+## 4. Dominios y datos reales involucrados
 
-No está permitido:
-- cambiar atributos existentes,
-- renombrar tablas o columnas,
-- alterar relaciones,
-- inventar entidades fuera del script base,
-- ni modificar la estructura general del modelo.
+| Dominio | Entidades usadas | Datos del seed |
+|---|---|---|
+| SECURITY | `user_account`, `user_status`, `user_role`, `security_role`, `role_permission`, `security_permission` | diego.ramirez (SYS_ADMIN), patricia.vargas (SALES_AGENT) |
+| IDENTITY | `person` | Diego Ramirez, Patricia Vargas |
 
-La solución deberá construirse únicamente sobre las entidades y relaciones reales definidas en el script.
+### Datos reales del seed usados en el demo
 
----
+| Elemento | Valor real del seed | Fuente |
+|---|---|---|
+| Usuario elegido | `patricia.vargas` (SALES_AGENT — sin OPS_CTRL) | seed canónico |
+| Rol a asignar | `OPS_CTRL` — Control operacional | seed canónico |
+| Usuario asignador | `diego.ramirez` (SYS_ADMIN) | seed canónico |
+| Roles previos | 1 — solo SALES_AGENT | seed canónico |
+| Efecto verificable | `user_account.updated_at` actualizado por trigger | DDL: campo mutable real |
 
-## 6. Contexto del ejercicio
-El área comercial necesita analizar las tarifas disponibles por ruta y validar cómo esas tarifas se relacionan con reservas, ventas y tiquetes emitidos. Además, se busca automatizar una acción posterior cuando se registre una tarifa o cuando se concrete una venta asociada a una tarifa.
+### ¿Por qué el usuario patricia.vargas?
 
----
-
-## 7. Dominios involucrados en este ejercicio
-### SALES, RESERVATION, TICKETING
-**Entidades:** `reservation`, `sale`, `ticket`, `fare`, `fare_class`, `ticket_status`, `sale_channel`  
-**Propósito:** Relacionar reservas, ventas y tiquetes con la estructura tarifaria.
-
-### AIRPORT
-**Entidades:** `airport`  
-**Propósito:** Representar origen y destino tarifario.
-
-### AIRLINE
-**Entidades:** `airline`  
-**Propósito:** Identificar la aerolínea propietaria de la tarifa.
-
-### GEOGRAPHY AND REFERENCE DATA
-**Entidades:** `currency`  
-**Propósito:** Normalizar la moneda de la tarifa.
+El seed canónico registra a `diego.ramirez` con rol `SYS_ADMIN` y a `patricia.vargas` con rol `SALES_AGENT`. Patricia no tiene `OPS_CTRL`, lo que permite demostrar la asignación de un segundo rol de forma limpia y verificable sin duplicar combinaciones existentes.
 
 ---
 
-## 8. Planteamiento del problema
-La organización desea analizar qué tarifas se ofrecen por ruta y cómo terminan siendo utilizadas dentro del flujo de venta y emisión de tiquetes.
+## 5. Roles y permisos existentes en el seed canónico
+
+### Matriz de roles activos por usuario
+
+| Usuario | Rol | Permisos heredados |
+|---|---|---|
+| diego.ramirez | SYS_ADMIN | Todos los permisos del sistema (12) |
+| patricia.vargas | SALES_AGENT | VIEW_CUSTOMERS, WRITE_CUSTOMERS, MANAGE_RESERVATIONS, ISSUE_TICKETS, VIEW_REPORTS |
+
+### Permisos del rol OPS_CTRL (añadido en el demo)
+
+| Código | Nombre |
+|---|---|
+| MANAGE_FLIGHTS | Administrar vuelos |
+| MANAGE_AIRCRAFT | Administrar flota |
+| VALIDATE_BOARDING | Validar abordaje |
+| VIEW_REPORTS | Consultar reportes |
 
 ---
 
-## 9. Objetivo del ejercicio
-Definir un caso comercial que conecte tarifas, rutas, reservas, ventas y tiquetes, incluyendo consulta multi-tabla, trigger posterior y procedimiento almacenado.
+## 6. Decisión técnica del trigger: el problema de 3FN
+
+### El reto
+
+El enunciado pide que el trigger sobre `user_role` produzca una acción verificable sobre la cuenta de usuario asociada. La solución intuitiva sería actualizar un campo de "último rol asignado" o un contador de roles en `user_account`. Sin embargo, el DDL no tiene esa columna derivada: el modelo preserva la **tercera forma normal (3FN)** y no almacena estados calculados en `user_account`.
+
+Modificar el modelo para agregar ese campo violaría la restricción del ejercicio.
+
+### La solución correcta
+
+El único campo mutable de `user_account` sin derivar datos es `updated_at`, presente en todas las tablas del modelo. Actualizar `user_account.updated_at` cuando se inserta un rol es:
+
+- **Correcto**: atributo real del DDL.
+- **Verificable**: se puede comparar el valor antes y después del trigger.
+- **Coherente con el negocio**: la ficha de la cuenta refleja que sus privilegios de acceso fueron modificados.
+- **Sin romper 3FN**: no almacena ningún valor derivado.
 
 ---
 
-## 10. Requerimiento 1 - Consulta con `INNER JOIN` de al menos 5 tablas
+## 7. Teoría base aplicada
 
-### Enunciado
-Construya una consulta SQL que relacione aerolínea, tarifa, clase tarifaria, aeropuertos origen y destino, moneda, reserva, venta y tiquete asociado.
+### ¿Por qué INNER JOIN en las 7 tablas?
 
-### Restricciones obligatorias
-- Debe usar **`INNER JOIN`**
-- Debe involucrar **mínimo 5 tablas**
-- Debe usar únicamente entidades y atributos existentes en el modelo base
-- No se permite cambiar nombres de tablas ni columnas
-- La consulta debe ser coherente con las relaciones reales del modelo
+Se usan `INNER JOIN` para las 7 tablas porque la consulta busca el mapa de autorización activo: solo tienen sentido los usuarios que tienen cuenta, la cuenta debe tener un estado, la cuenta debe tener al menos un rol asignado, ese rol debe tener permisos configurados y esos permisos deben existir. Si cualquiera de esas relaciones faltara, la fila no tendría valor para la auditoría de seguridad.
 
-### Tablas mínimas sugeridas
-El estudiante deberá incluir, como mínimo, una combinación válida de tablas como:
-- `airline`
-- `fare`
-- `fare_class`
-- `airport` (para origen)
-- `airport` (para destino)
-- `currency`
-- `ticket`
-- `sale`
-- `reservation`
+En la validación 3 (resumen por usuario) se mantienen `INNER JOIN` para las tablas de rol y permiso, ya que el resumen de roles sólo es útil cuando el usuario tiene al menos uno. La función de agregación `string_agg` consolida todos los roles en una sola fila por usuario.
 
-### Resultado esperado a nivel funcional
-La consulta debe permitir responder una necesidad como esta: “Mostrar qué tarifas están siendo utilizadas por las reservas y ventas efectivamente emitidas en forma de tiquete”.
+### ¿Por qué el trigger está sobre user_role y no sobre role_permission?
 
-### Campos esperados en el resultado
-Como mínimo, el resultado debe exponer columnas equivalentes a:
-- aerolínea
-- código de tarifa
-- clase tarifaria
-- aeropuerto origen
-- aeropuerto destino
-- moneda
-- reserva
-- venta
-- tiquete
+El evento de negocio relevante para la auditoría de acceso es la **asignación del rol al usuario**, no la definición de permisos en el rol. `role_permission` es configuración estructural del sistema (qué puede hacer cada rol), mientras que `user_role` es la decisión operativa de conceder ese acceso a una persona concreta. El trigger sobre `user_role` captura el momento exacto en que el privilegio fue otorgado.
 
-> El estudiante define la consulta exacta, pero debe respetar estrictamente el modelo base.
+### ¿Por qué procedimiento almacenado?
+
+Centraliza 4 validaciones críticas: existencia del usuario, existencia del rol, existencia del asignador (cuando se proporciona) y unicidad de la combinación usuario-rol. Sin este procedimiento, una inserción directa podría asignar el mismo rol dos veces a un usuario o referenciar roles o usuarios inexistentes, todos escenarios que comprometen la integridad del modelo de seguridad.
 
 ---
 
-## 11. Requerimiento 2 - Trigger `AFTER`
+## 8. Consulta resuelta con INNER JOIN
 
-### Enunciado
-Diseñe un trigger `AFTER INSERT` o `AFTER UPDATE` sobre `fare` o sobre una tabla del flujo comercial que automatice una acción posterior verificable dentro del mismo dominio.
+### Tablas involucradas: 7 (todos INNER JOIN)
 
-### Condición funcional del trigger
-El trigger deberá responder a un evento definido por el estudiante y generar una consecuencia verificable sobre otra tabla real del flujo comercial o tarifario.
+| # | Tabla | Propósito |
+|---|---|---|
+| 1 | `person` | Nombre real de la persona asociada a la cuenta |
+| 2 | `user_account` | Cuenta de acceso: username y estado |
+| 3 | `user_status` | Estado legible: ACTIVE, LOCKED, SUSPENDED... |
+| 4 | `user_role` | Rol asignado: fecha de asignación |
+| 5 | `security_role` | Definición del rol: código y nombre |
+| 6 | `role_permission` | Relación entre el rol y sus permisos |
+| 7 | `security_permission` | Permiso heredado: código, nombre y descripción |
 
-### Restricciones del trigger
-- Debe ser un trigger **`AFTER`**
-- Debe operar sobre tablas reales del modelo
-- No puede modificar atributos existentes del modelo base
-- No puede cambiar la definición de las tablas originales
-- La solución debe ser coherente con las relaciones reales entre las tablas involucradas
+### Resultado con datos reales del seed (antes del demo)
 
-### Demostración obligatoria
-El estudiante deberá entregar un **script de prueba** que dispare el trigger.
+| persona | usuario | estado | rol | fecha_asignacion | permiso |
+|---|---|---|---|---|---|
+| Diego Ramirez | diego.ramirez | Activo | Administrador del sistema | 2026-01-02 | (12 permisos) |
+| Patricia Vargas | patricia.vargas | Activo | Agente comercial | 2026-01-05 | VIEW_CUSTOMERS |
+| Patricia Vargas | patricia.vargas | Activo | Agente comercial | 2026-01-05 | WRITE_CUSTOMERS |
+| Patricia Vargas | patricia.vargas | Activo | Agente comercial | 2026-01-05 | MANAGE_RESERVATIONS |
+| Patricia Vargas | patricia.vargas | Activo | Agente comercial | 2026-01-05 | ISSUE_TICKETS |
+| Patricia Vargas | patricia.vargas | Activo | Agente comercial | 2026-01-05 | VIEW_REPORTS |
 
-### Condición mínima de la demostración
-El script de prueba debe:
-1. Identificar o preparar los datos necesarios del modelo base
-2. Ejecutar la operación que dispare el trigger
-3. Verificar el efecto posterior generado por el trigger
+### Resultado tras ejecutar el demo (después del CALL)
 
-> El estudiante deberá decidir cómo validar el resultado, siempre sobre entidades reales del modelo.
+Patricia Vargas aparece ahora con dos bloques de filas: uno por `SALES_AGENT` (5 permisos) y uno por `OPS_CTRL` (4 permisos), totalizando 9 permisos distintos. El campo `user_account.updated_at` refleja el timestamp del trigger.
 
----
+### Explicación paso a paso de cada JOIN
 
-## 12. Requerimiento 3 - Procedimiento almacenado
-
-### Enunciado
-Diseñe un procedimiento almacenado que registre o publique una tarifa para una ruta y clase específica.
-
-### Propósito del procedimiento
-Encapsular la creación de tarifas para que pueda reutilizarse de forma controlada desde base de datos.
-
-### Alcance funcional mínimo
-El procedimiento debe permitir trabajar con información relacionada con:
-- aerolínea
-- aeropuerto origen
-- aeropuerto destino
-- clase tarifaria
-- moneda
-- monto base
-- vigencia
-
-### Restricciones obligatorias
-- Debe implementarse como **procedimiento almacenado**
-- Debe trabajar sobre tablas y atributos existentes
-- No puede cambiar la estructura del modelo base
-- Debe ser reutilizable
-- Debe poder invocarse desde un script SQL independiente
-
-### Integración esperada
-La operación efectuada por el procedimiento debe permitir activar o dejar lista la lógica posterior definida en el trigger.
+1. **`person`** → nombre real de la persona. La cuenta por sí sola solo tiene un username; la auditoría de seguridad requiere la identidad real.
+2. **`user_account`** → cuenta de acceso al sistema. Punto de entrada de la consulta.
+3. **`user_status`** → estado legible de la cuenta. Crítico para auditoría: una cuenta LOCKED o SUSPENDED no debería tener actividad reciente de asignación.
+4. **`user_role`** → asignación concreta de rol a usuario. Contiene la fecha de asignación y quién la realizó.
+5. **`security_role`** → definición del rol: su código operativo y nombre descriptivo.
+6. **`role_permission`** → tabla de unión que conecta el rol con sus permisos. Sin ella no es posible saber qué puede hacer el rol.
+7. **`security_permission`** → permiso específico: código, nombre y descripción. Es el nivel más granular de la matriz de autorización.
 
 ---
 
-## 13. Script de uso del procedimiento
+## 9. Trigger resuelto
 
-### Enunciado
-El estudiante deberá entregar un script SQL que invoque el procedimiento almacenado desarrollado.
+### Acción implementada
 
-### Propósito del script
-Demostrar que el procedimiento:
-1. recibe los parámetros necesarios,
-2. ejecuta la operación principal del ejercicio,
-3. activa el trigger definido previamente o deja lista la evidencia para validarlo,
-4. deja evidencia verificable del proceso.
-
-### Contenido mínimo esperado
-El script debe incluir:
-- búsqueda o selección previa de identificadores necesarios
-- invocación del procedimiento
-- consulta posterior de validación
+Cada vez que se inserta un registro en `user_role`, la cuenta de usuario asociada queda marcada con el timestamp de la modificación mediante `UPDATE user_account SET updated_at = now()`. Esto es verificable, sin romper 3FN y coherente con el negocio: la ficha de la cuenta refleja que sus privilegios de acceso fueron modificados en ese instante.
 
 ---
 
-## 14. Entregables del estudiante
-El estudiante deberá entregar:
+## 10. Procedimiento almacenado resuelto
 
-1. **Consulta SQL** con `INNER JOIN` de mínimo 5 tablas  
-2. **Trigger `AFTER`**  
-3. **Función u objeto auxiliar necesario para el trigger**, si su diseño lo requiere  
-4. **Procedimiento almacenado**  
-5. **Script que dispare el trigger**  
-6. **Script que invoque el procedimiento**  
-7. **Consultas de validación** que demuestren el funcionamiento
+### Parámetros de entrada
 
----
+| Parámetro | Columna del DDL | Tipo | Constraint aplicado |
+|---|---|---|---|
+| `p_user_account_id` | `user_role.user_account_id` | uuid | FK a `user_account` |
+| `p_security_role_id` | `user_role.security_role_id` | uuid | FK a `security_role` |
+| `p_assigned_by_user_id` | `user_role.assigned_by_user_id` | uuid | Nullable, FK a `user_account` |
 
-## 15. Criterios de aceptación
-La solución propuesta por el estudiante será válida si cumple con todo lo siguiente:
+### Validaciones internas (4 checks)
 
-- La consulta utiliza `INNER JOIN`
-- La consulta relaciona al menos 5 tablas reales del modelo
-- El trigger es coherente con la necesidad del negocio
-- El trigger produce un efecto verificable sobre tablas reales
-- Existe un script que demuestra su ejecución
-- El procedimiento almacenado encapsula una operación útil del negocio
-- Existe un script que invoca el procedimiento
-- La invocación del procedimiento permite evidenciar también el funcionamiento del trigger o del flujo solicitado
-- No se alteró la estructura base del modelo
+1. `user_account_id` debe existir en `user_account`.
+2. `security_role_id` debe existir en `security_role`.
+3. Si se proporciona `assigned_by_user_id`, debe existir en `user_account`.
+4. La combinación `(user_account_id, security_role_id)` no puede existir ya en `user_role`.
 
 ---
 
-## 16. Observación final
-Este ejercicio no solicita la solución final enunciada en el documento. El estudiante deberá diseñarla e implementarla respetando las restricciones técnicas del modelo base.
+## 11. Script de demostración
+
+### ¿Qué demuestra?
+
+1. Resuelve `patricia.vargas` del seed canónico y verifica su `updated_at` inicial.
+2. Confirma que tiene 1 rol previo (SALES_AGENT) y ningún OPS_CTRL.
+3. Resuelve el `security_role_id` de `OPS_CTRL` y el `user_account_id` de `diego.ramirez`.
+4. Invoca `sp_assign_user_role` con esos datos reales.
+5. El procedimiento valida los 4 constraints e inserta en `user_role`.
+6. El trigger `AFTER INSERT` actualiza `user_account.updated_at` automáticamente.
+7. Las 3 validaciones confirman el rol insertado, la matriz de permisos expandida y el resumen por usuario con `string_agg` de roles.
+
+---
+
+## 12. Criterios de aceptación cumplidos
+
+| Criterio | Estado | Evidencia |
+|---|---|---|
+| La consulta usa INNER JOIN | ✅ | 7 INNER JOINs sobre tablas reales del modelo |
+| La consulta relaciona al menos 5 tablas reales del modelo | ✅ | 7 tablas reales del DDL |
+| El trigger es AFTER INSERT | ✅ | `AFTER INSERT ON user_role FOR EACH ROW` |
+| El trigger produce efecto verificable sobre tablas reales | ✅ | Actualiza `user_account.updated_at` |
+| Existe script que demuestra la ejecución | ✅ | `ejercicio_8_demo.sql` con `DO $$` y 3 validaciones |
+| El procedimiento encapsula una operación útil del negocio | ✅ | Asignación de rol con 4 validaciones |
+| Existe script que invoca el procedimiento | ✅ | `CALL sp_assign_user_role(...)` |
+| La invocación evidencia el trigger | ✅ | `user_account.updated_at` cambia al asignar el rol |
+| No se alteró la estructura base del modelo | ✅ | Solo función, trigger y procedimiento |
+
+---
+
+## 13. Archivos entregados
+
+| Archivo | Contenido |
+|---|---|
+| `ejercicio_8_setup.sql` | Función, trigger, procedimiento y consulta INNER JOIN con 7 tablas |
+| `ejercicio_8_demo.sql` | Bloque `DO $$`, invocación del procedimiento y 3 validaciones |
+| `ejercicio_8_resuelto.md` | Documentación completa con decisiones técnicas y criterios |

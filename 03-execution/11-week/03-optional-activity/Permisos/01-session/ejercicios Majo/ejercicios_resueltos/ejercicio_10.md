@@ -1,277 +1,217 @@
-# Ejercicio 10 - Identidad de pasajeros, documentos y medios de contacto
-
-# Modelo de datos base del sistema
+# Ejercicio 10 Resuelto - Identidad de pasajeros, documentos y medios de contacto
 
 ## 1. Descripción general del modelo
-El modelo de datos corresponde a un sistema integral de aerolínea, diseñado para soportar de forma relacional los procesos principales del negocio: gestión geográfica, identidad de personas, seguridad, clientes, fidelización, aeropuertos, aeronaves, operación de vuelos, reservas, tiquetes, abordaje, pagos y facturación.
 
-Se trata de un modelo amplio y normalizado, en el que las entidades están separadas por dominios funcionales y conectadas mediante llaves foráneas para garantizar trazabilidad, integridad y consistencia en todo el flujo operativo y comercial.
-
----
-
-## 2. Resumen previo del análisis realizado
-Como base de trabajo, previamente se identificó y organizó el script en dominios funcionales. A partir de esa revisión, se determinó que el modelo no corresponde a un caso pequeño o aislado, sino a una solución empresarial con múltiples áreas del negocio conectadas entre sí.
-
-También se verificó que:
-- el modelo contiene más de 60 entidades,
-- las relaciones entre tablas siguen una estructura consistente,
-- existen restricciones de integridad mediante `PRIMARY KEY`, `FOREIGN KEY`, `UNIQUE` y `CHECK`,
-- el diseño soporta trazabilidad end-to-end desde la reserva hasta el pago, abordaje y facturación.
+El modelo corresponde a un sistema integral de aerolínea con más de 60 entidades normalizadas. Soporta trazabilidad end-to-end desde la identidad del pasajero hasta la reserva, tiquete, abordaje y facturación.
 
 ---
 
-## 3. Dominios del modelo y propósito general
+## 2. Restricción general respetada
 
-### GEOGRAPHY AND REFERENCE DATA
-**Entidades:** `time_zone`, `continent`, `country`, `state_province`, `city`, `district`, `address`, `currency`  
-**Resumen:** Centraliza información geográfica y de referencia para ubicar aeropuertos, personas, proveedores y definir monedas operativas del sistema.
-
-### AIRLINE
-**Entidades:** `airline`  
-**Resumen:** Representa la aerolínea operadora del sistema, incluyendo sus códigos y país base.
-
-### IDENTITY
-**Entidades:** `person_type`, `document_type`, `contact_type`, `person`, `person_document`, `person_contact`  
-**Resumen:** Permite modelar la identidad de las personas, sus documentos y medios de contacto.
-
-### SECURITY
-**Entidades:** `user_status`, `security_role`, `security_permission`, `user_account`, `user_role`, `role_permission`  
-**Resumen:** Administra autenticación, autorización y control de acceso al sistema.
-
-### CUSTOMER AND LOYALTY
-**Entidades:** `customer_category`, `benefit_type`, `loyalty_program`, `loyalty_tier`, `customer`, `loyalty_account`, `loyalty_account_tier`, `miles_transaction`, `customer_benefit`  
-**Resumen:** Gestiona clientes, programas de fidelización, acumulación de millas, beneficios y niveles.
-
-### AIRPORT
-**Entidades:** `airport`, `terminal`, `boarding_gate`, `runway`, `airport_regulation`  
-**Resumen:** Modela la infraestructura aeroportuaria y las condiciones regulatorias asociadas a cada aeropuerto.
-
-### AIRCRAFT
-**Entidades:** `aircraft_manufacturer`, `aircraft_model`, `cabin_class`, `aircraft`, `aircraft_cabin`, `aircraft_seat`, `maintenance_provider`, `maintenance_type`, `maintenance_event`  
-**Resumen:** Gestiona aeronaves, fabricantes, configuración interna y procesos de mantenimiento.
-
-### FLIGHT OPERATIONS
-**Entidades:** `flight_status`, `delay_reason_type`, `flight`, `flight_segment`, `flight_delay`  
-**Resumen:** Controla la operación de vuelos, sus segmentos, estados y retrasos.
-
-### SALES, RESERVATION, TICKETING
-**Entidades:** `reservation_status`, `sale_channel`, `fare_class`, `fare`, `ticket_status`, `reservation`, `reservation_passenger`, `sale`, `ticket`, `ticket_segment`, `seat_assignment`, `baggage`  
-**Resumen:** Gestiona el flujo comercial principal: reserva, pasajero, venta, emisión de tiquetes, asignación de asiento y equipaje.
-
-### BOARDING
-**Entidades:** `boarding_group`, `check_in_status`, `check_in`, `boarding_pass`, `boarding_validation`  
-**Resumen:** Soporta el proceso de check-in, emisión de pase de abordar y validación final de embarque.
-
-### PAYMENT
-**Entidades:** `payment_status`, `payment_method`, `payment`, `payment_transaction`, `refund`  
-**Resumen:** Administra pagos, transacciones y devoluciones asociadas a las ventas.
-
-### BILLING
-**Entidades:** `tax`, `exchange_rate`, `invoice_status`, `invoice`, `invoice_line`  
-**Resumen:** Gestiona impuestos, tasas de cambio, facturas y detalle facturable.
+La solución no modifica ninguna tabla, columna, relación ni constraint del modelo base. Todos los objetos creados (función, trigger, procedimiento) operan únicamente sobre entidades y atributos existentes en el DDL entregado.
 
 ---
 
-## 4. Enfoque de los ejercicios
-Los ejercicios planteados sobre este modelo tendrán como propósito que el estudiante analice relaciones reales entre entidades y construya soluciones en PostgreSQL sin alterar la estructura base del sistema.
+## 3. Contexto del ejercicio
 
-Cada ejercicio se formulará para que el estudiante:
-- interprete correctamente los dominios involucrados,
-- construya consultas con múltiples relaciones,
-- diseñe automatizaciones con triggers,
-- implemente lógica reutilizable mediante procedimientos almacenados,
-- y demuestre técnicamente el funcionamiento con scripts de prueba.
+El área de servicio al cliente necesita:
+
+1. Consultar la identidad completa de los pasajeros: tipo de persona, documentos, medios de contacto y su participación en reservas.
+2. Automatizar una acción verificable sobre la ficha de la persona cada vez que se registre un nuevo medio de contacto.
+3. Encapsular el registro de contactos en un procedimiento reutilizable con validaciones de integridad.
 
 ---
 
-## 5. Restricción general para todos los ejercicios
-Todos los ejercicios deben resolverse respetando estrictamente el modelo entregado.
+## 4. Dominios y datos reales involucrados
 
-No está permitido:
-- cambiar atributos existentes,
-- renombrar tablas o columnas,
-- alterar relaciones,
-- inventar entidades fuera del script base,
-- ni modificar la estructura general del modelo.
+| Dominio | Entidades usadas | Datos del seed |
+|---|---|---|
+| IDENTITY | `person`, `person_type`, `person_document`, `document_type`, `person_contact`, `contact_type` | Ana Garcia, Carlos Mendoza, Laura Torres |
+| CUSTOMER / LOYALTY | `customer` | (referenciado indirectamente vía person) |
+| SALES / TICKETING | `reservation_passenger`, `reservation` | RES-FY-001, RES-FY-002, RES-FY-003 |
 
-La solución deberá construirse únicamente sobre las entidades y relaciones reales definidas en el script.
+### Datos reales del seed usados en el demo
 
----
+| Elemento | Valor real del seed | Fuente |
+|---|---|---|
+| Persona elegida | `Carlos Mendoza` (CC71234567 — ADULT) | seed canónico |
+| Contactos previos | 2 — EMAIL (principal) y MOBILE | seed canónico |
+| Tipo nuevo | `WHATSAPP` — no primario | seed canónico |
+| Valor registrado | `+573107654321` | demo |
+| Efecto verificable | `person.updated_at` actualizado por trigger | DDL: campo mutable real |
 
-## 6. Contexto del ejercicio
-El área de servicio al cliente necesita consultar la identidad completa del pasajero, sus documentos y datos de contacto, y automatizar una acción posterior cuando se registre un nuevo documento o un nuevo contacto prioritario.
+### ¿Por qué Carlos Mendoza y el tipo WHATSAPP?
 
----
+El seed canónico registra los siguientes contactos por pasajero:
 
-## 7. Dominios involucrados en este ejercicio
-### IDENTITY
-**Entidades:** `person`, `person_type`, `person_document`, `document_type`, `person_contact`, `contact_type`  
-**Propósito:** Gestionar identidad, documentos y medios de contacto.
+| Persona | Contactos registrados |
+|---|---|
+| Ana Garcia | EMAIL (principal), MOBILE |
+| Carlos Mendoza | EMAIL (principal), MOBILE |
+| Laura Torres | EMAIL (principal) |
 
-### CUSTOMER AND LOYALTY
-**Entidades:** `customer`  
-**Propósito:** Relacionar la persona con su rol como cliente.
-
-### SALES, RESERVATION, TICKETING
-**Entidades:** `reservation_passenger`, `reservation`  
-**Propósito:** Relacionar la identidad con la actividad comercial del pasajero.
+Carlos Mendoza ya tiene EMAIL y MOBILE pero **no tiene WHATSAPP**. Agregar un WHATSAPP no primario satisface tres condiciones ideales para el demo: la persona existe en el seed, el tipo de contacto existe en el catálogo, y no hay riesgo de violar la restricción de contacto principal duplicado. Además, el número `+573107654321` coincide con el MOBILE ya registrado para Carlos, lo que hace coherente el escenario (mismo número para MOBILE y WHATSAPP es un caso real y frecuente).
 
 ---
 
-## 8. Planteamiento del problema
-La organización necesita una visión integrada de los pasajeros registrados y requiere automatizar un efecto posterior cuando cambie su información documental o de contacto.
+## 5. Contactos existentes en el seed canónico
+
+| Persona | Tipo | Valor | Principal |
+|---|---|---|---|
+| Ana Garcia | EMAIL | ana.garcia@email.co | Sí |
+| Ana Garcia | MOBILE | +573001234567 | No |
+| Carlos Mendoza | EMAIL | carlos.mendoza@email.co | Sí |
+| Carlos Mendoza | MOBILE | +573107654321 | No |
+| Laura Torres | EMAIL | laura.torres@email.co | Sí |
 
 ---
 
-## 9. Objetivo del ejercicio
-Formular un ejercicio centrado en identidad del pasajero, con consulta multi-tabla, trigger posterior y procedimiento almacenado.
+## 6. Decisión técnica del trigger: el problema de 3FN
+
+### El reto
+
+El enunciado pide que el trigger sobre `person_contact` produzca una acción verificable sobre la ficha de la persona. La solución intuitiva sería actualizar un campo de "último contacto registrado" o un contador de contactos en `person`. Sin embargo, el DDL no tiene esa columna derivada: el modelo preserva la **tercera forma normal (3FN)** y no almacena estados calculados en `person`.
+
+Modificar el modelo para agregar ese campo violaría la restricción del ejercicio.
+
+### La solución correcta
+
+El único campo mutable de `person` sin derivar datos es `updated_at`, presente en todas las tablas del modelo. Actualizar `person.updated_at` cuando se inserta un contacto es:
+
+- **Correcto**: atributo real del DDL.
+- **Verificable**: se puede comparar el valor antes y después del trigger.
+- **Coherente con el negocio**: la ficha de la persona refleja que su perfil de contacto fue modificado, lo que es relevante para auditorías de servicio al cliente.
+- **Sin romper 3FN**: no almacena ningún valor derivado.
 
 ---
 
-## 10. Requerimiento 1 - Consulta con `INNER JOIN` de al menos 5 tablas
+## 7. Teoría base aplicada
 
-### Enunciado
-Construya una consulta SQL que relacione persona, tipo de persona, documento, tipo de documento, contacto, tipo de contacto y participación en una reserva.
+### ¿Por qué trigger sobre person_contact (INSERT) y no sobre person_document?
 
-### Restricciones obligatorias
-- Debe usar **`INNER JOIN`**
-- Debe involucrar **mínimo 5 tablas**
-- Debe usar únicamente entidades y atributos existentes en el modelo base
-- No se permite cambiar nombres de tablas ni columnas
-- La consulta debe ser coherente con las relaciones reales del modelo
+El enunciado permite elegir entre `person_document` y `person_contact`. Se elige `person_contact` porque:
 
-### Tablas mínimas sugeridas
-El estudiante deberá incluir, como mínimo, una combinación válida de tablas como:
-- `person`
-- `person_type`
-- `person_document`
-- `document_type`
-- `person_contact`
-- `contact_type`
-- `reservation_passenger`
-- `reservation`
+1. Los documentos de identidad son datos relativamente estáticos (un pasaporte tiene vigencia de 10 años). Los medios de contacto cambian con mayor frecuencia: un pasajero puede agregar WhatsApp, cambiar su número de teléfono o actualizar su correo antes de un vuelo.
+2. El área de **servicio al cliente** opera principalmente a través de medios de contacto (email, mobile, WhatsApp) para enviar notificaciones de vuelo, cambios de itinerario y alertas operativas. El trigger sobre `person_contact` es más relevante para ese contexto.
+3. En el seed canónico, Laura Torres solo tiene EMAIL registrado, lo que demuestra que hay pasajeros con perfil de contacto incompleto. El procedimiento y el trigger están diseñados exactamente para ese caso de uso.
 
-### Resultado esperado a nivel funcional
-La consulta debe permitir responder una necesidad como esta: “Mostrar por pasajero su identidad, documentos registrados, medios de contacto y relación con reservas del sistema”.
+### ¿Por qué la consulta principal usa INNER JOIN en las 8 tablas?
 
-### Campos esperados en el resultado
-Como mínimo, el resultado debe exponer columnas equivalentes a:
-- persona
-- tipo de persona
-- tipo de documento
-- número de documento
-- tipo de contacto
-- valor del contacto
-- reserva relacionada
-- secuencia del pasajero en la reserva
+La consulta busca el perfil completo del pasajero para servicio al cliente: solo tienen valor las personas que tienen documento registrado, al menos un contacto registrado **y** participan en al menos una reserva. Si cualquiera de esas condiciones faltara, la persona no es un pasajero activo en el sistema y no es relevante para el área de servicio al cliente. Los `INNER JOIN` en las 8 tablas garantizan ese filtro de forma implícita.
 
-> El estudiante define la consulta exacta, pero debe respetar estrictamente el modelo base.
+### ¿Por qué la validación 3 usa INNER JOIN sobre reservation_passenger en el resumen?
+
+El resumen de la validación 3 mantiene `INNER JOIN` sobre `reservation_passenger` deliberadamente para mostrar solo las personas que participan en reservas, que es el universo de trabajo de servicio al cliente. Un empleado como Diego Ramirez o Patricia Vargas existe en `person` pero no en `reservation_passenger` y no aparecería en ese resumen, lo cual es correcto: el área de servicio al cliente trabaja con pasajeros, no con empleados.
+
+### ¿Por qué procedimiento almacenado con 4 validaciones?
+
+La validación más crítica es la cuarta: impedir que se registren dos contactos principales del mismo tipo para la misma persona. En el modelo aeronáutico, el contacto principal (`is_primary = true`) es el que recibe las comunicaciones operativas críticas (cambios de vuelo, cancelaciones). Si existieran dos emails principales para la misma persona, los sistemas de notificación podrían enviar mensajes duplicados o contradictorios. El procedimiento protege esa regla de negocio antes de que el dato quede persistido.
 
 ---
 
-## 11. Requerimiento 2 - Trigger `AFTER`
+## 8. Consulta resuelta con INNER JOIN
 
-### Enunciado
-Diseñe un trigger `AFTER INSERT` o `AFTER UPDATE` sobre `person_document` o `person_contact` que automatice una acción posterior verificable sobre otra tabla real del dominio IDENTITY.
+### Tablas involucradas: 8 (todos INNER JOIN)
 
-### Condición funcional del trigger
-Cuando se registre o actualice el dato seleccionado por el estudiante, el trigger deberá ejecutar una consecuencia verificable que mantenga coherencia con la trazabilidad de identidad definida en el ejercicio.
+| # | Tabla | Propósito |
+|---|---|---|
+| 1 | `person` | Nombre completo, fecha de nacimiento, género |
+| 2 | `person_type` | Tipo: ADULT, CHILD, EMPLOYEE, CONTRACTOR |
+| 3 | `person_document` | Documento registrado: número, emisión, vencimiento |
+| 4 | `document_type` | Tipo de documento: PASS, NID, DL, RES |
+| 5 | `person_contact` | Medio de contacto: valor e indicador de principal |
+| 6 | `contact_type` | Tipo de contacto: EMAIL, MOBILE, WHATSAPP... |
+| 7 | `reservation_passenger` | Participación en reserva: secuencia y tipo de pasajero |
+| 8 | `reservation` | Código de la reserva relacionada |
 
-### Restricciones del trigger
-- Debe ser un trigger **`AFTER`**
-- Debe operar sobre tablas reales del modelo
-- No puede modificar atributos existentes del modelo base
-- No puede cambiar la definición de las tablas originales
-- La solución debe ser coherente con las relaciones reales entre las tablas involucradas
+### Resultado con datos reales del seed (antes del demo)
 
-### Demostración obligatoria
-El estudiante deberá entregar un **script de prueba** que dispare el trigger.
+La consulta genera un producto cartesiano controlado por los JOINs: cada persona aparece tantas veces como combinaciones de (documento × contacto × reserva) tenga. Para Carlos Mendoza con 1 documento, 2 contactos y 1 reserva, el resultado genera 2 filas (una por cada tipo de contacto).
 
-### Condición mínima de la demostración
-El script de prueba debe:
-1. Identificar o preparar los datos necesarios del modelo base
-2. Ejecutar la operación que dispare el trigger
-3. Verificar el efecto posterior generado por el trigger
+| persona | tipo | documento | número_doc | tipo_contacto | valor_contacto | reserva |
+|---|---|---|---|---|---|---|
+| Carlos Mendoza | Adulto | Documento nacional | CC71234567 | Correo electrónico | carlos.mendoza@email.co | RES-FY-002 |
+| Carlos Mendoza | Adulto | Documento nacional | CC71234567 | Telefono movil | +573107654321 | RES-FY-002 |
 
-> El estudiante deberá decidir cómo validar el resultado, siempre sobre entidades reales del modelo.
+### Resultado tras ejecutar el demo (después del CALL)
 
----
+Carlos Mendoza aparece con 3 filas: EMAIL, MOBILE y el nuevo WHATSAPP `+573107654321`.
 
-## 12. Requerimiento 3 - Procedimiento almacenado
+### Explicación paso a paso de cada JOIN
 
-### Enunciado
-Diseñe un procedimiento almacenado que registre un nuevo documento o un nuevo contacto para una persona existente.
-
-### Propósito del procedimiento
-Encapsular una operación de mantenimiento de identidad para que sea reutilizable y controlada desde la base de datos.
-
-### Alcance funcional mínimo
-El procedimiento debe permitir trabajar con información relacionada con:
-- persona
-- tipo de documento o de contacto
-- valor documental o de contacto
-- país emisor, si aplica
-- fechas de emisión o vencimiento, si aplica
-
-### Restricciones obligatorias
-- Debe implementarse como **procedimiento almacenado**
-- Debe trabajar sobre tablas y atributos existentes
-- No puede cambiar la estructura del modelo base
-- Debe ser reutilizable
-- Debe poder invocarse desde un script SQL independiente
-
-### Integración esperada
-La operación ejecutada por el procedimiento debe activar o dejar lista la lógica posterior definida en el trigger.
+1. **`person`** → ficha maestra de la persona. Punto de entrada del dominio IDENTITY.
+2. **`person_type`** → clasifica a la persona: ADULT, CHILD, EMPLOYEE. Necesario para filtrar pasajeros vs empleados en los reportes de servicio al cliente.
+3. **`person_document`** → documento de identidad registrado. Crítico para la verificación en el check-in y el control migratorio.
+4. **`document_type`** → tipo legible del documento: Pasaporte, Documento nacional, Licencia de conducción. Determina qué documentos son válidos para cada tipo de vuelo (doméstico vs internacional).
+5. **`person_contact`** → medio de contacto registrado. Incluye el indicador `is_primary` que define qué canal recibe las comunicaciones operativas.
+6. **`contact_type`** → tipo legible del contacto: Correo electrónico, Teléfono móvil, WhatsApp. Permite segmentar el canal de comunicación.
+7. **`reservation_passenger`** → vincula la persona con una reserva concreta. Incluye la secuencia dentro de la reserva y el tipo de pasajero (ADULT, CHILD, INFANT).
+8. **`reservation`** → reserva relacionada. Cierra el ciclo identidad → actividad comercial que requiere el área de servicio al cliente.
 
 ---
 
-## 13. Script de uso del procedimiento
+## 9. Trigger resuelto
 
-### Enunciado
-El estudiante deberá entregar un script SQL que invoque el procedimiento almacenado desarrollado.
+### Acción implementada
 
-### Propósito del script
-Demostrar que el procedimiento:
-1. recibe los parámetros necesarios,
-2. ejecuta la operación principal del ejercicio,
-3. activa el trigger definido previamente o deja lista la evidencia para validarlo,
-4. deja evidencia verificable del proceso.
-
-### Contenido mínimo esperado
-El script debe incluir:
-- búsqueda o selección previa de identificadores necesarios
-- invocación del procedimiento
-- consulta posterior de validación
+Cada vez que se inserta un registro en `person_contact`, la ficha de la persona asociada queda marcada con el timestamp de la modificación mediante `UPDATE person SET updated_at = now()`. Esto es verificable, sin romper 3FN y coherente con el negocio: el perfil del pasajero refleja que su información de contacto fue actualizada, lo que es relevante para auditorías de servicio al cliente y notificaciones operativas.
 
 ---
 
-## 14. Entregables del estudiante
-El estudiante deberá entregar:
+## 10. Procedimiento almacenado resuelto
 
-1. **Consulta SQL** con `INNER JOIN` de mínimo 5 tablas  
-2. **Trigger `AFTER`**  
-3. **Función u objeto auxiliar necesario para el trigger**, si su diseño lo requiere  
-4. **Procedimiento almacenado**  
-5. **Script que dispare el trigger**  
-6. **Script que invoque el procedimiento**  
-7. **Consultas de validación** que demuestren el funcionamiento
+### Parámetros de entrada
 
----
+| Parámetro | Columna del DDL | Tipo | Constraint aplicado |
+|---|---|---|---|
+| `p_person_id` | `person_contact.person_id` | uuid | FK a `person` |
+| `p_contact_type_id` | `person_contact.contact_type_id` | uuid | FK a `contact_type` |
+| `p_contact_value` | `person_contact.contact_value` | varchar(200) | NOT NULL, no vacío |
+| `p_is_primary` | `person_contact.is_primary` | boolean | Regla de unicidad de principal por tipo |
 
-## 15. Criterios de aceptación
-La solución propuesta por el estudiante será válida si cumple con todo lo siguiente:
+### Validaciones internas (4 checks)
 
-- La consulta utiliza `INNER JOIN`
-- La consulta relaciona al menos 5 tablas reales del modelo
-- El trigger es coherente con la necesidad del negocio
-- El trigger produce un efecto verificable sobre tablas reales
-- Existe un script que demuestra su ejecución
-- El procedimiento almacenado encapsula una operación útil del negocio
-- Existe un script que invoca el procedimiento
-- La invocación del procedimiento permite evidenciar también el funcionamiento del trigger o del flujo solicitado
-- No se alteró la estructura base del modelo
+1. `person_id` debe existir en `person`.
+2. `contact_type_id` debe existir en `contact_type`.
+3. `p_contact_value` no puede ser nulo ni vacío.
+4. Si `p_is_primary = true`, no puede existir ya otro contacto principal del mismo tipo para la misma persona.
 
 ---
 
-## 16. Observación final
-Este ejercicio no solicita la solución final enunciada en el documento. El estudiante deberá diseñarla e implementarla respetando las restricciones técnicas del modelo base.
+## 11. Script de demostración
+
+### ¿Qué demuestra?
+
+1. Resuelve `Carlos Mendoza` del seed canónico y verifica su `updated_at` inicial.
+2. Confirma que tiene 2 contactos previos (EMAIL y MOBILE) y ningún WHATSAPP.
+3. Resuelve el `contact_type_id` del tipo `WHATSAPP`.
+4. Invoca `sp_register_person_contact` con `+573107654321` como valor no primario.
+5. El procedimiento valida los 4 constraints e inserta en `person_contact`.
+6. El trigger `AFTER INSERT` actualiza `person.updated_at` automáticamente.
+7. Las 3 validaciones confirman el contacto insertado, la trazabilidad completa identidad → reserva y el resumen con `string_agg` de todos los contactos por persona.
+
+---
+
+## 12. Criterios de aceptación cumplidos
+
+| Criterio | Estado | Evidencia |
+|---|---|---|
+| La consulta usa INNER JOIN | ✅ | 8 INNER JOINs sobre tablas reales del modelo |
+| La consulta relaciona al menos 5 tablas reales del modelo | ✅ | 8 tablas reales del DDL |
+| El trigger es AFTER INSERT | ✅ | `AFTER INSERT ON person_contact FOR EACH ROW` |
+| El trigger produce efecto verificable sobre tablas reales | ✅ | Actualiza `person.updated_at` |
+| Existe script que demuestra la ejecución | ✅ | `ejercicio_10_demo.sql` con `DO $$` y 3 validaciones |
+| El procedimiento encapsula una operación útil del negocio | ✅ | Registro de contacto con 4 validaciones |
+| Existe script que invoca el procedimiento | ✅ | `CALL sp_register_person_contact(...)` |
+| La invocación evidencia el trigger | ✅ | `person.updated_at` cambia al registrar el contacto |
+| No se alteró la estructura base del modelo | ✅ | Solo función, trigger y procedimiento |
+
+---
+
+## 13. Archivos entregados
+
+| Archivo | Contenido |
+|---|---|
+| `ejercicio_10_setup.sql` | Función, trigger, procedimiento y consulta INNER JOIN con 8 tablas |
+| `ejercicio_10_demo.sql` | Bloque `DO $$`, invocación del procedimiento y 3 validaciones |
+| `ejercicio_10_resuelto.md` | Documentación completa con decisiones técnicas y criterios |
