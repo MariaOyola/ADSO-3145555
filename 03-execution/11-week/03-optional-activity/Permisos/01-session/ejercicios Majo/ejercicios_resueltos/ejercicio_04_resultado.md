@@ -2,7 +2,7 @@
 
 ## 1. Descripción general del modelo
 
-El modelo corresponde a un sistema integral de aerolínea con más de 60 entidades normalizadas. Soporta trazabilidad end-to-end desde la reserva hasta el pago, abordaje, facturación y fidelización de clientes.
+El modelo corresponde a un sistema integral de aerolínea con más de 60 entidades normalizadas. Soporta trazabilidad end-to-end desde la reserva hasta el pago, abordaje, facturación y gestión completa del programa de fidelización.
 
 ---
 
@@ -14,11 +14,11 @@ La solución no modifica ninguna tabla, columna, relación ni constraint del mod
 
 ## 3. Contexto del ejercicio
 
-El programa de fidelización de la aerolínea requiere:
+El programa de fidelización necesita:
 
-1. Consultar la relación entre clientes, cuentas de fidelización, programas, niveles y ventas asociadas.
-2. Automatizar el registro de un upgrade de nivel cada vez que se inserta una transacción de millas que supere el umbral correspondiente.
-3. Encapsular el registro de transacciones de millas en un procedimiento reutilizable.
+1. Consultar la relación entre clientes, cuentas de fidelización, niveles activos y ventas asociadas.
+2. Automatizar una acción verificable sobre la cuenta de fidelización cada vez que se registra una transacción de millas.
+3. Encapsular el registro de transacciones de millas en un procedimiento reutilizable con validaciones de integridad.
 
 ---
 
@@ -26,125 +26,116 @@ El programa de fidelización de la aerolínea requiere:
 
 | Dominio | Entidades usadas | Datos del seed |
 |---|---|---|
-| CUSTOMER AND LOYALTY | `customer`, `loyalty_account`, `loyalty_program`, `loyalty_tier`, `loyalty_account_tier`, `miles_transaction` | FLY-0001-ANA, FLY-0002-CAR, FLY-0003-LAU + 250 cuentas vol. |
+| CUSTOMER AND LOYALTY | `customer`, `customer_category`, `loyalty_account`, `loyalty_program`, `loyalty_account_tier`, `loyalty_tier`, `miles_transaction` | Ana (Gold), Carlos (Bronze), Laura (Silver) |
 | IDENTITY | `person` | Ana Garcia, Carlos Mendoza, Laura Torres |
-| AIRLINE | `airline` | FLY Miles Program |
+| SALES / TICKETING | `sale`, `reservation` | SAL-20260305, SAL-20260310, SAL-20260312 |
 
 ### Datos reales del seed usados en el demo
 
 | Elemento | Valor real del seed | Fuente |
 |---|---|---|
-| Cuenta elegida | `FLY-0002-CAR` (Carlos Mendoza, tier `BRONZE`) | seed canónico |
-| Tier inicial | `BRONZE` — `required_miles = 0`, `priority_level = 1` | seed canónico |
-| Tier objetivo | `SILVER` — `required_miles = 10000`, `priority_level = 2` | seed canónico |
-| Transacción registrada | `EARN` +15000 millas (supera umbral de SILVER) | demo |
-| Efecto verificable | Nuevo registro en `loyalty_account_tier` con tier `SILVER` | trigger |
+| Cuenta elegida | `FLY-0002-CAR` (Carlos Mendoza — Bronze) | seed canónico |
+| Transacciones previas | 1 — EARN de 420 millas por FY101 BOG→MDE | seed canónico |
+| Saldo previo | 420 millas | seed canónico |
+| Nueva transacción | EARN 580 millas — `TKT-VOL-000001-SEG1` | demo |
+| Efecto verificable | `loyalty_account.updated_at` actualizado por trigger | DDL: campo mutable real |
 
-### ¿Por qué la cuenta FLY-0002-CAR?
+### ¿Por qué la cuenta FLY-0002-CAR (Carlos Mendoza)?
 
-El seed canónico crea tres cuentas. `FLY-0001-ANA` ya está en GOLD (máximo nivel), por lo que no puede hacer upgrade. `FLY-0003-LAU` está en SILVER. `FLY-0002-CAR` (Carlos) está en BRONZE con saldo mínimo, lo que permite demostrar un upgrade claro y verificable de BRONZE a SILVER al acumular 15.000 millas.
+El seed canónico registra los siguientes saldos de millas:
 
----
+| Cuenta | Cliente | Nivel | Millas acumuladas |
+|---|---|---|---|
+| FLY-0001-ANA | Ana Garcia | Gold | 8,200 (3,000 FY210 + 5,200 FY711) |
+| FLY-0002-CAR | Carlos Mendoza | Bronze | 420 (FY101 BOG→MDE) |
+| FLY-0003-LAU | Laura Torres | Silver | 1,500 (FY305 BOG→MIA) |
 
-## 5. Estructura de tiers del programa FLY Miles Program
-
-| Tier | `required_miles` | `priority_level` |
-|---|---|---|
-| BRONZE | 0 | 1 |
-| SILVER | 10.000 | 2 |
-| GOLD | 50.000 | 3 |
+Carlos tiene solo 1 transacción previa y el saldo más bajo, lo que hace su cuenta la candidata más limpia para demostrar un nuevo EARN sin interferir con historial complejo. Además, el escenario es coherente con el negocio: Carlos tiene reservas volumétricas en FY120 BOG→MDE que justifican nuevas acreditaciones de millas.
 
 ---
 
-## 6. Decisión técnica del trigger: lógica de upgrade
+## 5. Transacciones de millas existentes en el seed canónico
+
+| Cuenta | Tipo | Millas | Referencia | Vuelo |
+|---|---|---|---|---|
+| FLY-0001-ANA | EARN | +3,000 | TKT-FY-00001-SEG1 | FY210 BOG→MIA Business J |
+| FLY-0001-ANA | EARN | +5,200 | TKT-FY-00001-SEG2 | FY711 MIA→MAD Business J |
+| FLY-0002-CAR | EARN | +420 | TKT-FY-00002-SEG1 | FY101 BOG→MDE Economy YB |
+| FLY-0003-LAU | EARN | +1,500 | TKT-FY-00003-SEG1 | FY305 BOG→MIA Economy YF |
+
+---
+
+## 6. Decisión técnica del trigger: el problema de 3FN
 
 ### El reto
 
-El enunciado pide que el trigger sobre `miles_transaction` produzca una acción verificable en `loyalty_account_tier`. La lógica correcta debe:
+El enunciado pide que el trigger sobre `miles_transaction` produzca una acción verificable sobre la cuenta de fidelización o el historial de niveles. La solución intuitiva sería actualizar un campo de "saldo acumulado" o "total de millas" en `loyalty_account`. Sin embargo, el DDL no tiene esa columna derivada: el modelo preserva la **tercera forma normal (3FN)** y calcula el saldo real siempre mediante `SUM(miles_delta)` sobre `miles_transaction`. Almacenar ese saldo en `loyalty_account` crearía redundancia y posibilidades de inconsistencia.
 
-1. Calcular el saldo total acumulado de la cuenta (suma de todos los `miles_delta`).
-2. Determinar el tier que le corresponde según ese saldo (el de mayor `priority_level` cuyo `required_miles` no supere el saldo).
-3. Comparar con el tier más reciente registrado en `loyalty_account_tier`.
-4. Solo insertar un nuevo registro si el tier calculado tiene mayor prioridad que el actual.
+Modificar el modelo para agregar ese campo violaría la restricción del ejercicio.
 
-### Por qué solo se evalúa en transacciones positivas
+### La solución correcta
 
-El campo `miles_delta` puede ser negativo (`REDEEM`) o positivo (`EARN`/`ADJUST`). Un upgrade de nivel nunca ocurre por redención de millas, solo por acumulación. Por eso el trigger evalúa únicamente cuando `miles_delta > 0`.
+El único campo mutable de `loyalty_account` sin derivar datos es `updated_at`, presente en todas las tablas del modelo. Actualizar `loyalty_account.updated_at` cuando se inserta una transacción de millas es:
 
-### El constraint `uq_loyalty_account_tier_point`
-
-El modelo tiene una restricción `UNIQUE(loyalty_account_id, assigned_at)` en `loyalty_account_tier`. PostgreSQL usa `now()` con precisión de microsegundos dentro de la misma transacción, lo que garantiza unicidad en inserciones consecutivas del trigger.
+- **Correcto**: atributo real del DDL.
+- **Verificable**: se puede comparar el valor antes y después del trigger.
+- **Coherente con el negocio**: la cuenta refleja que su historial de millas fue modificado, lo que es relevante para auditorías del programa de fidelización.
+- **Sin romper 3FN**: no almacena ningún valor derivado.
 
 ---
 
 ## 7. Teoría base aplicada
 
-### ¿Por qué INNER JOIN en todas las tablas de la consulta principal?
+### ¿Por qué la consulta usa una subconsulta IN para relacionar customer con sale?
 
-Se usa `INNER JOIN` en las 7 tablas porque todas deben existir para que el resultado tenga sentido. No hay ninguna relación opcional en este flujo: un cliente sin cuenta de fidelización, una cuenta sin programa, un programa sin aerolínea o una cuenta sin nivel asignado no representan un registro completo del programa de fidelización.
+El modelo no tiene una relación directa entre `customer` y `sale`. El camino real es: `customer` → `reservation` (vía `booked_by_customer_id`) → `sale` (vía `reservation_id`). Se usa una subconsulta `IN` en lugar de un JOIN adicional para mantener la cláusula `FROM` limpia con exactamente las 7 tablas declaradas en el enunciado, sin generar filas duplicadas por la multiplicación de registros que produciría un JOIN directo entre `sale` y las tablas de fidelización.
 
-### ¿Por qué trigger AFTER?
+### ¿Por qué la validación 3 usa LEFT JOIN sobre miles_transaction?
 
-El trigger necesita leer el saldo total de `miles_transaction` incluyendo la fila recién insertada. Si fuera `BEFORE`, la nueva transacción no estaría aún en la tabla y el `SUM(miles_delta)` devolvería un valor incompleto. El trigger `AFTER INSERT` garantiza que la fila ya fue persistida antes de que la función calcule el saldo.
+El resumen de la validación 3 usa `LEFT JOIN` sobre `miles_transaction` deliberadamente para incluir también cuentas que aún no tienen ninguna transacción registrada. Esto da una visión completa del programa, mostrando tanto clientes activos en la acumulación como clientes con cuenta abierta pero sin movimientos. Sin el `LEFT JOIN`, una cuenta nueva sin transacciones no aparecería en el resumen, lo que generaría un reporte incompleto.
 
-### ¿Por qué procedimiento almacenado?
+### ¿Por qué procedimiento almacenado con 5 validaciones?
 
-El procedimiento centraliza tres validaciones críticas antes de insertar en `miles_transaction`: existencia de la cuenta, tipo de transacción válido y delta distinto de cero. Sin él, cada proceso que registre millas replicaría esas validaciones de forma independiente, lo que genera inconsistencias.
+La acreditación de millas es una operación financiera con impacto real para el cliente: las millas tienen valor canjeable en vuelos, upgrades y beneficios. Una transacción con cuenta inexistente, tipo inválido, delta en cero o sin referencia podría crear saldos incorrectos que son difíciles de auditar y corregir después. El procedimiento centraliza 5 validaciones que protegen la integridad del historial antes de que el movimiento quede persistido.
+
+### ¿Por qué transaction_type valida contra una lista cerrada?
+
+El modelo no tiene una tabla catálogo para `transaction_type` en `miles_transaction` (a diferencia de otros dominios que usan tablas de referencia). El tipo se almacena como `varchar`. El procedimiento aplica una validación explícita contra los cuatro valores que tienen sentido semántico en el programa: `EARN` (acumulación por vuelo), `REDEEM` (canje), `ADJUST` (ajuste manual) y `EXPIRE` (vencimiento). Aceptar cualquier string sin validar permitiría registrar tipos incoherentes como `'BONO'` o `'DESCUENTO'` que no tienen tratamiento definido en el modelo.
 
 ---
 
 ## 8. Consulta resuelta con INNER JOIN
 
-### Tablas involucradas: 7 (todas con INNER JOIN)
+### Tablas involucradas: 7 (6 INNER JOIN + subconsulta)
 
-
-### Script
-
-```sql
-SELECT
-    p.first_name || ' ' || p.last_name     AS cliente,
-    p.first_name,
-    p.last_name,
-    la.account_number,
-    lp.program_name,
-    lt.tier_name                            AS nivel,
-    lt.required_miles                       AS millas_requeridas,
-    lat.assigned_at                         AS fecha_asignacion_nivel,
-    lat.expires_at                          AS vencimiento_nivel,
-    al.airline_name
-FROM customer c
-INNER JOIN person p
-    ON p.person_id = c.person_id
-INNER JOIN loyalty_account la
-    ON la.customer_id = c.customer_id
-INNER JOIN loyalty_program lp
-    ON lp.loyalty_program_id = la.loyalty_program_id
-INNER JOIN loyalty_account_tier lat
-    ON lat.loyalty_account_id = la.loyalty_account_id
-INNER JOIN loyalty_tier lt
-    ON lt.loyalty_tier_id = lat.loyalty_tier_id
-INNER JOIN airline al
-    ON al.airline_id = lp.airline_id
-ORDER BY lat.assigned_at DESC, p.last_name, p.first_name;
-```
+| # | Tabla | Propósito |
+|---|---|---|
+| 1 | `customer` | Cliente registrado: categoría y fecha de alta |
+| 2 | `person` | Nombre real del cliente |
+| 3 | `customer_category` | Categoría: Regular, Silver, Gold, Corporate |
+| 4 | `loyalty_account` | Cuenta de fidelización: número y fecha de apertura |
+| 5 | `loyalty_program` | Programa: FLY Miles Program |
+| 6 | `loyalty_account_tier` | Nivel activo o histórico: fecha de asignación y vencimiento |
+| 7 | `loyalty_tier` | Definición del nivel: Bronze, Silver, Gold y millas requeridas |
+| subconsulta | `sale` + `reservation` | Ventas del cliente vía su actividad de reservas |
 
 ### Resultado con datos reales del seed canónico
 
-| cliente | account_number | program_name | nivel | millas_requeridas | fecha_asignacion | vencimiento | airline_name |
-|---|---|---|---|---|---|---|---|
-| Ana Garcia | FLY-0001-ANA | FLY Miles Program | GOLD | 50000 | 2026-03-05 | 2027-03-05 | FlyAir |
-| Carlos Mendoza | FLY-0002-CAR | FLY Miles Program | BRONZE | 0 | 2026-03-10 | 2027-03-10 | FlyAir |
-| Laura Torres | FLY-0003-LAU | FLY Miles Program | SILVER | 10000 | 2026-03-12 | 2027-03-12 | FlyAir |
+| cliente | categoria | cuenta | programa | nivel | nivel_asignado_en | venta |
+|---|---|---|---|---|---|---|
+| Garcia Ana | Gold | FLY-0001-ANA | FLY Miles Program | Gold | 2025-01-01 | SAL-20260305-001 |
+| Mendoza Carlos | Regular | FLY-0002-CAR | FLY Miles Program | Bronze | 2024-01-15 | SAL-20260310-001 |
+| Torres Laura | Silver | FLY-0003-LAU | FLY Miles Program | Silver | 2024-06-01 | SAL-20260312-001 |
 
 ### Explicación paso a paso de cada JOIN
 
-1. **`customer`** → cliente registrado en la aerolínea. Punto de entrada del dominio de fidelización.
-2. **`person`** → identidad real del cliente: nombre, apellido. Relacionado por `person_id`.
-3. **`loyalty_account`** → cuenta del programa de millas del cliente. Relacionada por `customer_id`.
-4. **`loyalty_program`** → programa al que pertenece la cuenta: nombre, aerolínea. Relacionado por `loyalty_program_id`.
-5. **`loyalty_account_tier`** → historial de niveles asignados a la cuenta: fecha y vencimiento de cada tier.
-6. **`loyalty_tier`** → definición del nivel: nombre, millas requeridas, prioridad.
-7. **`airline`** → aerolínea propietaria del programa. Relacionada por `airline_id` desde `loyalty_program`.
+1. **`customer`** → punto de entrada del dominio de fidelización. Conecta la persona con la aerolínea y su categoría comercial.
+2. **`person`** → nombre real del cliente. Necesario para los reportes de servicio al cliente y comunicaciones del programa.
+3. **`customer_category`** → clasificación comercial del cliente. Determina qué beneficios y tarifas especiales aplican.
+4. **`loyalty_account`** → cuenta del programa de fidelización. Contiene el número de cuenta y la fecha de apertura.
+5. **`loyalty_program`** → programa al que pertenece la cuenta. Permite reportes multi-programa si la aerolínea opera más de uno.
+6. **`loyalty_account_tier`** → nivel asignado a la cuenta: fecha de asignación y vencimiento. Una cuenta puede tener historial de niveles.
+7. **`loyalty_tier`** → definición del nivel: nombre, código y millas requeridas para alcanzarlo. Cierra el ciclo del programa.
 
 ---
 
@@ -152,36 +143,30 @@ ORDER BY lat.assigned_at DESC, p.last_name, p.first_name;
 
 ### Acción implementada
 
-Cada vez que se inserta una `miles_transaction` con `miles_delta > 0`, el trigger calcula el saldo total acumulado, determina el tier correspondiente y, si es de mayor prioridad que el actual, inserta un nuevo registro en `loyalty_account_tier` con `expires_at = now() + 1 year`.
-
-### Por qué esta solución es correcta
-
-- No altera ninguna tabla del modelo base.
-- Opera sobre `loyalty_account_tier`, tabla real del DDL diseñada para registrar el historial de niveles.
-- Respeta el constraint `uq_loyalty_account_tier_point UNIQUE(loyalty_account_id, assigned_at)`.
-- Produce un efecto verificable: nuevo registro en `loyalty_account_tier` con tier de mayor prioridad.
-- Es coherente con el negocio: el nivel mejora cuando el cliente acumula las millas requeridas.
+Cada vez que se inserta un registro en `miles_transaction`, la cuenta de fidelización asociada queda marcada con el timestamp de la modificación mediante `UPDATE loyalty_account SET updated_at = now()`. Esto es verificable, sin romper 3FN y coherente con el negocio: la cuenta refleja que su historial de millas fue actualizado, lo que permite detectar cuentas activas vs inactivas en el programa.
 
 ---
 
 ## 10. Procedimiento almacenado resuelto
 
-### Parámetros de entrada (mapeados a columnas reales del DDL)
+### Parámetros de entrada
 
 | Parámetro | Columna del DDL | Tipo | Constraint aplicado |
 |---|---|---|---|
 | `p_loyalty_account_id` | `miles_transaction.loyalty_account_id` | uuid | FK a `loyalty_account` |
-| `p_transaction_type` | `miles_transaction.transaction_type` | varchar(20) | `ck_miles_transaction_type`: EARN, REDEEM, ADJUST |
-| `p_miles_delta` | `miles_transaction.miles_delta` | integer | `ck_miles_delta_non_zero` (≠ 0) |
-| `p_occurred_at` | `miles_transaction.occurred_at` | timestamptz | DEFAULT `now()` si es NULL |
-| `p_reference_code` | `miles_transaction.reference_code` | varchar(60) | Nullable |
+| `p_transaction_type` | `miles_transaction.transaction_type` | varchar(20) | IN ('EARN','REDEEM','ADJUST','EXPIRE') |
+| `p_miles_delta` | `miles_transaction.miles_delta` | integer | ≠ 0 |
+| `p_occurred_at` | `miles_transaction.occurred_at` | timestamptz | NOT NULL |
+| `p_reference_code` | `miles_transaction.reference_code` | varchar(100) | NOT NULL, no vacío |
 | `p_notes` | `miles_transaction.notes` | text | Nullable |
 
-### Validaciones internas (3 checks)
+### Validaciones internas (5 checks)
 
 1. `loyalty_account_id` debe existir en `loyalty_account`.
-2. `transaction_type` debe ser `EARN`, `REDEEM` o `ADJUST`.
-3. `miles_delta` no puede ser cero.
+2. `transaction_type` debe ser uno de: `EARN`, `REDEEM`, `ADJUST`, `EXPIRE`.
+3. `p_miles_delta` no puede ser cero ni nulo.
+4. `p_occurred_at` no puede ser nulo.
+5. `p_reference_code` no puede ser nulo ni vacío.
 
 ---
 
@@ -189,12 +174,12 @@ Cada vez que se inserta una `miles_transaction` con `miles_delta > 0`, el trigge
 
 ### ¿Qué demuestra?
 
-1. Busca la cuenta `FLY-0002-CAR` (Carlos Mendoza, tier `BRONZE`) del seed canónico.
-2. Verifica el tier actual y el saldo de millas antes del demo.
-3. Invoca `sp_register_miles_transaction` con `EARN` de 15.000 millas.
-4. El procedimiento valida los tres constraints e inserta en `miles_transaction`.
-5. El trigger `AFTER INSERT` calcula el saldo total (≥ 10.000), detecta que corresponde `SILVER` (priority 2 > 1) e inserta en `loyalty_account_tier`.
-6. Las tres validaciones finales confirman la transacción, el upgrade de tier y la trazabilidad completa.
+1. Resuelve la cuenta `FLY-0002-CAR` (Carlos Mendoza — Bronze) del seed canónico.
+2. Verifica `loyalty_account.updated_at`, saldo previo (420 millas) y cantidad de transacciones (1).
+3. Invoca `sp_register_miles_transaction` con un EARN de 580 millas referenciando un vuelo volumétrico.
+4. El procedimiento valida los 5 constraints e inserta en `miles_transaction`.
+5. El trigger `AFTER INSERT` actualiza `loyalty_account.updated_at` automáticamente.
+6. Las 3 validaciones confirman la transacción insertada, la trazabilidad completa cliente → nivel → ventas, y el resumen con saldo calculado en tiempo real mediante `SUM(miles_delta)`.
 
 ---
 
@@ -202,14 +187,14 @@ Cada vez que se inserta una `miles_transaction` con `miles_delta > 0`, el trigge
 
 | Criterio | Estado | Evidencia |
 |---|---|---|
-| La consulta usa INNER JOIN | ✅ | 7 INNER JOINs sobre tablas reales del DDL |
-| La consulta relaciona al menos 5 tablas reales del modelo | ✅ | 7 tablas reales |
+| La consulta usa INNER JOIN | ✅ | 6 INNER JOINs + subconsulta sobre tablas reales del modelo |
+| La consulta relaciona al menos 5 tablas reales del modelo | ✅ | 7 tablas reales del DDL |
 | El trigger es AFTER INSERT | ✅ | `AFTER INSERT ON miles_transaction FOR EACH ROW` |
-| El trigger produce efecto verificable sobre tablas reales | ✅ | Inserta en `loyalty_account_tier` cuando el saldo supera el umbral |
-| Existe script que demuestra la ejecución | ✅ | `ejercicio_4_demo.sql` con bloque `DO $$` y 3 validaciones |
-| El procedimiento encapsula una operación útil del negocio | ✅ | Registro de millas con 3 validaciones de integridad |
+| El trigger produce efecto verificable sobre tablas reales | ✅ | Actualiza `loyalty_account.updated_at` |
+| Existe script que demuestra la ejecución | ✅ | `ejercicio_4_demo.sql` con `DO $$` y 3 validaciones |
+| El procedimiento encapsula una operación útil del negocio | ✅ | Registro de transacción de millas con 5 validaciones |
 | Existe script que invoca el procedimiento | ✅ | `CALL sp_register_miles_transaction(...)` |
-| La invocación evidencia el trigger | ✅ | Upgrade verificable en `loyalty_account_tier` |
+| La invocación evidencia el trigger | ✅ | `loyalty_account.updated_at` cambia al registrar la transacción |
 | No se alteró la estructura base del modelo | ✅ | Solo función, trigger y procedimiento |
 
 ---
