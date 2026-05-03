@@ -1,0 +1,137 @@
+{
+  "source": "docs/architecture/model-data/es",
+  "rows": [
+    {
+      "id": "HU-001",
+      "activity": "Consultar disponibilidad de habitacion",
+      "priority": "Must Have",
+      "estimate": 5,
+      "designThinkingPhase": "Empatizar",
+      "suggestedWeek": "Semana 1",
+      "dependencies": "Sin dependencia",
+      "suggestedOwner": "Frontend",
+      "expectedDeliverable": "Vista de consulta con validacion de fechas y estado disponible",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-002",
+      "activity": "Crear reserva de habitacion",
+      "priority": "Must Have",
+      "estimate": 8,
+      "designThinkingPhase": "Definir",
+      "suggestedWeek": "Semana 2",
+      "dependencies": "HU-001",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Flujo de reserva con control de solapamiento",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-003",
+      "activity": "Registrar pago parcial",
+      "priority": "Must Have",
+      "estimate": 5,
+      "designThinkingPhase": "Idear",
+      "suggestedWeek": "Semana 3",
+      "dependencies": "HU-002",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Registro de abonos con saldo pendiente",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-004",
+      "activity": "Ejecutar check in",
+      "priority": "Must Have",
+      "estimate": 3,
+      "designThinkingPhase": "Idear",
+      "suggestedWeek": "Semana 3",
+      "dependencies": "HU-002",
+      "suggestedOwner": "Frontend",
+      "expectedDeliverable": "Proceso de ingreso con cambio de estado de habitacion",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-008",
+      "activity": "Controlar disponibilidad de inventario",
+      "priority": "Should Have",
+      "estimate": 5,
+      "designThinkingPhase": "Prototipar",
+      "suggestedWeek": "Semana 4",
+      "dependencies": "Sin dependencia",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Actualizacion de stock y consulta de disponibilidad",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-005",
+      "activity": "Registrar consumo en estadia",
+      "priority": "Must Have",
+      "estimate": 8,
+      "designThinkingPhase": "Prototipar",
+      "suggestedWeek": "Semana 5",
+      "dependencies": "HU-004, HU-008",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Registro de venta de producto y servicio asociado a estadia",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-006",
+      "activity": "Cerrar estadia con check out y factura",
+      "priority": "Must Have",
+      "estimate": 13,
+      "designThinkingPhase": "Prototipar",
+      "suggestedWeek": "Semana 6",
+      "dependencies": "HU-003, HU-005",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Pre factura y factura final con detalle de compra",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-009",
+      "activity": "Configurar acceso por rol y permiso",
+      "priority": "Should Have",
+      "estimate": 8,
+      "designThinkingPhase": "Evaluar",
+      "suggestedWeek": "Semana 7",
+      "dependencies": "Sin dependencia",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Esquema de autorizacion por rol para modulos y vistas",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-007",
+      "activity": "Gestionar mantenimiento de habitacion",
+      "priority": "Should Have",
+      "estimate": 8,
+      "designThinkingPhase": "Evaluar",
+      "suggestedWeek": "Semana 7",
+      "dependencies": "HU-001",
+      "suggestedOwner": "Backend",
+      "expectedDeliverable": "Bloqueo de habitacion por mantenimiento y seguimiento",
+      "status": "Backlog"
+    },
+    {
+      "id": "HU-010",
+      "activity": "Aplicar precio dinamico en reserva",
+      "priority": "Should Have",
+      "estimate": 13,
+      "designThinkingPhase": "Evaluar",
+      "suggestedWeek": "Semana 8",
+      "dependencies": "HU-002",
+      "suggestedOwner": "Product Owner",
+      "expectedDeliverable": "Reglas de precio por tipo de habitacion y tipo de dia",
+      "status": "Blocked"
+    },
+    {
+      "id": "HU-011",
+      "activity": "Enviar alertas de operacion hotelera",
+      "priority": "Could Have",
+      "estimate": 5,
+      "designThinkingPhase": "Evaluar",
+      "suggestedWeek": "Semana 8",
+      "dependencies": "HU-002",
+      "suggestedOwner": "Frontend",
+      "expectedDeliverable": "Mensajeria de alerta para cliente y reserva",
+      "status": "Backlog"
+    }
+  ]
+}

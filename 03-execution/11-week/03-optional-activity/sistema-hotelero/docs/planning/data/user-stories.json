@@ -1,0 +1,248 @@
+{
+  "source": "docs/architecture/model-data/es",
+  "fibonacciScale": {
+    "1": "muy simple",
+    "2": "simple",
+    "3": "baja complejidad",
+    "5": "complejidad media",
+    "8": "complejidad alta",
+    "13": "muy alta complejidad",
+    "21": "epica o requiere dividirse"
+  },
+  "stories": [
+    {
+      "id": "HU-001",
+      "title": "Consultar disponibilidad de habitacion",
+      "role": "Cliente",
+      "description": "Como cliente, quiero consultar disponibilidad de habitacion por fecha, para elegir una opcion real antes de reservar.",
+      "acceptanceCriteria": [
+        "Muestra habitaciones con estado que permite reserva.",
+        "Valida rango fecha inicio y fecha fin.",
+        "Retorna no disponible cuando exista bloqueo operativo o mantenimiento."
+      ],
+      "moscowPriority": "Must Have",
+      "estimate": 5,
+      "estimateJustification": "Cruza disponibilidad, estado de habitacion y rango de fechas.",
+      "initialStatus": "Backlog",
+      "dependencies": [],
+      "observations": "Depende de definicion operativa final de estados oficiales (No esta en architecture)."
+    },
+    {
+      "id": "HU-002",
+      "title": "Crear reserva de habitacion",
+      "role": "Empleado de recepcion",
+      "description": "Como empleado de recepcion, quiero crear una reserva de habitacion, para asegurar una estadia futura del cliente.",
+      "acceptanceCriteria": [
+        "Asocia cliente, habitacion, fechas y valor estimado.",
+        "Registra estado de reserva.",
+        "Evita doble reserva en fechas superpuestas."
+      ],
+      "moscowPriority": "Must Have",
+      "estimate": 8,
+      "estimateJustification": "Implica reglas de solapamiento y consistencia transaccional.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-001"
+      ],
+      "observations": "La politica de cancelacion no esta cerrada en architecture."
+    },
+    {
+      "id": "HU-003",
+      "title": "Registrar pago parcial",
+      "role": "Empleado de recepcion",
+      "description": "Como empleado de recepcion, quiero registrar abonos o pagos parciales, para controlar saldo pendiente de la reserva o factura.",
+      "acceptanceCriteria": [
+        "Permite seleccionar metodo de pago parametrizado.",
+        "Guarda valor, fecha y referencia de pago cuando aplique.",
+        "Calcula saldo pendiente despues del registro."
+      ],
+      "moscowPriority": "Must Have",
+      "estimate": 5,
+      "estimateJustification": "Requiere consistencia de saldos y trazabilidad de movimientos.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-002"
+      ],
+      "observations": "Integracion con pasarela externa No esta en architecture."
+    },
+    {
+      "id": "HU-004",
+      "title": "Ejecutar check in",
+      "role": "Empleado de recepcion",
+      "description": "Como empleado de recepcion, quiero registrar check in, para activar la estadia y cambiar el estado de la habitacion.",
+      "acceptanceCriteria": [
+        "Solo permite check in en reservas validas.",
+        "Asocia empleado responsable y fecha hora de ingreso.",
+        "Actualiza estado de habitacion a ocupada."
+      ],
+      "moscowPriority": "Must Have",
+      "estimate": 3,
+      "estimateJustification": "Flujo acotado con validaciones directas sobre reserva.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-002"
+      ],
+      "observations": "Estado oficial de reserva previo al check in No esta en architecture."
+    },
+    {
+      "id": "HU-005",
+      "title": "Registrar consumo en estadia",
+      "role": "Empleado operativo",
+      "description": "Como empleado operativo, quiero registrar ventas de producto y servicio durante la estadia, para consolidar consumos del cliente.",
+      "acceptanceCriteria": [
+        "Relaciona cada consumo con estadia activa.",
+        "Permite producto y servicio con cantidad y valor unitario.",
+        "Actualiza acumulado para pre factura."
+      ],
+      "moscowPriority": "Must Have",
+      "estimate": 8,
+      "estimateJustification": "Conecta prestacion de servicio con inventario y facturacion.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-004",
+        "HU-008"
+      ],
+      "observations": "Tipos exactos de servicios a vender No estan en architecture."
+    },
+    {
+      "id": "HU-006",
+      "title": "Cerrar estadia con check out y factura",
+      "role": "Empleado de recepcion",
+      "description": "Como empleado de recepcion, quiero ejecutar check out con pre factura y factura definitiva, para liquidar la estadia del cliente.",
+      "acceptanceCriteria": [
+        "Genera pre factura con subtotal, impuesto, descuento y total.",
+        "Emite factura final y conserva detalle de compra.",
+        "Actualiza habitacion a estado posterior segun operacion."
+      ],
+      "moscowPriority": "Must Have",
+      "estimate": 13,
+      "estimateJustification": "Orquesta cierre de estadia, facturacion y estado de habitacion.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-003",
+        "HU-005"
+      ],
+      "observations": "Si crece en reglas fiscales, sugerido dividir en 2 HUs."
+    },
+    {
+      "id": "HU-007",
+      "title": "Gestionar mantenimiento de habitacion",
+      "role": "Empleado de mantenimiento",
+      "description": "Como empleado de mantenimiento, quiero registrar mantenimiento por uso o remodelacion, para bloquear habitaciones no operativas.",
+      "acceptanceCriteria": [
+        "Permite registrar tipo de mantenimiento y rango de fecha.",
+        "Actualiza estado de habitacion para evitar reserva y check in.",
+        "Mantiene seguimiento de observaciones y estado de mantenimiento."
+      ],
+      "moscowPriority": "Should Have",
+      "estimate": 8,
+      "estimateJustification": "Impacta disponibilidad y requiere sincronizacion con distribucion.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-001"
+      ],
+      "observations": "Definicion exacta de estados de mantenimiento No esta en architecture."
+    },
+    {
+      "id": "HU-008",
+      "title": "Controlar disponibilidad de inventario",
+      "role": "Empleado de inventario",
+      "description": "Como empleado de inventario, quiero actualizar existencias y disponibilidad, para evitar venta de productos sin stock.",
+      "acceptanceCriteria": [
+        "Registra entradas y salidas de producto.",
+        "Expone disponibilidad antes de venta.",
+        "Notifica cuando stock actual cae por debajo de stock minimo."
+      ],
+      "moscowPriority": "Should Have",
+      "estimate": 5,
+      "estimateJustification": "Reglas de inventario son claras y acotadas en architecture.",
+      "initialStatus": "Backlog",
+      "dependencies": [],
+      "observations": "Canal de alerta interno No esta en architecture."
+    },
+    {
+      "id": "HU-009",
+      "title": "Configurar acceso por rol y permiso",
+      "role": "Administrador",
+      "description": "Como administrador, quiero asignar usuarios, roles y permisos, para restringir funcionalidades segun responsabilidad.",
+      "acceptanceCriteria": [
+        "Permite crear relacion usuario_rol.",
+        "Permite crear relacion rol_permiso.",
+        "Restringe vistas segun permiso asociado."
+      ],
+      "moscowPriority": "Should Have",
+      "estimate": 8,
+      "estimateJustification": "Abarca modelo de seguridad transversal a varios modulos.",
+      "initialStatus": "Backlog",
+      "dependencies": [],
+      "observations": "Reglas exactas de autorizacion por rol No estan en architecture."
+    },
+    {
+      "id": "HU-010",
+      "title": "Aplicar precio dinamico en reserva",
+      "role": "Administrador",
+      "description": "Como administrador, quiero configurar precio dinamico por tipo de dia y habitacion, para reflejar temporada y condiciones comerciales.",
+      "acceptanceCriteria": [
+        "Permite definir vigencia de precio por fecha inicio y fecha fin.",
+        "Permite asociar precio a tipo de habitacion y tipo de dia.",
+        "Se usa en el calculo de valor estimado de reserva."
+      ],
+      "moscowPriority": "Should Have",
+      "estimate": 13,
+      "estimateJustification": "Alta incertidumbre por formula exacta no confirmada en architecture.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-002"
+      ],
+      "observations": "Si se agregan reglas avanzadas, sugerido dividirla. No esta en architecture la formula definitiva."
+    },
+    {
+      "id": "HU-011",
+      "title": "Enviar alertas de operacion hotelera",
+      "role": "Empleado de recepcion",
+      "description": "Como empleado de recepcion, quiero enviar alertas de reserva y estadia, para mantener informado al cliente.",
+      "acceptanceCriteria": [
+        "Registra alerta con titulo, mensaje y fecha envio.",
+        "Asocia alerta a cliente y reserva cuando aplique.",
+        "Permite seleccionar canal definido."
+      ],
+      "moscowPriority": "Could Have",
+      "estimate": 5,
+      "estimateJustification": "Modelo de datos existe, pero falta canal oficial por definir.",
+      "initialStatus": "Backlog",
+      "dependencies": [
+        "HU-002"
+      ],
+      "observations": "Canales de notificacion requeridos No estan en architecture."
+    }
+  ],
+  "boardExtras": [
+    {
+      "id": "EP-001",
+      "title": "Flujo integral de estadia",
+      "moscowPriority": "Must Have",
+      "estimate": 21,
+      "initialStatus": "Backlog",
+      "type": "Epica",
+      "note": "Sugerido dividir en HU-001 a HU-006."
+    },
+    {
+      "id": "RSK-001",
+      "title": "Estados oficiales no definidos",
+      "moscowPriority": "Must Have",
+      "estimate": 8,
+      "initialStatus": "Blocked",
+      "type": "Riesgo",
+      "note": "No esta en architecture: estados oficiales de reserva, factura y pago."
+    },
+    {
+      "id": "TASK-001",
+      "title": "Definir politica de cancelacion",
+      "moscowPriority": "Should Have",
+      "estimate": 5,
+      "initialStatus": "Ready",
+      "type": "Tarea",
+      "note": "No esta en architecture como regla cerrada."
+    }
+  ]
+}

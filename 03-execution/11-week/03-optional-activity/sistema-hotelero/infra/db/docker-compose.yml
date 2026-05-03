@@ -1,0 +1,21 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: sistema-hotelero-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-abcd1234}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-sistema_hotelero}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - sistema_hotelero_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-abcd1234}"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  sistema_hotelero_mysql_data:
+

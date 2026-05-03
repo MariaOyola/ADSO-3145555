@@ -1,0 +1,105 @@
+{
+  "projectName": "Sistema de hoteleria",
+  "source": "docs/architecture/model-data/es",
+  "mustHave": [
+    {
+      "id": "M-001",
+      "item": "Consultar catalogo y disponibilidad de habitacion por rango de fechas",
+      "source": "02_posibles_funcionalidades_sistema.md - Prestacion de servicio",
+      "inferido": false
+    },
+    {
+      "id": "M-002",
+      "item": "Crear y administrar reserva de habitacion",
+      "source": "02_posibles_funcionalidades_sistema.md - Prestacion de servicio",
+      "inferido": false
+    },
+    {
+      "id": "M-003",
+      "item": "Ejecutar check in y check out con actualizacion de estado de habitacion",
+      "source": "01_entendimiento_necesidad_producto.md - Flujo core",
+      "inferido": false
+    },
+    {
+      "id": "M-004",
+      "item": "Registrar venta de producto y servicio durante la estadia",
+      "source": "02_posibles_funcionalidades_sistema.md - Prestacion de servicio",
+      "inferido": false
+    },
+    {
+      "id": "M-005",
+      "item": "Generar pre factura, factura y seguimiento de pago parcial",
+      "source": "02_posibles_funcionalidades_sistema.md - Facturacion",
+      "inferido": false
+    },
+    {
+      "id": "M-006",
+      "item": "Controlar estados de habitacion para evitar sobreventa en mantenimiento",
+      "source": "01_entendimiento_necesidad_producto.md - Modulo distribucion y mantenimiento",
+      "inferido": false
+    }
+  ],
+  "shouldHave": [
+    {
+      "id": "S-001",
+      "item": "Gestionar inventario y disponibilidad de producto o servicio antes de vender",
+      "source": "02_posibles_funcionalidades_sistema.md - Inventario",
+      "inferido": false
+    },
+    {
+      "id": "S-002",
+      "item": "Controlar acceso por usuario, rol y permiso",
+      "source": "02_posibles_funcionalidades_sistema.md - Seguridad",
+      "inferido": false
+    },
+    {
+      "id": "S-003",
+      "item": "Configurar precio dinamico por tipo de dia y tipo de habitacion",
+      "source": "01_entendimiento_necesidad_producto.md - Parametrizacion",
+      "inferido": false
+    }
+  ],
+  "couldHave": [
+    {
+      "id": "C-001",
+      "item": "Enviar promociones y comunicaciones de fidelizacion al cliente",
+      "source": "02_posibles_funcionalidades_sistema.md - Notificacion",
+      "inferido": false
+    },
+    {
+      "id": "C-002",
+      "item": "Dashboard operativo de mantenimiento por sede",
+      "source": "02_posibles_funcionalidades_sistema.md - Mantenimiento",
+      "inferido": false
+    },
+    {
+      "id": "C-003",
+      "item": "Bloquear temporalmente reserva cuando una habitacion queda en limpieza (Inferido)",
+      "source": "01_entendimiento_necesidad_producto.md - Cambio de estado de habitacion",
+      "inferido": true
+    }
+  ],
+  "wontHaveNow": [
+    {
+      "id": "W-001",
+      "item": "Integracion con pasarela de pago",
+      "source": "01_entendimiento_necesidad_producto.md - Pendiente por confirmar",
+      "inferido": false,
+      "note": "No esta en architecture como capacidad confirmada"
+    },
+    {
+      "id": "W-002",
+      "item": "Politica automatica de devolucion o penalidad configurable",
+      "source": "01_entendimiento_necesidad_producto.md - Pendiente por confirmar",
+      "inferido": false,
+      "note": "No esta en architecture como regla cerrada"
+    },
+    {
+      "id": "W-003",
+      "item": "Canales especificos de notificacion (WhatsApp, SMS, Email transaccional)",
+      "source": "01_entendimiento_necesidad_producto.md - Pendiente por confirmar",
+      "inferido": false,
+      "note": "No esta en architecture"
+    }
+  ]
+}

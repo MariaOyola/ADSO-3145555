@@ -1,0 +1,105 @@
+{
+  "source": "docs/architecture/model-data/es",
+  "phases": [
+    {
+      "id": "DT-01",
+      "name": "Empatizar",
+      "objective": "Comprender la operacion real del hotel y los dolores de control manual.",
+      "findings": [
+        "Necesidad de centralizar reservas, estadias, pagos, facturacion, inventario y mantenimiento.",
+        "Se requiere informacion compartida por diferentes roles del hotel.",
+        "Hay necesidad de trazabilidad de estados de habitacion y pagos."
+      ],
+      "guideQuestions": [
+        "Que tareas hoy se hacen de forma manual y con mayor tasa de error?",
+        "Que actor necesita visibilidad inmediata de disponibilidad y estado de habitacion?",
+        "Que informacion minima requiere recepcion para operar check in y check out?"
+      ],
+      "risksOrGaps": [
+        "No esta en architecture el listado oficial de roles reales del sistema.",
+        "No esta en architecture la priorizacion por sede o tipo de hotel."
+      ],
+      "expectedOutcome": "Mapa claro de necesidades operativas y actores clave para definir alcance inicial."
+    },
+    {
+      "id": "DT-02",
+      "name": "Definir",
+      "objective": "Delimitar el problema principal y el alcance funcional confirmado por architecture.",
+      "findings": [
+        "El core es el ciclo: disponibilidad -> reserva -> check in -> consumos -> check out -> facturacion.",
+        "El sistema requiere control de acceso, inventario y mantenimiento conectados al core.",
+        "El precio dinamico existe, pero su formula exacta no esta cerrada."
+      ],
+      "guideQuestions": [
+        "Cual es el minimo producto viable para operar una estadia completa?",
+        "Que dependencias deben estar listas para facturar sin errores?",
+        "Que estados oficiales faltan definir por proceso?"
+      ],
+      "risksOrGaps": [
+        "No esta en architecture el catalogo oficial de estados de reserva, factura y pago.",
+        "No esta en architecture la politica de cancelacion y penalidad definitiva."
+      ],
+      "expectedOutcome": "Declaracion de alcance inicial validable, con vacios funcionales explicitados."
+    },
+    {
+      "id": "DT-03",
+      "name": "Idear",
+      "objective": "Proponer soluciones de flujo y priorizacion sin salir de architecture.",
+      "findings": [
+        "Se pueden separar capacidades en modulos: parametrizacion, distribucion, prestacion, facturacion e inventario.",
+        "MoSCoW permite priorizar el flujo core y posponer elementos pendientes.",
+        "Tablero visual facilita seguimiento transversal por estado."
+      ],
+      "guideQuestions": [
+        "Como reducir riesgos en check in y check out desde el primer release?",
+        "Que historias deben terminar antes para habilitar facturacion?",
+        "Que tareas dependen del cierre de reglas aun no confirmadas?"
+      ],
+      "risksOrGaps": [
+        "No esta en architecture la API ni contratos de integracion entre modulos.",
+        "No esta en architecture la estrategia de despliegue por ambientes."
+      ],
+      "expectedOutcome": "Backlog inicial priorizado con dependencias y estimaciones Fibonacci."
+    },
+    {
+      "id": "DT-04",
+      "name": "Prototipar",
+      "objective": "Construir una vista navegable de planificacion, backlog y cronograma.",
+      "findings": [
+        "El prototipo debe mostrar alcance confirmado y recomendaciones separadas.",
+        "La interaccion drag and drop ayuda a simular avance por rieles de entrega.",
+        "La persistencia local permite seguimiento sin backend."
+      ],
+      "guideQuestions": [
+        "La visualizacion del tablero facilita la toma de decision del PO tecnico?",
+        "Los filtros permiten identificar bloqueos por prioridad y tipo?",
+        "La matriz de cronograma refleja secuencia funcional razonable?"
+      ],
+      "risksOrGaps": [
+        "No esta en architecture la herramienta oficial de gestion (Azure DevOps, Jira, otra).",
+        "No esta en architecture el criterio formal de Definition of Ready/Done."
+      ],
+      "expectedOutcome": "Landing funcional para planificar entregas y alinear equipo multidisciplinario."
+    },
+    {
+      "id": "DT-05",
+      "name": "Evaluar",
+      "objective": "Validar consistencia entre arquitectura, backlog, cronograma y riesgos.",
+      "findings": [
+        "La trazabilidad por fuente evita agregar alcance no confirmado.",
+        "Las historias con alta incertidumbre deben dividirse o quedar bloqueadas.",
+        "La seccion de recomendaciones separa lo confirmado de lo sugerido."
+      ],
+      "guideQuestions": [
+        "Que historias dependen de definiciones de negocio aun pendientes?",
+        "Que cambios de prioridad impactan fechas sugeridas de entrega?",
+        "Que riesgos de seguridad y auditoria requieren cierre temprano?"
+      ],
+      "risksOrGaps": [
+        "No esta en architecture el plan de pruebas, cobertura ni criterios de aceptacion global.",
+        "No esta en architecture el esquema de monitoreo operacional."
+      ],
+      "expectedOutcome": "Lista de acciones para cierre de vacios y refinamiento de roadmap."
+    }
+  ]
+}
