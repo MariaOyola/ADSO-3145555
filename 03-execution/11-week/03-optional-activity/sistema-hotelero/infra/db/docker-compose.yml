@@ -19,3 +19,8 @@ services:
 volumes:
   sistema_hotelero_mysql_data:
 
+## Set-ExecutionPolicy Bypass -Scope Process
+## .\infra\db\scripts\load-database.ps1
+## docker exec -it sistema-hotelero-mysql mysql -u root -p
+## USE sistema_hotelero;
+## SHOW TABLES;

@@ -1,0 +1,1 @@
+SELECT * FROM estado_habitacion;

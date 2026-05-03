@@ -8,13 +8,14 @@
             },
             "ssh": "Disabled",
             "previewLimit": 50,
-            "server": "localhost",
+            "server": "127.0.0.1",
             "port": 3306,
             "driver": "MySQL",
-            "name": "sistema-hotelero-mysql",
+            "name": "sistema-hotelero",
             "database": "sistema_hotelero",
             "username": "root",
-            "password": "abcd1234"
+            "password": "abcd1234",
+            "group": "127.0.0.1"
         }
     ]
 }
