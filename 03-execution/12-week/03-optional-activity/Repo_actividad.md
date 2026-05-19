@@ -1,9 +1,10 @@
-## Repo de la actividad
+Repositorio Grupo 6: https://github.com/Hotel-system-group-6/Hotel-System-Final.git
 
-### Base de datos
+Repositorio de Documentación Grupo 6: https://github.com/Hotel-system-group-6/docs_Hotel-system-group.git
 
-https://github.com/Hotel-system-group-6/Hotel-System-Final
+## Integrantes:
 
-### Documentacion 
-
-https://github.com/Hotel-system-group-6/docs_Hotel-system-group
+Maria Jose Oyolá
+Kevin Andrey Culma Gómez
+Laura Vanesa Perdomo
+Daniel Vargas
