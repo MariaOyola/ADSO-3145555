@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Puente Hidráulico 3D</title>
+
+  <link rel="stylesheet"
+        href="css/style.css">
+
+  <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- PANEL -->
+
+  <div class="hud">
+
+    <h1>PUENTE HIDRÁULICO</h1>
+
+    <p class="subtitle">
+      Visualización 3D • Principio de Pascal
+    </p>
+
+    <div class="panel">
+
+      <div class="card">
+
+        <span>Presión</span>
+
+        <h2 id="pressureValue">0 Pa</h2>
+
+      </div>
+
+      <div class="card">
+
+        <span>Fuerza</span>
+
+        <h2 id="forceValue">0 N</h2>
+
+      </div>
+
+      <div class="card">
+
+        <span>Elevación</span>
+
+        <h2 id="heightValue">0%</h2>
+
+      </div>
+
+    </div>
+
+    <div class="formula">
+
+      P = F / A
+
+    </div>
+
+  </div>
+
+  <!-- THREE JS -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- CONTROLES -->
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+
+  <script src="js/script.js"></script>
+
+</body>
+
+</html>

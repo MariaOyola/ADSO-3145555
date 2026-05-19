@@ -1,0 +1,3567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Talleres · Desarrollo de Software</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,wght@0,300;0,500;1,300&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema">
+  <span class="toggle-icon" id="toggleIcon">🌙</span>
+  <div class="toggle-track">
+    <div class="toggle-knob"></div>
+  </div>
+  <span class="toggle-label" id="toggleLabel">Oscuro</span>
+</button>
+
+<!-- HAMBURGER (mobile) -->
+<button class="hamburger" id="hamburger" style="display:none;" aria-label="Menú">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- ═══════════════════════════════════════════
+     WELCOME / TALLER SELECTION SCREEN
+═══════════════════════════════════════════ -->
+<div id="welcome-screen">
+
+  <!-- bg grid duplicado para la pantalla de bienvenida -->
+  <div class="wl-eyebrow">Selecciona un taller</div>
+
+  <div class="wl-title">Talleres de<br/><span>Desarrollo</span> de Software</div>
+  <div class="wl-subtitle">Haz clic en un taller para comenzar a explorar su contenido</div>
+
+  <div class="wl-cards">
+
+    <!-- TALLER 1 -->
+    <div class="wl-card wl-card-t1" id="wl-btn-t1">
+      <div class="wl-card-num">Taller 01</div>
+      <div class="wl-card-icon">📋</div>
+      <div class="wl-card-title">Interpretar Informe de Diseño</div>
+      <div class="wl-card-desc">Análisis del informe de diseño del sistema de gestión de asistencia por reconocimiento facial. Incluye arquitectura, base de datos, interfaces, seguridad y más.</div>
+      <div class="wl-card-footer">
+        <div class="wl-card-points">11 puntos</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="wl-card-status wl-status-done">✓ Completado</span>
+          <span class="wl-card-arrow">→</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TALLER 2 -->
+    <div class="wl-card wl-card-t2" id="wl-btn-t2">
+      <div class="wl-card-num">Taller 02</div>
+      <div class="wl-card-icon">🛠️</div>
+      <div class="wl-card-title">Seleccionar Herramientas de Desarrollo</div>
+      <div class="wl-card-desc">Evaluación y selección de las herramientas, frameworks, librerías y entornos de desarrollo más adecuados para construir el sistema propuesto.</div>
+      <div class="wl-card-footer">
+        <div class="wl-card-points">5 puntos</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="wl-card-status wl-status-progress">⏳ En progreso</span>
+          <span class="wl-card-arrow">→</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TALLER 3 -->
+    <div class="wl-card wl-card-t3" id="wl-btn-t3">
+      <div class="wl-card-num" style="color:#a78bfa;">Taller 03</div>
+      <div class="wl-card-icon">⚙️</div>
+      <div class="wl-card-title">Configurar Herramientas de Desarrollo</div>
+      <div class="wl-card-desc">Instalación, configuración y verificación de cada herramienta del entorno de desarrollo: IDE, lenguajes, backend, frontend, base de datos, control de versiones y más.</div>
+      <div class="wl-card-footer">
+        <div class="wl-card-points" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.07);">2 puntos</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="wl-card-status" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.07);">✓ Completado</span>
+          <span class="wl-card-arrow" style="color:#a78bfa;">→</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Back button (visible when inside a taller) -->
+<button class="back-to-home" id="backToHome" style="display:none;" aria-label="Volver al inicio">
+  ⌂ <span>Inicio</span>
+</button>
+
+<div class="layout" id="main-layout" style="display:none;">
+
+  <!-- ─── SIDEBAR ─── -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-tag" id="sb-tag">Taller #01</div>
+      <div class="sidebar-title" id="sb-title">Interpretar Informe de Diseño</div>
+      <div class="sidebar-subtitle" id="sb-subtitle">Análisis · Arquitectura · Implementación</div>
+      <div class="taller-badge" id="sb-badge">11 puntos</div>
+    </div>
+
+    <nav>
+      <div class="nav-section-label">Índice</div>
+
+      <a class="nav-item active" href="#" data-target="home">
+        <span class="nav-num">00</span>
+        <span class="nav-icon">⌂</span>
+        <span class="nav-label">Vista general</span>
+        <span class="nav-dot"></span>
+      </a>
+
+      <a class="nav-item" href="#" data-target="s1">
+        <span class="nav-num">01</span>
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Introducción</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s2">
+        <span class="nav-num">02</span>
+        <span class="nav-icon">🖥</span>
+        <span class="nav-label">Descripción general</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s3">
+        <span class="nav-num">03</span>
+        <span class="nav-icon">🏗</span>
+        <span class="nav-label">Arquitectura del software</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s4">
+        <span class="nav-num">04</span>
+        <span class="nav-icon">🧩</span>
+        <span class="nav-label">Diseño de componentes</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s5">
+        <span class="nav-num">05</span>
+        <span class="nav-icon">📐</span>
+        <span class="nav-label">Diagramas UML</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s6">
+        <span class="nav-num">06</span>
+        <span class="nav-icon">🗄</span>
+        <span class="nav-label">Diseño de base de datos</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s7">
+        <span class="nav-num">07</span>
+        <span class="nav-icon">🎨</span>
+        <span class="nav-label">Diseño de interfaces</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s8">
+        <span class="nav-num">08</span>
+        <span class="nav-icon">⚖️</span>
+        <span class="nav-label">Reglas de negocio</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s9">
+        <span class="nav-num">09</span>
+        <span class="nav-icon">🔐</span>
+        <span class="nav-label">Seguridad del sistema</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s10">
+        <span class="nav-num">10</span>
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Especificaciones técnicas</span>
+        <span class="nav-dot"></span>
+      </a>
+      <a class="nav-item" href="#" data-target="s11">
+        <span class="nav-num">11</span>
+        <span class="nav-icon">🚀</span>
+        <span class="nav-label">Consideraciones de implementación</span>
+        <span class="nav-dot"></span>
+      </a>
+
+      <!-- ─── TALLER 2 NAV (hidden by default) ─── -->
+      <div id="t2-nav" style="display:none;">
+        <div class="nav-section-label" style="margin-top:4px;">Índice</div>
+        <a class="nav-item" href="#" data-target="t2-home">
+          <span class="nav-num">00</span>
+          <span class="nav-icon">⌂</span>
+          <span class="nav-label">Vista general</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t2-s1">
+          <span class="nav-num">01</span>
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">Analizar el diseño del sistema</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t2-s2">
+          <span class="nav-num">02</span>
+          <span class="nav-icon">🛠️</span>
+          <span class="nav-label">Identificar herramientas necesarias</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t2-s3">
+          <span class="nav-num">03</span>
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">Seleccionar herramientas de desarrollo</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t2-s4">
+          <span class="nav-num">04</span>
+          <span class="nav-icon">📝</span>
+          <span class="nav-label">Justificar la selección de herramientas</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t2-s5">
+          <span class="nav-num">05</span>
+          <span class="nav-icon">🔗</span>
+          <span class="nav-label">Relacionar herramientas con actividad</span>
+          <span class="nav-dot"></span>
+        </a>
+      </div>
+
+      <!-- ─── TALLER 3 NAV ─── -->
+      <div id="t3-nav" style="display:none;">
+        <div class="nav-section-label" style="margin-top:4px;">Índice</div>
+        <a class="nav-item" href="#" data-target="t3-home">
+          <span class="nav-num">00</span>
+          <span class="nav-icon">⌂</span>
+          <span class="nav-label">Vista general</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t3-s1">
+          <span class="nav-num">01</span>
+          <span class="nav-icon">🔎</span>
+          <span class="nav-label">Características de cada herramienta</span>
+          <span class="nav-dot"></span>
+        </a>
+        <a class="nav-item" href="#" data-target="t3-s2">
+          <span class="nav-num">02</span>
+          <span class="nav-icon">📦</span>
+          <span class="nav-label">Instalación y configuración</span>
+          <span class="nav-dot"></span>
+        </a>
+      </div>
+
+    </nav>
+
+    <div class="progress-area">
+      <div class="progress-label">
+        <span>Progreso</span>
+        <span id="progress-pct">11 / 11</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ─── MAIN ─── -->
+  <main id="main">
+
+    <!-- HERO -->
+    <div class="hero" id="main-hero">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <div class="hero-eyebrow-text" id="hero-eyebrow-text">Análisis de software</div>
+      </div>
+      <h1 id="hero-h1">Interpretar<br/><span>Informe</span> de Diseño</h1>
+      <div class="hero-meta">
+        <div class="meta-chip"><div class="meta-chip-dot"></div><span id="hero-meta-taller">Taller 01</span></div>
+        <div class="meta-chip"><div class="meta-chip-dot" style="background:var(--accent3)"></div><span id="hero-meta-puntos">11 puntos</span></div>
+        <div class="meta-chip"><div class="meta-chip-dot" style="background:var(--accent2)"></div><span id="hero-meta-status">Completado</span></div>
+      </div>
+    </div>
+
+    <!-- ─── TALLER 1 CONTENT WRAPPER ─── -->
+    <div id="t1-content">
+
+    <!-- ─── HOME ─── -->
+    <section class="section active" id="home">
+      <div class="content-full">
+        <p>Selecciona cualquier punto del índice lateral para ver su desarrollo. Los puntos se irán completando a medida que avancemos en el taller. Haz clic en cada tarjeta o en el menú lateral para navegar.</p>
+      </div>
+
+      <div class="points-overview">
+        <a class="point-card" href="#" data-target="s1">
+          <span class="point-card-num">01</span>
+          <span class="point-card-icon">📋</span>
+          <span class="point-card-label">Introducción</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s2">
+          <span class="point-card-num">02</span>
+          <span class="point-card-icon">🖥</span>
+          <span class="point-card-label">Descripción general del sistema</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s3">
+          <span class="point-card-num">03</span>
+          <span class="point-card-icon">🏗</span>
+          <span class="point-card-label">Arquitectura del software</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s4">
+          <span class="point-card-num">04</span>
+          <span class="point-card-icon">🧩</span>
+          <span class="point-card-label">Diseño de componentes</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s5">
+          <span class="point-card-num">05</span>
+          <span class="point-card-icon">📐</span>
+          <span class="point-card-label">Diagramas UML</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s6">
+          <span class="point-card-num">06</span>
+          <span class="point-card-icon">🗄</span>
+          <span class="point-card-label">Diseño de base de datos</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s7">
+          <span class="point-card-num">07</span>
+          <span class="point-card-icon">🎨</span>
+          <span class="point-card-label">Diseño de interfaces</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s8">
+          <span class="point-card-num">08</span>
+          <span class="point-card-icon">⚖️</span>
+          <span class="point-card-label">Reglas de negocio</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s9">
+          <span class="point-card-num">09</span>
+          <span class="point-card-icon">🔐</span>
+          <span class="point-card-label">Seguridad del sistema</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s10">
+          <span class="point-card-num">10</span>
+          <span class="point-card-icon">⚙️</span>
+          <span class="point-card-label">Especificaciones técnicas</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+        <a class="point-card" href="#" data-target="s11">
+          <span class="point-card-num">11</span>
+          <span class="point-card-icon">🚀</span>
+          <span class="point-card-label">Consideraciones de implementación</span>
+          <span class="point-card-status status-done">✓ Completado</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ─── SECCIÓN 1 ─── -->
+    <section class="section" id="s1">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 01</div>
+          <h2>Introducción</h2>
+        </div>
+      </div>
+
+      <!-- INTRODUCCIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label">Introducción</div>
+        <div class="content-full">
+          <p>El SENA ha tenido problemas por el retraso de los aprendices y acumulación de fallas de manera constante, lo que involucra un registro manual obligatorio que deben realizar los instructores. Lo que conlleva a una pérdida de tiempo y mal control, pues los instructores deben llenar la lista por cada uno de los aprendices, preguntar si está o no y anotarlo. Todos los días se repite el mismo proceso; en ocasiones hasta se olvida llamar a asistencia.</p>
+        </div>
+      </div>
+
+      <!-- PROPÓSITO -->
+      <div class="s1-block">
+        <div class="s1-block-label">Propósito</div>
+        <div class="content-full">
+          <p>El propósito del presente sistema es diseñar e implementar una solución tecnológica que permita <strong>automatizar el proceso de control y gestión de asistencia mediante reconocimiento facial</strong>, reemplazando el registro manual realizado actualmente por los instructores en hojas de cálculo (Excel).</p>
+          <p>El sistema busca garantizar un registro preciso, automático y en tiempo real de la asistencia de los aprendices dentro del ambiente de formación, permitiendo identificar de manera confiable:</p>
+          <div class="s1-pill-row">
+            <div class="s1-pill s1-pill-green">✅ Quién asistió</div>
+            <div class="s1-pill s1-pill-blue">🕐 Quién llegó puntual</div>
+            <div class="s1-pill s1-pill-yellow">⚠️ Quién llegó tarde</div>
+            <div class="s1-pill s1-pill-red">❌ Quién no asistió</div>
+          </div>
+          <p style="margin-top:16px;">De esta manera, se pretende reducir los errores humanos, evitar omisiones involuntarias al momento de llamar lista y optimizar el tiempo operativo del instructor, mejorando la eficiencia en la gestión académica. Además, el sistema permitirá generar reportes organizados y actualizados que faciliten el seguimiento del comportamiento de asistencia de cada aprendiz, apoyando la toma de decisiones académicas y administrativas.</p>
+        </div>
+      </div>
+
+      <!-- ALCANCE -->
+      <div class="s1-block">
+        <div class="s1-block-label">Alcance</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:16px;font-family:'DM Mono',monospace;">Este sistema de reconocimiento facial para gestión de asistencia tendrá el siguiente alcance:</p>
+        <div class="content-grid">
+
+          <div class="content-card">
+            <h3>👤 Registro de Usuarios</h3>
+            <ul>
+              <li>Permitir el registro previo de los aprendices.</li>
+              <li>Almacenar datos básicos (nombre, ficha, programa).</li>
+              <li>Capturar y guardar información biométrica facial para reconocimiento.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>📷 Reconocimiento Facial en Tiempo Real</h3>
+            <ul>
+              <li>Detectar automáticamente el rostro del aprendiz al ingresar al ambiente.</li>
+              <li>Comparar el rostro con la base de datos registrada.</li>
+              <li>Identificar al aprendiz sin intervención manual del instructor.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>📝 Registro Automático de Asistencia</h3>
+            <ul>
+              <li>Registrar automáticamente la hora exacta de ingreso.</li>
+              <li>Clasificar la asistencia: presente puntual, presente con retraso, o ausente.</li>
+            </ul>
+          </div>
+
+          <div class="content-card">
+            <h3>📊 Gestión y Consulta de Reportes</h3>
+            <ul>
+              <li>Generar reportes individuales y grupales.</li>
+              <li>Visualizar historial de asistencia y estadísticas.</li>
+              <li>Exportar reportes en formato Excel o PDF.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DEFINICIONES Y TÉRMINOS -->
+      <div class="s1-block">
+        <div class="s1-block-label">Definiciones y términos</div>
+        <div class="s1-table-wrap">
+          <table class="s1-table">
+            <thead>
+              <tr><th>Nombre</th><th>Descripción</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Usuario</td><td>Persona que interactúa con el sistema, como aprendiz, instructor o administrador.</td></tr>
+              <tr><td>ERS</td><td>Especificación de Requisitos de Software. Documento donde se describen todas las funciones y características del sistema.</td></tr>
+              <tr><td>RF</td><td>Requerimiento Funcional. Función específica que el sistema debe cumplir.</td></tr>
+              <tr><td>RNF</td><td>Requerimiento No Funcional. Característica de calidad del sistema (rendimiento, seguridad, etc.).</td></tr>
+              <tr><td>SENA</td><td>Servicio Nacional de Aprendizaje, institución donde se implementará el sistema.</td></tr>
+              <tr><td>CU</td><td>Caso de Uso. Descripción de cómo un usuario interactúa con el sistema para lograr un objetivo.</td></tr>
+              <tr><td>Ambiente</td><td>Aula o espacio físico del SENA donde se realizan las clases.</td></tr>
+              <tr><td>Ficha</td><td>Grupo de aprendices inscritos en un programa de formación.</td></tr>
+              <tr><td>Programa de Formación</td><td>Carrera o curso que ofrece el SENA (ejemplo: ADSO).</td></tr>
+              <tr><td>Reconocimiento Facial</td><td>Tecnología que permite identificar a una persona mediante su rostro usando una cámara.</td></tr>
+              <tr><td>Raspberry Pi</td><td>Microcomputador que se utilizará para capturar el reconocimiento facial.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REFERENCIAS -->
+      <div class="s1-block">
+        <div class="s1-block-label">Referencias de documentos relacionados</div>
+        <div class="s1-table-wrap">
+          <table class="s1-table">
+            <thead>
+              <tr><th>Título del Documento</th><th>Referencia</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Standard IEEE 830 - 1998</td><td>Estándar internacional para la elaboración de Especificaciones de Requisitos de Software.</td></tr>
+              <tr><td>Documentación del SENA</td><td>Lineamientos institucionales para gestión académica.</td></tr>
+              <tr><td>Normas de seguridad informática</td><td>Lineamientos para protección de datos de usuarios.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 2 ─── -->
+    <section class="section" id="s2">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 02</div>
+          <h2>Descripción General del Sistema</h2>
+        </div>
+      </div>
+
+      <!-- OBJETIVO -->
+      <div class="s1-block">
+        <div class="s1-block-label">🎯 Objetivo del sistema</div>
+        <div class="content-full">
+          <p>El sistema tiene como objetivo <strong>automatizar el control de asistencia académica mediante reconocimiento facial</strong> para mejorar la precisión, seguridad y eficiencia del registro de asistencia de los aprendices. De esta manera se busca reemplazar el proceso manual que realizan los instructores, reduciendo errores humanos, evitando suplantaciones de identidad y optimizando el tiempo dedicado al registro de asistencia.</p>
+          <p>Además, el sistema permitirá generar reportes automáticos que faciliten el seguimiento del comportamiento de asistencia de los estudiantes.</p>
+        </div>
+      </div>
+
+      <!-- USUARIOS -->
+      <div class="s1-block">
+        <div class="s1-block-label">👥 Usuarios del sistema</div>
+        <div class="s2-users-grid">
+          <div class="content-card s2-user-card s2-admin">
+            <h3>🛡️ Administrador</h3>
+            <p>Responsable de gestionar el funcionamiento general del sistema, administrar usuarios y supervisar la información de la plataforma.</p>
+          </div>
+          <div class="content-card s2-user-card s2-instructor">
+            <h3>👨‍🏫 Instructor</h3>
+            <p>Puede registrar aprendices, asociarlos a fichas y consultar los reportes de asistencia generados por el sistema.</p>
+          </div>
+          <div class="content-card s2-user-card s2-aprendiz">
+            <h3>🎓 Aprendiz</h3>
+            <p>Identificado por el sistema mediante reconocimiento facial para registrar automáticamente su asistencia al ingresar al ambiente de formación. No requiere intervención manual.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUNCIONALIDADES -->
+      <div class="s1-block">
+        <div class="s1-block-label">⚡ Funcionalidades principales</div>
+        <div class="content-full">
+          <p>El sistema permitirá el <strong>inicio de sesión</strong> con control de acceso por roles. También registrará aprendices con sus datos personales y almacenará su información facial. Al ingresar al ambiente, el sistema detectará el rostro mediante cámara, lo identificará y registrará automáticamente la asistencia con la hora de ingreso.</p>
+          <p>Adicionalmente gestionará programas de formación, fichas, ambientes y horarios académicos, y generará <strong>reportes exportables en PDF o Excel</strong>.</p>
+        </div>
+      </div>
+
+      <!-- CONTEXTO -->
+      <div class="s1-block">
+        <div class="s1-block-label">🌐 Contexto del sistema</div>
+        <div class="highlight-box">
+          El sistema será utilizado dentro del entorno académico del <strong>SENA</strong>. Funcionará mediante una plataforma web conectada con un dispositivo de reconocimiento facial basado en <strong>Raspberry Pi</strong> y una cámara. El dispositivo capturará los rostros de los aprendices y enviará la información al servidor a través de <strong>red WiFi</strong>, registrando la asistencia en tiempo real en la base de datos.
+        </div>
+
+        <div class="s2-arch-row">
+          <div class="s2-arch-node">📷<span>Cámara</span></div>
+          <div class="s2-arch-arrow">→</div>
+          <div class="s2-arch-node">🖥️<span>Raspberry Pi</span></div>
+          <div class="s2-arch-arrow">→ WiFi →</div>
+          <div class="s2-arch-node">☁️<span>Servidor</span></div>
+          <div class="s2-arch-arrow">→</div>
+          <div class="s2-arch-node">🗄️<span>Base de datos</span></div>
+        </div>
+      </div>
+
+      <!-- MÓDULOS -->
+      <div class="s1-block">
+        <div class="s1-block-label">🧩 Módulos del sistema</div>
+        <div class="s1-table-wrap">
+          <table class="s1-table">
+            <thead>
+              <tr><th>#</th><th>Módulo</th><th>Función</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>01</td><td>Autenticación y acceso</td><td>Permite el inicio de sesión, validación de usuarios y gestión de roles y permisos del sistema.</td></tr>
+              <tr><td>02</td><td>Gestión académica</td><td>Administra programas de formación, fichas y registro de aprendices dentro del sistema.</td></tr>
+              <tr><td>03</td><td>Gestión de ambientes</td><td>Permite registrar, consultar y administrar los ambientes de formación y su asignación a fichas.</td></tr>
+              <tr><td>04</td><td>Gestión de horarios</td><td>Permite organizar los horarios de las fichas, ambientes e instructores.</td></tr>
+              <tr><td>05</td><td>Reconocimiento facial</td><td>Identifica a los aprendices mediante cámara conectada a la Raspberry Pi y envía la información al sistema.</td></tr>
+              <tr><td>06</td><td>Asistencia y validaciones</td><td>Registra automáticamente la asistencia de los aprendices y calcula atrasos o inasistencias.</td></tr>
+              <tr><td>07</td><td>Reportes y consultas</td><td>Genera reportes de asistencia, estadísticas e historial de los aprendices.</td></tr>
+              <tr><td>08</td><td>Notificaciones</td><td>Genera y envía alertas del sistema a los usuarios dentro de la plataforma o por correo electrónico.</td></tr>
+              <tr><td>09</td><td>Perfil y personalización</td><td>Permite a los usuarios visualizar su perfil y configurar preferencias del sistema.</td></tr>
+              <tr><td>10</td><td>Administración y auditoría</td><td>Permite al administrador gestionar usuarios, roles y supervisar el funcionamiento del sistema.</td></tr>
+              <tr><td>11</td><td>Bitácora del sistema</td><td>Registra las acciones y movimientos realizados dentro del sistema para control y seguridad.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 3 ─── -->
+    <section class="section" id="s3">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 03</div>
+          <h2>Arquitectura del Software</h2>
+        </div>
+      </div>
+
+      <!-- 1. ESTRUCTURA GENERAL -->
+      <div class="s1-block">
+        <div class="s1-block-label">1. Estructura general — Arquitectura N-Capas</div>
+        <div class="s3-layers-stack">
+          <div class="s3-layer" style="--lc:#4fffb0;">
+            <span class="s3-layer-tag">Presentación</span>
+            <span class="s3-layer-desc">Interfaz / Frontend</span>
+          </div>
+          <div class="s3-layer" style="--lc:#00c3ff;">
+            <span class="s3-layer-tag">Aplicación</span>
+            <span class="s3-layer-desc">Casos de uso / Servicios</span>
+          </div>
+          <div class="s3-layer" style="--lc:#a78bfa;">
+            <span class="s3-layer-tag">Dominio</span>
+            <span class="s3-layer-desc">Entidades y reglas del negocio</span>
+          </div>
+          <div class="s3-layer" style="--lc:#fb923c;">
+            <span class="s3-layer-tag">Persistencia</span>
+            <span class="s3-layer-desc">Repositorios y consultas</span>
+          </div>
+          <div class="s3-layer" style="--lc:#f472b6;">
+            <span class="s3-layer-tag">Infraestructura</span>
+            <span class="s3-layer-desc">Servicios externos</span>
+          </div>
+          <div class="s3-layer" style="--lc:#facc15;">
+            <span class="s3-layer-tag">Datos</span>
+            <span class="s3-layer-desc">Base de datos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. CAPA DE PRESENTACIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#4fffb0;">2. Capa de Presentación (UI)</div>
+        <div class="content-full" style="margin-bottom:16px;">
+          <p>La interfaz que ve el usuario. Incluye todas las pantallas y formularios del sistema.</p>
+        </div>
+        <div class="s3-modules-grid">
+          <div class="s3-mod-card"><div class="s3-mod-title">🔐 Acceso al sistema</div><div class="s3-mod-items">Login · Recuperar contraseña · Registro</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">🏛️ Gestión de ambientes</div><div class="s3-mod-items">Formulario crear ambiente · Lista de ambientes</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">🎓 Gestión académica</div><div class="s3-mod-items">Registrar ficha · Registrar programas</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">🗓️ Horarios</div><div class="s3-mod-items">Formulario horario · Consulta horarios</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">📷 Reconocimiento facial</div><div class="s3-mod-items">Pantallas de la cámara y reconocimiento facial</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">✅ Asistencia y validaciones</div><div class="s3-mod-items">Registrar entrada/salida · Cálculo de retrasos</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">📊 Reportes</div><div class="s3-mod-items">Dashboard · Reportes PDF</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">🔔 Notificaciones</div><div class="s3-mod-items">Visualización de notificaciones</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">👤 Perfil y personalización</div><div class="s3-mod-items">Ver perfil · Idioma · Colores del dashboard</div></div>
+          <div class="s3-mod-card"><div class="s3-mod-title">🛡️ Administración y auditoría</div><div class="s3-mod-items">Registro de acciones · Auditoría de acceso y movimientos</div></div>
+        </div>
+      </div>
+
+      <!-- 3. CAPA DE APLICACIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#00c3ff;">3. Capa de Aplicación</div>
+        <div class="content-full" style="margin-bottom:16px;">
+          <p>Controla qué debe hacer el sistema cuando el usuario ejecuta una acción. Se usan <strong>controladores y servicios</strong>.</p>
+        </div>
+        <div class="s3-service-grid">
+          <div class="s3-svc-group">
+            <div class="s3-svc-title">👤 Usuario y seguridad</div>
+            <div class="s3-svc-list">UsuarioService · CredencialService · Politicas_ContrasenasService · RecuperacionContrasenaService · SesionUsuarioService · AuditoriaService · Log_ErroresService · BitacoraSistemaService · ConfiguracionUsuarioService</div>
+          </div>
+          <div class="s3-svc-group">
+            <div class="s3-svc-title">🔑 Roles y permisos</div>
+            <div class="s3-svc-list">RolService · PermisosService · Usuario_RolService · Rol_PermisoService</div>
+          </div>
+          <div class="s3-svc-group">
+            <div class="s3-svc-title">🎓 Gestión académica</div>
+            <div class="s3-svc-list">ProgramaService · FichaService · Ficha_UsuarioService · AmbienteService · Ficha_AmbienteService · RestriccionAmbienteService · ExcepcionAmbienteService</div>
+          </div>
+          <div class="s3-svc-group">
+            <div class="s3-svc-title">🗓️ Gestión de horario</div>
+            <div class="s3-svc-list">HorarioService · Horario_InstructorService · Horario_AmbienteService · ExcepcionHorarioService</div>
+          </div>
+          <div class="s3-svc-group">
+            <div class="s3-svc-title">📷 Reconocimiento facial</div>
+            <div class="s3-svc-list">DispositivoService · RostroUsuarioService · EventoFacialService · BitacoraBiometricaService</div>
+          </div>
+          <div class="s3-svc-group">
+            <div class="s3-svc-title">🔔 Notificaciones y otros</div>
+            <div class="s3-svc-list">NotificacionesService · EnvioCorreoService · ExcusaService · TerminosCondicionesService · AceptacionTerminosService · AcudienteService · ConsentimientoService</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. CAPA DE DOMINIO -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#a78bfa;">4. Capa de Dominio</div>
+        <div class="content-full" style="margin-bottom:16px;">
+          <p>Aquí están las <strong>reglas del negocio</strong>. Se usan las entidades del sistema.</p>
+        </div>
+        <div class="s3-service-grid">
+          <div class="s3-svc-group" style="--gc:rgba(167,139,250,0.08);--gb:rgba(167,139,250,0.2);">
+            <div class="s3-svc-title">👤 Usuario y seguridad</div>
+            <div class="s3-svc-list">Usuario · Credencial · Politicas_Contrasenas · RecuperacionContrasena · SesionUsuario · Auditoria · Log_Errores · BitacoraSistema · ConfiguracionUsuario</div>
+          </div>
+          <div class="s3-svc-group" style="--gc:rgba(167,139,250,0.08);--gb:rgba(167,139,250,0.2);">
+            <div class="s3-svc-title">🔑 Roles y permisos</div>
+            <div class="s3-svc-list">Rol · Permisos · Usuario_Rol · Rol_Permiso</div>
+          </div>
+          <div class="s3-svc-group" style="--gc:rgba(167,139,250,0.08);--gb:rgba(167,139,250,0.2);">
+            <div class="s3-svc-title">🎓 Gestión académica</div>
+            <div class="s3-svc-list">Programa · Ficha · Ficha_Usuario · Ambiente · Ficha_Ambiente · RestriccionAmbiente · ExcepcionAmbiente</div>
+          </div>
+          <div class="s3-svc-group" style="--gc:rgba(167,139,250,0.08);--gb:rgba(167,139,250,0.2);">
+            <div class="s3-svc-title">🗓️ Gestión de horario</div>
+            <div class="s3-svc-list">Horario · Horario_Instructor · Horario_Ambiente · ExcepcionHorario</div>
+          </div>
+          <div class="s3-svc-group" style="--gc:rgba(167,139,250,0.08);--gb:rgba(167,139,250,0.2);">
+            <div class="s3-svc-title">📷 Reconocimiento facial</div>
+            <div class="s3-svc-list">Dispositivo · RostroUsuario · EventoFacial · BitacoraBiometrica</div>
+          </div>
+          <div class="s3-svc-group" style="--gc:rgba(167,139,250,0.08);--gb:rgba(167,139,250,0.2);">
+            <div class="s3-svc-title">🔔 Notificaciones y otros</div>
+            <div class="s3-svc-list">Notificaciones · EnvioCorreo · Excusa · TerminosCondiciones · AceptacionTerminos · Acudiente · Consentimiento</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. CAPA DE PERSISTENCIA -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#fb923c;">5. Capa de Persistencia</div>
+        <div class="content-full" style="margin-bottom:16px;">
+          <p>Maneja la <strong>comunicación con la base de datos</strong> a través de repositorios (Repository Pattern).</p>
+        </div>
+        <div class="highlight-box" style="border-color:#fb923c;">
+          Los repositorios de esta capa espejean las entidades del dominio: <strong>Usuario, Credencial, Rol, Programa, Ficha, Ambiente, Horario, Dispositivo, RostroUsuario, EventoFacial, Notificaciones, Excusa, TerminosCondiciones, Acudiente</strong> y sus tablas relacionadas.
+        </div>
+      </div>
+
+      <!-- 6. CAPA DE INFRAESTRUCTURA -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#f472b6;">6. Capa de Infraestructura</div>
+        <div class="content-full" style="margin-bottom:16px;">
+          <p>Conecta el sistema con el <strong>mundo externo</strong>: seguridad, cámara, reportes, correos y bitácoras.</p>
+        </div>
+        <div class="s3-infra-grid">
+          <div class="s3-infra-card">
+            <div class="s3-infra-head">🔐 Seguridad</div>
+            <div class="s3-infra-services">PasswordHasher · TokenGenerator</div>
+            <div class="s3-infra-tables">Credencial · SesionUsuario · Politicas_Contrasenas · RecuperacionContrasena</div>
+          </div>
+          <div class="s3-infra-card">
+            <div class="s3-infra-head">📷 Reconocimiento Facial</div>
+            <div class="s3-infra-services">FacialRecognitionService · CameraService · DeviceManager</div>
+            <div class="s3-infra-tables">Dispositivo · RostroUsuario · EventoFacial · BitacoraBiometrica</div>
+          </div>
+          <div class="s3-infra-card">
+            <div class="s3-infra-head">📄 Reportes</div>
+            <div class="s3-infra-services">ExcelGenerator · PDFGenerator</div>
+            <div class="s3-infra-tables">ReporteAsistencia.pdf · ReporteAmbientes.xlsx</div>
+          </div>
+          <div class="s3-infra-card">
+            <div class="s3-infra-head">✉️ Notificaciones</div>
+            <div class="s3-infra-services">EmailCorreo</div>
+            <div class="s3-infra-tables">Notificaciones · EnvioCorreo</div>
+          </div>
+          <div class="s3-infra-card">
+            <div class="s3-infra-head">📋 Bitácoras</div>
+            <div class="s3-infra-services">LoggerService · AuditService · ErrorLogger</div>
+            <div class="s3-infra-tables">Log_Errores · Auditoria</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. CAPA DE DATOS -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#facc15;">7. Capa de Datos</div>
+        <div class="content-full">
+          <p>Aquí está la <strong>base de datos</strong> del sistema. Contiene todas las tablas que persisten la información de usuarios, asistencia, reconocimiento facial, reportes y configuración.</p>
+        </div>
+        <a class="s3-db-link" href="https://drive.google.com/drive/folders/1GDl3IVGh-ejBfp51dmERLVLHfWyRdw-T?usp=drive_link" target="_blank">
+          <span class="s3-db-link-icon">🗄️</span>
+          <div>
+            <div class="s3-db-link-title">Ver base de datos en Google Drive</div>
+            <div class="s3-db-link-url">drive.google.com · Diagrama entidad-relación y tablas</div>
+          </div>
+          <span class="s3-db-link-arrow">↗</span>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 4 ─── -->
+    <section class="section" id="s4">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 04</div>
+          <h2>Diseño de Componentes o Módulos</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>Cada módulo del sistema se describe con sus <strong>entradas</strong>, <strong>procesos internos</strong> y <strong>salidas</strong>. A continuación se presentan los 11 módulos que componen el sistema de gestión de asistencia.</p>
+      </div>
+
+      <!-- MÓDULOS -->
+      <div class="s4-modules">
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">01</span>
+            <span class="s4-mod-icon">🔐</span>
+            <span class="s4-mod-name">Autenticación y Acceso</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Usuario, contraseña y datos de registro</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Validación de credenciales, verificación de rol y permisos, recuperación de contraseña</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Acceso al sistema según el rol del usuario</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">02</span>
+            <span class="s4-mod-icon">🎓</span>
+            <span class="s4-mod-name">Gestión Académica (programas, fichas y aprendices)</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Datos del programa, ficha y datos personales del aprendiz</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Registro de programas, creación de fichas y asociación de aprendices a cada ficha</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Información académica organizada y aprendices asociados a fichas</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">03</span>
+            <span class="s4-mod-icon">🏛️</span>
+            <span class="s4-mod-name">Gestión de Ambientes</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Datos del ambiente (nombre, número, capacidad, estado)</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Registro, consulta y asignación de ambientes a fichas o horarios</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Ambientes registrados y disponibles para asignación</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">04</span>
+            <span class="s4-mod-icon">🗓️</span>
+            <span class="s4-mod-name">Gestión de Horarios</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Datos de fichas, ambientes, instructores y franjas horarias</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Creación y administración de horarios académicos</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Horarios registrados y asociados a fichas y ambientes</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">05</span>
+            <span class="s4-mod-icon">📷</span>
+            <span class="s4-mod-name">Reconocimiento Facial</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Imagen del rostro capturada por la cámara</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Detección facial, comparación con la base de datos, identificación del usuario</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Identificación del aprendiz y envío de datos al sistema</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">06</span>
+            <span class="s4-mod-icon">✅</span>
+            <span class="s4-mod-name">Registro de Asistencia</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Identificación del usuario, fecha, hora, ambiente</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Validación del horario, registro automático de asistencia, cálculo de puntualidad o retraso</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Registro clasificado como <strong>puntual</strong>, <strong>tardío</strong> o <strong>ausente</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">07</span>
+            <span class="s4-mod-icon">📊</span>
+            <span class="s4-mod-name">Reportes y Estadísticas</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Datos de asistencia almacenados en la base de datos</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Análisis de registros, generación de reportes y estadísticas</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Reportes de asistencia por aprendiz, ficha o ambiente en <strong>PDF o Excel</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">08</span>
+            <span class="s4-mod-icon">🔔</span>
+            <span class="s4-mod-name">Notificaciones</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Eventos del sistema (inasistencias, atrasos, alertas)</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Generación y envío automático de notificaciones</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Notificaciones en la plataforma o por correo electrónico</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">09</span>
+            <span class="s4-mod-icon">👤</span>
+            <span class="s4-mod-name">Perfil y Personalización</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Datos del usuario, preferencias de configuración, idioma, colores del dashboard</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Visualización y actualización del perfil, modificación de configuraciones, cambio de idioma y personalización de la interfaz</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Perfil actualizado y sistema personalizado según las preferencias del usuario</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">10</span>
+            <span class="s4-mod-icon">🛡️</span>
+            <span class="s4-mod-name">Gestión de Usuarios</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Datos del usuario (nombre, correo, rol, contraseña)</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Registro, actualización y administración de usuarios del sistema</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Usuarios registrados y gestionados dentro del sistema</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="s4-mod">
+          <div class="s4-mod-header">
+            <span class="s4-mod-num">11</span>
+            <span class="s4-mod-icon">📋</span>
+            <span class="s4-mod-name">Auditoría y Bitácora</span>
+          </div>
+          <div class="s4-mod-body">
+            <div class="s4-col s4-entrada">
+              <div class="s4-col-label entrada">Entrada</div>
+              <p>Acciones realizadas por los usuarios en el sistema</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-proceso">
+              <div class="s4-col-label proceso">Proceso</div>
+              <p>Registro y almacenamiento de actividades y accesos</p>
+            </div>
+            <div class="s4-arrow">→</div>
+            <div class="s4-col s4-salida">
+              <div class="s4-col-label salida">Salida</div>
+              <p>Historial de actividades y control de auditoría del sistema</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── SECCIÓN 5 ─── -->
+    <section class="section" id="s5">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 05</div>
+          <h2>Diagramas del Sistema (UML)</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>Los diagramas UML representan el diseño del sistema de forma gráfica. A continuación se presentan los 6 diagramas elaborados para el sistema de gestión de asistencia por reconocimiento facial.</p>
+      </div>
+
+      <!-- INFO ACADÉMICA -->
+      <div class="s5-info-row">
+        <div class="s5-info-chip">📚 <strong>Competencia:</strong> Construcción del Software</div>
+        <div class="s5-info-chip">🎯 <strong>R.A.:</strong> Planear actividades de construcción del software de acuerdo con el diseño establecido</div>
+        <div class="s5-info-chip">📋 <strong>Actividad:</strong> Interpretar informe de diseño</div>
+        <div class="s5-info-chip">👨‍🏫 <strong>Instructor:</strong> José de Jesús Motta Vargas</div>
+      </div>
+
+      <!-- DIAGRAMAS GRID -->
+      <div class="s5-diagrams-grid">
+
+        <!-- Casos de Uso -->
+        <a class="s5-diagram-card s5-available" href="https://app.diagrams.net/#G1peaPnqHgAH5RWz8VudT9IpGw-Vp7WKi7#%7B%22pageId%22%3A%22b4tuXGWWpa0JyEujkGbf%22%7D" target="_blank">
+          <div class="s5-diag-icon">🧑‍💻</div>
+          <div class="s5-diag-info">
+            <div class="s5-diag-name">Diagrama de Casos de Uso</div>
+            <div class="s5-diag-desc">Muestra los actores del sistema y las interacciones que realizan con cada funcionalidad.</div>
+          </div>
+          <div class="s5-diag-badge available">Ver diagrama ↗</div>
+        </a>
+
+        <!-- Clases -->
+        <a class="s5-diagram-card s5-available" href="https://app.diagrams.net/#G1f1bQgYUD59HMzRBbaMcxx-D_KNAAuTLI#%7B%22pageId%22%3A%22pPHjrprG-2dQOO5S8m36%22%7D" target="_blank">
+          <div class="s5-diag-icon">🏛️</div>
+          <div class="s5-diag-info">
+            <div class="s5-diag-name">Diagrama de Clases</div>
+            <div class="s5-diag-desc">Define las entidades del sistema, sus atributos, métodos y las relaciones entre ellas.</div>
+          </div>
+          <div class="s5-diag-badge available">Ver diagrama ↗</div>
+        </a>
+
+        <!-- Secuencia -->
+        <a class="s5-diagram-card s5-available" href="https://app.diagrams.net/#G11J1bTOaf69TcS_K0kFFpAHpdANXge_bo#%7B%22pageId%22%3A%22KXMIah-nhfQg-b-bwSF4%22%7D" target="_blank">
+          <div class="s5-diag-icon">🔄</div>
+          <div class="s5-diag-info">
+            <div class="s5-diag-name">Diagrama de Secuencia</div>
+            <div class="s5-diag-desc">Representa el orden cronológico de los mensajes e interacciones entre objetos del sistema.</div>
+          </div>
+          <div class="s5-diag-badge available">Ver diagrama ↗</div>
+        </a>
+
+        <!-- Actividad -->
+        <a class="s5-diagram-card s5-available" href="https://app.diagrams.net/#G1VPMGymfb5zPx238h0yrr0kPw5JEBq-yt" target="_blank">
+          <div class="s5-diag-icon">⚙️</div>
+          <div class="s5-diag-info">
+            <div class="s5-diag-name">Diagrama de Actividad</div>
+            <div class="s5-diag-desc">Ilustra el flujo de actividades y decisiones en los procesos principales del sistema.</div>
+          </div>
+          <div class="s5-diag-badge available">Ver diagrama ↗</div>
+        </a>
+
+        <!-- Componentes -->
+        <div class="s5-diagram-card s5-pending">
+          <div class="s5-diag-icon">🧩</div>
+          <div class="s5-diag-info">
+            <div class="s5-diag-name">Diagrama de Componentes</div>
+            <div class="s5-diag-desc">Describe la organización y dependencias entre los componentes de software del sistema.</div>
+          </div>
+          <div class="s5-diag-badge pending">Pendiente</div>
+        </div>
+
+        <!-- Despliegue -->
+        <div class="s5-diagram-card s5-pending">
+          <div class="s5-diag-icon">🌐</div>
+          <div class="s5-diag-info">
+            <div class="s5-diag-name">Diagrama de Despliegue</div>
+            <div class="s5-diag-desc">Muestra la distribución física del sistema: servidores, dispositivos y conexiones de red.</div>
+          </div>
+          <div class="s5-diag-badge pending">Pendiente</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── SECCIÓN 6 ─── -->
+    <section class="section" id="s6">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 06</div>
+          <h2>Diseño de Base de Datos</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>El sistema cuenta con <strong>26 tablas</strong> organizadas en grupos temáticos. Cada tabla se describe con sus campos clave, llave primaria, llaves foráneas y relaciones con otras entidades del sistema.</p>
+      </div>
+
+      <!-- GRUPOS DE TABLAS -->
+
+      <!-- SEGURIDAD -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#4fffb0;">🔐 Seguridad y Usuarios</div>
+        <div class="s6-table-wrap">
+          <table class="s6-table">
+            <thead><tr><th>Tabla</th><th>Descripción</th><th>Campos clave</th><th>PK</th><th>FK</th><th>Relaciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="s6-td-name">Usuario</td>
+                <td>Información personal de los usuarios</td>
+                <td><code>id_Usuario, nombreUsuario, apellido, fechaNacimiento</code></td>
+                <td><span class="s6-pk">id_Usuario</span></td>
+                <td>—</td>
+                <td>Base principal; relacionada con credenciales, roles, asistencia, reportes, notificaciones, etc.</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Credencial</td>
+                <td>Control de acceso y seguridad</td>
+                <td><code>id_Credencial, correo, contrasenaHash, estado</code></td>
+                <td><span class="s6-pk">id_Credencial</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Cada usuario tiene una credencial; FK con Usuario(id_Usuario)</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Rol</td>
+                <td>Roles del sistema</td>
+                <td><code>id_Rol, nombreRol</code></td>
+                <td><span class="s6-pk">id_Rol</span></td>
+                <td>—</td>
+                <td>Relacionado con Usuario_Rol para asignar roles a los usuarios</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Permisos</td>
+                <td>Permisos asociados a roles</td>
+                <td><code>id_Permiso, nombrePermiso, descripcion</code></td>
+                <td><span class="s6-pk">id_Permiso</span></td>
+                <td>—</td>
+                <td>Relacionado con Rol_Permiso para asignar permisos a los roles</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Usuario_Rol</td>
+                <td>Asociación de usuarios a roles</td>
+                <td><code>id_Usuario, id_Rol, fechaAsignacion</code></td>
+                <td><span class="s6-pk">(id_Usuario, id_Rol)</span></td>
+                <td><span class="s6-fk">id_Usuario</span> <span class="s6-fk">id_Rol</span></td>
+                <td>Muchos a muchos entre Usuario y Rol</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Rol_Permiso</td>
+                <td>Asociación de roles con permisos</td>
+                <td><code>id_Rol, id_Permiso, fechaAsignacion</code></td>
+                <td><span class="s6-pk">(id_Rol, id_Permiso)</span></td>
+                <td><span class="s6-fk">id_Rol</span> <span class="s6-fk">id_Permiso</span></td>
+                <td>Muchos a muchos entre Rol y Permisos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ACADÉMICA -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#00c3ff;">🎓 Gestión Académica</div>
+        <div class="s6-table-wrap">
+          <table class="s6-table">
+            <thead><tr><th>Tabla</th><th>Descripción</th><th>Campos clave</th><th>PK</th><th>FK</th><th>Relaciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="s6-td-name">Programa</td>
+                <td>Programas de formación</td>
+                <td><code>id_Programa, nombrePrograma, codigo, nivel, estado</code></td>
+                <td><span class="s6-pk">id_Programa</span></td>
+                <td>—</td>
+                <td>Cada programa puede tener varias fichas</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Ficha</td>
+                <td>Fichas asociadas a programas</td>
+                <td><code>id_Ficha, id_Programa, codigoFicha, nombreFicha</code></td>
+                <td><span class="s6-pk">id_Ficha</span></td>
+                <td><span class="s6-fk">id_Programa</span></td>
+                <td>Cada ficha pertenece a un programa; tiene muchos aprendices y horarios</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Ficha_Usuario</td>
+                <td>Asociación de aprendices a fichas</td>
+                <td><code>id_Ficha, id_Usuario, fechaAsignacion</code></td>
+                <td><span class="s6-pk">id_Ficha</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Relaciona usuarios (aprendices) con fichas</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Ambiente</td>
+                <td>Espacios de formación</td>
+                <td><code>id_Ambiente, codigoAmbiente, nombreAmbiente, capacidad, estado</code></td>
+                <td><span class="s6-pk">id_Ambiente</span></td>
+                <td>—</td>
+                <td>Cada ambiente puede asignarse a varias fichas y horarios</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Ficha_Ambiente</td>
+                <td>Asociación de fichas a ambientes</td>
+                <td><code>id_Ficha, id_Ambiente, fechaAsignacion</code></td>
+                <td><span class="s6-pk">(id_Ficha, id_Ambiente)</span></td>
+                <td><span class="s6-fk">id_Ficha</span> <span class="s6-fk">id_Ambiente</span></td>
+                <td>Relaciona fichas con los ambientes asignados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- HORARIOS -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#a78bfa;">🗓️ Gestión de Horarios</div>
+        <div class="s6-table-wrap">
+          <table class="s6-table">
+            <thead><tr><th>Tabla</th><th>Descripción</th><th>Campos clave</th><th>PK</th><th>FK</th><th>Relaciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="s6-td-name">Horario</td>
+                <td>Horarios académicos</td>
+                <td><code>id_Horario, id_Ficha, diaSemana, horaInicio, horaFin</code></td>
+                <td><span class="s6-pk">id_Horario</span></td>
+                <td><span class="s6-fk">id_Ficha</span></td>
+                <td>Cada ficha tiene varios horarios</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Horario_Instructor</td>
+                <td>Relación de instructores con horarios</td>
+                <td><code>id_HorarioInstructor, id_Horario, id_Usuario</code></td>
+                <td><span class="s6-pk">id_HorarioInstructor</span></td>
+                <td><span class="s6-fk">id_Horario</span> <span class="s6-fk">id_Usuario</span></td>
+                <td>Relaciona instructores a horarios de fichas</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Horario_Ambiente</td>
+                <td>Relación de horarios con ambientes</td>
+                <td><code>id_Horario, id_Ambiente</code></td>
+                <td><span class="s6-pk">(id_Horario, id_Ambiente)</span></td>
+                <td><span class="s6-fk">id_Horario</span> <span class="s6-fk">id_Ambiente</span></td>
+                <td>Asocia cada horario con el ambiente asignado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RECONOCIMIENTO FACIAL -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#fb923c;">📷 Reconocimiento Facial y Asistencia</div>
+        <div class="s6-table-wrap">
+          <table class="s6-table">
+            <thead><tr><th>Tabla</th><th>Descripción</th><th>Campos clave</th><th>PK</th><th>FK</th><th>Relaciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="s6-td-name">Dispositivo</td>
+                <td>Dispositivos de captura facial</td>
+                <td><code>id_Dispositivo, codigoDispositivo, ubicacion</code></td>
+                <td><span class="s6-pk">id_Dispositivo</span></td>
+                <td>—</td>
+                <td>Cada dispositivo captura eventos faciales de los usuarios</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">RostroUsuario</td>
+                <td>Registro biométrico de los aprendices</td>
+                <td><code>id_RostroUsuario, id_Usuario, vectorBiometrico</code></td>
+                <td><span class="s6-pk">id_RostroUsuario</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Relaciona cada usuario con su rostro</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">EventoFacial</td>
+                <td>Registro de asistencia mediante reconocimiento facial</td>
+                <td><code>id_EventoFacial, id_Usuario, id_Ambiente, id_Ficha, id_Dispositivo, fechaHora, tipoEvento</code></td>
+                <td><span class="s6-pk">id_EventoFacial</span></td>
+                <td><span class="s6-fk">id_Usuario</span> <span class="s6-fk">id_Ambiente</span> <span class="s6-fk">id_Ficha</span> <span class="s6-fk">id_Dispositivo</span></td>
+                <td>Registra cada entrada, salida o descanso</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">BitacoraBiometrica</td>
+                <td>Historial de eventos faciales</td>
+                <td><code>id_Bitacora, id_Evento, descripcion, fecha</code></td>
+                <td><span class="s6-pk">id_Bitacora</span></td>
+                <td><span class="s6-fk">id_Evento</span></td>
+                <td>Registro detallado de cada evento de reconocimiento facial</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- LEGAL Y NOTIFICACIONES -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#f472b6;">🔔 Notificaciones, Legal y Personalización</div>
+        <div class="s6-table-wrap">
+          <table class="s6-table">
+            <thead><tr><th>Tabla</th><th>Descripción</th><th>Campos clave</th><th>PK</th><th>FK</th><th>Relaciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="s6-td-name">Notificaciones</td>
+                <td>Alertas para los usuarios</td>
+                <td><code>id_Notificacion, id_Usuario, tipo, titulo, mensaje, fechaHora</code></td>
+                <td><span class="s6-pk">id_Notificacion</span></td>
+                <td><span class="s6-fk">id_Usuario</span> <span class="s6-fk">id_Evento</span></td>
+                <td>Notifica a usuarios sobre asistencias, anomalías o sistema</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Excusa</td>
+                <td>Registro de excusas por ausencia</td>
+                <td><code>id_Excusa, id_Usuario, fechaAusencia, mensaje, archivoPDF, estado</code></td>
+                <td><span class="s6-pk">id_Excusa</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Cada usuario puede registrar excusas por ausencias</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">TerminosCondiciones</td>
+                <td>Términos legales</td>
+                <td><code>id_Terminos, tipo, textoTerminos</code></td>
+                <td><span class="s6-pk">id_Terminos</span></td>
+                <td>—</td>
+                <td>Guarda las políticas legales del sistema</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">AceptacionTerminos</td>
+                <td>Registro de aceptación de términos</td>
+                <td><code>id_Aceptacion, id_Usuario, id_Terminos, aceptado, fechaAceptacion</code></td>
+                <td><span class="s6-pk">id_Aceptacion</span></td>
+                <td><span class="s6-fk">id_Usuario</span> <span class="s6-fk">id_Terminos</span></td>
+                <td>Relaciona usuarios con los términos aceptados</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Consentimiento</td>
+                <td>Consentimiento de menores o adultos</td>
+                <td><code>id_Consentimiento, id_Usuario, id_Acudiente, menorEdad, consentimientoAdulto</code></td>
+                <td><span class="s6-pk">id_Consentimiento</span></td>
+                <td><span class="s6-fk">id_Usuario</span> <span class="s6-fk">id_Acudiente</span></td>
+                <td>Registro legal de consentimiento para uso de datos biométricos</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">ConfiguracionUsuario</td>
+                <td>Preferencias del usuario</td>
+                <td><code>id_ConfiguracionUsuario, id_Usuario, idioma, modoOscuro, temaDashboard</code></td>
+                <td><span class="s6-pk">id_ConfiguracionUsuario</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Permite personalizar la interfaz y preferencias de cada usuario</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AUDITORÍA -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#facc15;">📋 Auditoría y Bitácoras</div>
+        <div class="s6-table-wrap">
+          <table class="s6-table">
+            <thead><tr><th>Tabla</th><th>Descripción</th><th>Campos clave</th><th>PK</th><th>FK</th><th>Relaciones</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="s6-td-name">Auditoria</td>
+                <td>Registro de acciones de los usuarios</td>
+                <td><code>id_Auditoria, id_Usuario, accion, fecha, descripcion</code></td>
+                <td><span class="s6-pk">id_Auditoria</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Supervisa acciones del usuario dentro del sistema</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">BitacoraSistema</td>
+                <td>Registro general del sistema</td>
+                <td><code>id_BitacoraSistema, id_Usuario, accion, modulo, fechaHora, resultado</code></td>
+                <td><span class="s6-pk">id_BitacoraSistema</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Guarda el historial de eventos de todo el sistema</td>
+              </tr>
+              <tr>
+                <td class="s6-td-name">Log_Errores</td>
+                <td>Registro de errores del sistema</td>
+                <td><code>id_Error, id_Usuario, tipoError, descripcion, fecha</code></td>
+                <td><span class="s6-pk">id_Error</span></td>
+                <td><span class="s6-fk">id_Usuario</span></td>
+                <td>Almacena errores generados por usuarios o sistema</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="s1-block">
+        <div class="s1-block-label">📊 Resumen de tablas</div>
+        <div class="s6-summary-grid">
+          <div class="s6-summary-card" style="--sc:#4fffb0;">
+            <div class="s6-sum-num">6</div>
+            <div class="s6-sum-label">Seguridad y Usuarios</div>
+          </div>
+          <div class="s6-summary-card" style="--sc:#00c3ff;">
+            <div class="s6-sum-num">5</div>
+            <div class="s6-sum-label">Gestión Académica</div>
+          </div>
+          <div class="s6-summary-card" style="--sc:#a78bfa;">
+            <div class="s6-sum-num">3</div>
+            <div class="s6-sum-label">Horarios</div>
+          </div>
+          <div class="s6-summary-card" style="--sc:#fb923c;">
+            <div class="s6-sum-num">4</div>
+            <div class="s6-sum-label">Reconocimiento Facial</div>
+          </div>
+          <div class="s6-summary-card" style="--sc:#f472b6;">
+            <div class="s6-sum-num">6</div>
+            <div class="s6-sum-label">Notificaciones y Legal</div>
+          </div>
+          <div class="s6-summary-card" style="--sc:#facc15;">
+            <div class="s6-sum-num">3</div>
+            <div class="s6-sum-label">Auditoría y Bitácoras</div>
+          </div>
+          <div class="s6-summary-card s6-total" style="--sc:#4fffb0;">
+            <div class="s6-sum-num">27</div>
+            <div class="s6-sum-label">Total de tablas</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 7 ─── -->
+    <section class="section" id="s7">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 07</div>
+          <h2>Diseño de Interfaces</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>El diseño de interfaces describe cómo será la interacción visual entre el usuario y el sistema. Incluye prototipos de pantallas, formularios, menús y el flujo de navegación. Los mockups fueron elaborados en <strong>Figma</strong> y documentados en detalle.</p>
+      </div>
+
+      <!-- RECURSOS PRINCIPALES -->
+      <div class="s1-block">
+        <div class="s1-block-label">📁 Recursos del diseño</div>
+        <div class="s7-resources">
+
+          <a class="s7-resource-card s7-figma" href="https://www.figma.com/design/fRPJLroPiL9Jeu4zhfy0Zf/FaceID-completo?node-id=0-1&t=A9xeobAq2USPRcX7-1" target="_blank">
+            <div class="s7-res-left">
+              <div class="s7-res-logo">
+                <svg width="24" height="36" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 18C6 15.8 7.8 14 10 14H12V22H10C7.8 22 6 20.2 6 18Z" fill="#1ABCFE"/>
+                  <path d="M12 14H14C16.2 14 18 15.8 18 18C18 20.2 16.2 22 14 22H12V14Z" fill="#0ACF83"/>
+                  <path d="M12 6H14C16.2 6 18 7.8 18 10C18 12.2 16.2 14 14 14H12V6Z" fill="#FF7262"/>
+                  <path d="M6 10C6 7.8 7.8 6 10 6H12V14H10C7.8 14 6 12.2 6 10Z" fill="#F24E1E"/>
+                  <path d="M6 26C6 23.8 7.8 22 10 22H12V27C12 29.2 10.2 31 8 31C6.9 31 6 30.1 6 29V26Z" fill="#A259FF"/>
+                </svg>
+              </div>
+              <div>
+                <div class="s7-res-title">Mockup App — Figma</div>
+                <div class="s7-res-desc">Prototipo interactivo completo · FaceID-completo</div>
+              </div>
+            </div>
+            <div class="s7-res-action">Abrir en Figma ↗</div>
+          </a>
+
+          <a class="s7-resource-card s7-gdocs" href="https://docs.google.com/document/d/124DMhKY1hcSxPRV5pZq_56zdGzM0A955/edit?usp=drive_link&ouid=105863111727087095874&rtpof=true&sd=true" target="_blank">
+            <div class="s7-res-left">
+              <div class="s7-res-logo">
+                <svg width="30" height="36" viewBox="0 0 30 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="2" width="26" height="32" rx="3" fill="#4285F4"/>
+                  <rect x="7" y="10" width="16" height="2" rx="1" fill="white" fill-opacity="0.9"/>
+                  <rect x="7" y="15" width="16" height="2" rx="1" fill="white" fill-opacity="0.9"/>
+                  <rect x="7" y="20" width="10" height="2" rx="1" fill="white" fill-opacity="0.9"/>
+                </svg>
+              </div>
+              <div>
+                <div class="s7-res-title">Mockup Documento</div>
+                <div class="s7-res-desc">Documentación detallada de las interfaces · Google Docs</div>
+              </div>
+            </div>
+            <div class="s7-res-action">Abrir Documento ↗</div>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- QUÉ INCLUYE -->
+      <div class="s1-block">
+        <div class="s1-block-label">🖼️ ¿Qué incluye el diseño?</div>
+        <div class="content-grid">
+          <div class="content-card">
+            <h3>🔐 Acceso al sistema</h3>
+            <ul>
+              <li>Pantalla de Login con campos usuario y contraseña</li>
+              <li>Pantalla de recuperación de contraseña</li>
+              <li>Pantalla de registro de nuevo usuario</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>📊 Panel principal (Dashboard)</h3>
+            <ul>
+              <li>Vista de métricas de asistencia en tiempo real</li>
+              <li>Gráficas estadísticas de puntualidad</li>
+              <li>Accesos rápidos a módulos del sistema</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>📷 Reconocimiento facial</h3>
+            <ul>
+              <li>Pantalla de captura en vivo desde la cámara</li>
+              <li>Indicador de identificación exitosa / fallida</li>
+              <li>Registro automático con hora de entrada</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>🎓 Gestión académica</h3>
+            <ul>
+              <li>Formulario de registro de aprendices</li>
+              <li>Gestión de fichas y programas</li>
+              <li>Asignación de ambientes y horarios</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>📋 Reportes y estadísticas</h3>
+            <ul>
+              <li>Filtros por aprendiz, ficha o rango de fechas</li>
+              <li>Tabla de historial de asistencia</li>
+              <li>Botones de exportación PDF y Excel</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3>⚙️ Perfil y configuración</h3>
+            <ul>
+              <li>Vista y edición del perfil de usuario</li>
+              <li>Selector de idioma y tema (oscuro/claro)</li>
+              <li>Personalización del dashboard</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- FLUJO DE NAVEGACIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label">🗺️ Flujo de navegación principal</div>
+        <div class="s7-flow">
+          <div class="s7-flow-node s7-start">
+            <span>🌐</span>
+            <span>Ingreso</span>
+          </div>
+          <div class="s7-flow-arrow">→</div>
+          <div class="s7-flow-node">
+            <span>🔐</span>
+            <span>Login</span>
+          </div>
+          <div class="s7-flow-arrow">→</div>
+          <div class="s7-flow-node s7-dashboard">
+            <span>📊</span>
+            <span>Dashboard</span>
+          </div>
+          <div class="s7-flow-arrow">→</div>
+          <div class="s7-flow-branches">
+            <div class="s7-flow-node s7-branch"><span>📷</span><span>Reconocimiento</span></div>
+            <div class="s7-flow-node s7-branch"><span>🎓</span><span>Académica</span></div>
+            <div class="s7-flow-node s7-branch"><span>📋</span><span>Reportes</span></div>
+            <div class="s7-flow-node s7-branch"><span>🔔</span><span>Notificaciones</span></div>
+            <div class="s7-flow-node s7-branch"><span>⚙️</span><span>Configuración</span></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 8 ─── -->
+    <section class="section" id="s8">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 08</div>
+          <h2>Reglas de Negocio</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>Las reglas de negocio definen las <strong>condiciones, restricciones y comportamientos</strong> que el sistema debe cumplir obligatoriamente. Están organizadas por área funcional.</p>
+      </div>
+
+      <div class="s8-groups">
+
+        <!-- USUARIOS Y SEGURIDAD -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#4fffb0;">
+            <span class="s8-group-icon">🔐</span>
+            <span class="s8-group-title">Usuarios y Seguridad</span>
+            <span class="s8-group-count">7 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-01</span><p>Un usuario no puede registrarse con un correo electrónico que ya exista en el sistema.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-02</span><p>Cada usuario debe tener un único perfil de credenciales activo.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-03</span><p>Solo los usuarios mayores de edad pueden registrarse como adultos; los menores requieren consentimiento de un acudiente.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-04</span><p>Cada usuario puede tener uno o varios roles, pero un rol solo se asigna una vez por usuario.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-05</span><p>Las contraseñas deben cumplir la política de seguridad definida: longitud mínima, mayúsculas, números y símbolos.</p></div>
+            <div class="s8-rule s8-rule-warning"><span class="s8-rule-num">RN-06</span><p>Después de <strong>tres intentos fallidos</strong> de inicio de sesión, la cuenta se bloquea temporalmente.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-07</span><p>Los administradores pueden crear, modificar o eliminar usuarios y asignar roles y permisos.</p></div>
+          </div>
+        </div>
+
+        <!-- ASISTENCIA Y RECONOCIMIENTO FACIAL -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#00c3ff;">
+            <span class="s8-group-icon">📷</span>
+            <span class="s8-group-title">Asistencia y Reconocimiento Facial</span>
+            <span class="s8-group-count">6 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-08</span><p>Cada asistente debe ser identificado por reconocimiento facial <strong>antes</strong> de registrar su asistencia.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-09</span><p>Un usuario solo puede registrar una entrada y una salida por horario asignado.</p></div>
+            <div class="s8-rule s8-rule-warning"><span class="s8-rule-num">RN-10</span><p>Si un usuario llega fuera del horario definido, se marcará como <strong>"tardío"</strong>.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-11</span><p>La asistencia se registra automáticamente en el sistema con fecha, hora y ambiente.</p></div>
+            <div class="s8-rule s8-rule-danger"><span class="s8-rule-num">RN-12</span><p>No se permite la suplantación de identidad; cada rostro corresponde a un único usuario registrado.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-13</span><p>Los eventos de reconocimiento facial deben enviarse al servidor para validación antes de actualizar la asistencia.</p></div>
+          </div>
+        </div>
+
+        <!-- AMBIENTES Y HORARIOS -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#a78bfa;">
+            <span class="s8-group-icon">🏛️</span>
+            <span class="s8-group-title">Gestión de Ambientes y Horarios</span>
+            <span class="s8-group-count">4 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-14</span><p>Un ambiente solo puede estar asignado a una ficha en un mismo horario.</p></div>
+            <div class="s8-rule s8-rule-warning"><span class="s8-rule-num">RN-15</span><p>Si un ambiente está marcado como restringido o cerrado, no se puede asignar a ninguna ficha temporalmente.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-16</span><p>Cada ficha debe tener un horario asignado y un ambiente disponible para registrar asistencia.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-17</span><p>Los instructores deben estar asociados a los horarios de las fichas que supervisan.</p></div>
+          </div>
+        </div>
+
+        <!-- REPORTES -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#fb923c;">
+            <span class="s8-group-icon">📊</span>
+            <span class="s8-group-title">Reportes y Consultas</span>
+            <span class="s8-group-count">3 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-18</span><p>Los reportes de asistencia deben mostrar el estado de puntualidad, inasistencias y ausencias justificadas.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-19</span><p>Solo los usuarios con permisos adecuados pueden generar y exportar reportes.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-20</span><p>Las excusas de inasistencia deben aprobarse antes de que se reflejen en los reportes oficiales.</p></div>
+          </div>
+        </div>
+
+        <!-- NOTIFICACIONES -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#facc15;">
+            <span class="s8-group-icon">🔔</span>
+            <span class="s8-group-title">Notificaciones y Comunicación</span>
+            <span class="s8-group-count">2 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-21</span><p>Las notificaciones deben enviarse automáticamente ante ausencias, anomalías o cambios en horarios y ambientes.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-22</span><p>Cada usuario recibe notificaciones únicamente sobre sus registros, horarios o eventos relevantes.</p></div>
+          </div>
+        </div>
+
+        <!-- CONFIGURACIÓN -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#4fffb0;">
+            <span class="s8-group-icon">⚙️</span>
+            <span class="s8-group-title">Configuración y Personalización</span>
+            <span class="s8-group-count">2 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-23</span><p>Cada usuario puede configurar su idioma, colores y modo del dashboard.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-24</span><p>La personalización es única por usuario y no afecta la configuración de otros usuarios.</p></div>
+          </div>
+        </div>
+
+        <!-- AUDITORÍA -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#f472b6;">
+            <span class="s8-group-icon">📋</span>
+            <span class="s8-group-title">Auditoría y Bitácoras</span>
+            <span class="s8-group-count">3 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule"><span class="s8-rule-num">RN-25</span><p>Todas las acciones de usuarios y administradores deben registrarse en la bitácora del sistema.</p></div>
+            <div class="s8-rule s8-rule-danger"><span class="s8-rule-num">RN-26</span><p>Las auditorías y bitácoras <strong>no se pueden eliminar</strong>; solo pueden ser visualizadas por administradores.</p></div>
+            <div class="s8-rule"><span class="s8-rule-num">RN-27</span><p>Cada error registrado debe incluir información de fecha, usuario y tipo de error para su control.</p></div>
+          </div>
+        </div>
+
+        <!-- LEGAL -->
+        <div class="s8-group">
+          <div class="s8-group-header" style="--gc:#ff6b6b;">
+            <span class="s8-group-icon">⚖️</span>
+            <span class="s8-group-title">Legal y Consentimiento</span>
+            <span class="s8-group-count">3 reglas</span>
+          </div>
+          <div class="s8-rules">
+            <div class="s8-rule s8-rule-danger"><span class="s8-rule-num">RN-28</span><p>Todo usuario debe aceptar los términos y condiciones <strong>antes</strong> de usar el sistema.</p></div>
+            <div class="s8-rule s8-rule-danger"><span class="s8-rule-num">RN-29</span><p>Los menores de edad requieren consentimiento de un acudiente para registrar su información biométrica.</p></div>
+            <div class="s8-rule s8-rule-danger"><span class="s8-rule-num">RN-30</span><p>El consentimiento de datos biométricos debe validarse y registrarse para cumplir con las normativas legales.</p></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="s1-block" style="margin-top:32px;">
+        <div class="s1-block-label">📊 Resumen de reglas</div>
+        <div class="s8-summary">
+          <div class="s8-sum-chip s8-total-chip">
+            <span class="s8-sum-big">30</span>
+            <span>Reglas totales</span>
+          </div>
+          <div class="s8-sum-chip">
+            <span class="s8-rule-dot s8-dot-normal"></span>
+            <span>Estándar</span>
+          </div>
+          <div class="s8-sum-chip">
+            <span class="s8-rule-dot s8-dot-warning"></span>
+            <span>Restricción importante</span>
+          </div>
+          <div class="s8-sum-chip">
+            <span class="s8-rule-dot s8-dot-danger"></span>
+            <span>Crítica / Obligatoria</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 9 ─── -->
+    <section class="section" id="s9">
+      <div class="section-header">
+        <div class="section-num">09</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 09</div>
+          <h2>Seguridad del Sistema</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>El sistema implementa múltiples capas de seguridad para garantizar la <strong>confidencialidad, integridad y disponibilidad</strong> de la información. Combina autenticación por credenciales, reconocimiento facial, control de acceso por roles y protección de datos conforme a la <strong>Ley 1581 de 2012</strong> de Colombia.</p>
+      </div>
+
+      <!-- PILARES -->
+      <div class="s9-pillars">
+        <div class="s9-pillar" style="--pc:#4fffb0;"><span>🔑</span><span>Autenticación</span></div>
+        <div class="s9-pillar" style="--pc:#00c3ff;"><span>🛡️</span><span>Autorización</span></div>
+        <div class="s9-pillar" style="--pc:#a78bfa;"><span>🚪</span><span>Control de acceso</span></div>
+        <div class="s9-pillar" style="--pc:#fb923c;"><span>🔒</span><span>Protección de datos</span></div>
+        <div class="s9-pillar" style="--pc:#f472b6;"><span>🔄</span><span>Contraseñas</span></div>
+      </div>
+
+      <!-- 1. AUTENTICACIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#4fffb0;">🔑 Autenticación</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>El sistema combina <strong>autenticación por credenciales</strong> y <strong>autenticación biométrica facial</strong>, garantizando mayor seguridad y confiabilidad en la verificación de identidad.</p>
+        </div>
+        <div class="content-grid">
+          <div class="content-card" style="border-left:3px solid #4fffb0;">
+            <h3>📧 Por credenciales</h3>
+            <p>Acceso mediante correo y contraseña validados contra la base de datos. Las contraseñas se almacenan con <strong>hashing seguro</strong>, nunca en texto plano.</p>
+            <div class="tag-list">
+              <span class="tag" style="color:#4fffb0;border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">8–15 caracteres</span>
+              <span class="tag" style="color:#4fffb0;border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">Letras + números + símbolos</span>
+              <span class="tag" style="color:#4fffb0;border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">Max 3 intentos fallidos</span>
+              <span class="tag" style="color:#4fffb0;border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">Registro de auditoría</span>
+            </div>
+          </div>
+          <div class="content-card" style="border-left:3px solid #00c3ff;">
+            <h3>📷 Biométrica facial</h3>
+            <p>Durante el registro inicial se captura el rostro mediante <strong>Raspberry Pi</strong>, generando un vector biométrico. Al ingresar, la cámara compara el rostro con los registros almacenados para identificación automática.</p>
+            <div class="tag-list">
+              <span class="tag">Captura con Raspberry Pi</span>
+              <span class="tag">Vector biométrico</span>
+              <span class="tag">Comparación en tiempo real</span>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box" style="border-color:#4fffb0;">
+          Estas medidas garantizan la protección de las credenciales y el cumplimiento de la <strong>Ley 1581 de 2012</strong> sobre protección de datos personales en Colombia.
+        </div>
+      </div>
+
+      <!-- 2. AUTORIZACIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#00c3ff;">🛡️ Autorización</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>El sistema implementa autorización basada en <strong>roles (RBAC)</strong>, garantizando que cada usuario solo acceda a las funciones correspondientes a su perfil.</p>
+        </div>
+        <div class="s9-flow-roles">
+          <div class="s9-role-step">
+            <div class="s9-role-icon">✅</div>
+            <div class="s9-role-label">Autenticación exitosa</div>
+          </div>
+          <div class="s9-role-arrow">→</div>
+          <div class="s9-role-step">
+            <div class="s9-role-icon">🗄️</div>
+            <div class="s9-role-label">Consulta de rol en BD</div>
+          </div>
+          <div class="s9-role-arrow">→</div>
+          <div class="s9-role-step">
+            <div class="s9-role-icon">🔓</div>
+            <div class="s9-role-label">Habilita módulos permitidos</div>
+          </div>
+          <div class="s9-role-arrow">→</div>
+          <div class="s9-role-step">
+            <div class="s9-role-icon">🚀</div>
+            <div class="s9-role-label">Acceso al sistema</div>
+          </div>
+        </div>
+        <div class="content-grid" style="margin-top:16px;">
+          <div class="content-card">
+            <h3>⚠️ Derechos de datos personales</h3>
+            <p>Antes de usar el sistema, el usuario debe confirmar que ha leído y comprendido sus derechos de acceso, actualización y rectificación. La confirmación se registra con fecha, hora y usuario. Si no acepta, el acceso se bloquea.</p>
+          </div>
+          <div class="content-card">
+            <h3>🛡️ Administrador general</h3>
+            <p>Acceso completo para gestionar usuarios, roles, ambientes, fichas, horarios y configuraciones. Puede suspender cuentas, restablecer contraseñas y consultar reportes globales. Todas sus acciones quedan en bitácora.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. CONTROL DE ACCESO -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#a78bfa;">🚪 Control de Acceso</div>
+        <div class="s9-access-grid">
+          <div class="s9-access-card">
+            <div class="s9-access-icon">📡</div>
+            <div class="s9-access-title">Envío seguro desde Raspberry Pi</div>
+            <p>Cada reconocimiento facial envía un paquete con ID usuario, ambiente, ficha, fecha, hora y tipo de evento. El servidor valida antes de almacenar. Si no hay red, los eventos se sincronizan al restablecer conexión.</p>
+          </div>
+          <div class="s9-access-card">
+            <div class="s9-access-icon">📋</div>
+            <div class="s9-access-title">Bitácoras del sistema</div>
+            <p>Se registran todas las acciones relevantes: accesos, movimientos de asistencia, cambios de configuración y actividades de usuarios. Cada registro incluye usuario, acción, fecha, hora e IP.</p>
+          </div>
+          <div class="s9-access-card">
+            <div class="s9-access-icon">🔍</div>
+            <div class="s9-access-title">Módulo de auditoría</div>
+            <p>Permite a administradores y auditores consultar reportes sobre accesos, movimientos y anomalías, asegurando control y supervisión completa del uso del sistema.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. PROTECCIÓN DE DATOS -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#fb923c;">🔒 Protección de Datos</div>
+        <div class="content-full" style="margin-bottom:16px;">
+          <p>El sistema garantiza la protección de datos personales y biométricos mediante mecanismos de seguridad en el almacenamiento y transmisión. Los datos capturados por la Raspberry Pi se envían al servidor de forma segura para evitar accesos no autorizados.</p>
+        </div>
+        <div class="s9-pillars-mini">
+          <div class="s9-mini-pillar" style="--mc:#fb923c;">
+            <span class="s9-mini-icon">🔏</span>
+            <span class="s9-mini-label">Confidencialidad</span>
+            <span class="s9-mini-desc">Solo usuarios autorizados acceden a los datos</span>
+          </div>
+          <div class="s9-mini-pillar" style="--mc:#fb923c;">
+            <span class="s9-mini-icon">✔️</span>
+            <span class="s9-mini-label">Integridad</span>
+            <span class="s9-mini-desc">Los datos no pueden ser alterados sin autorización</span>
+          </div>
+          <div class="s9-mini-pillar" style="--mc:#fb923c;">
+            <span class="s9-mini-icon">🌐</span>
+            <span class="s9-mini-label">Disponibilidad</span>
+            <span class="s9-mini-desc">El sistema y sus datos están siempre accesibles</span>
+          </div>
+        </div>
+        <div class="highlight-box" style="border-color:#fb923c;margin-top:16px;">
+          Cumple con la <strong>Ley 1581 de 2012</strong> sobre protección de datos personales en Colombia. Solo usuarios con permisos autorizados pueden acceder o modificar datos.
+        </div>
+      </div>
+
+      <!-- 5. CONTRASEÑAS -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#f472b6;">🔄 Manejo de Contraseñas</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>El sistema cuenta con un mecanismo seguro de <strong>restablecimiento de contraseñas</strong> mediante token único y temporal enviado al correo del usuario.</p>
+        </div>
+        <div class="s9-password-flow">
+          <div class="s9-pw-step">
+            <div class="s9-pw-num">1</div>
+            <div class="s9-pw-icon">📧</div>
+            <div class="s9-pw-text">Usuario ingresa su correo registrado</div>
+          </div>
+          <div class="s9-pw-line"></div>
+          <div class="s9-pw-step">
+            <div class="s9-pw-num">2</div>
+            <div class="s9-pw-icon">🎟️</div>
+            <div class="s9-pw-text">Sistema genera token único temporal y lo envía al correo</div>
+          </div>
+          <div class="s9-pw-line"></div>
+          <div class="s9-pw-step">
+            <div class="s9-pw-num">3</div>
+            <div class="s9-pw-icon">✅</div>
+            <div class="s9-pw-text">Usuario valida el token y establece nueva contraseña</div>
+          </div>
+          <div class="s9-pw-line"></div>
+          <div class="s9-pw-step">
+            <div class="s9-pw-num">4</div>
+            <div class="s9-pw-icon">🔐</div>
+            <div class="s9-pw-text">Nueva contraseña se almacena cifrada; token se invalida automáticamente</div>
+          </div>
+          <div class="s9-pw-line"></div>
+          <div class="s9-pw-step">
+            <div class="s9-pw-num">5</div>
+            <div class="s9-pw-icon">📋</div>
+            <div class="s9-pw-text">Proceso registrado en bitácora: usuario, fecha, IP y resultado</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 10 ─── -->
+    <section class="section" id="s10">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 10</div>
+          <h2>Especificaciones Técnicas</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>Define el <strong>stack tecnológico</strong> utilizado para construir el sistema de gestión de asistencia por reconocimiento facial. Cada componente fue seleccionado en función de su rendimiento, compatibilidad y soporte para las funcionalidades requeridas.</p>
+      </div>
+
+      <!-- ACADEMIA -->
+      <div class="s5-info-row" style="margin-bottom:32px;">
+        <div class="s5-info-chip">📚 <strong>Competencia:</strong> Construcción del Software</div>
+        <div class="s5-info-chip">🎯 <strong>R.A.:</strong> Planear actividades de construcción del software</div>
+        <div class="s5-info-chip">📋 <strong>Actividad:</strong> Interpretar informe de diseño</div>
+        <div class="s5-info-chip">👨‍🏫 <strong>Instructor:</strong> José de Jesús Motta Vargas</div>
+      </div>
+
+      <!-- TECH STACK CARDS -->
+      <div class="s1-block">
+        <div class="s1-block-label">🛠️ Stack tecnológico</div>
+        <div class="s10-stack">
+
+          <div class="s10-tech-card" style="--tc:#f7df1e;--tb:rgba(247,223,30,0.12);--tbr:rgba(247,223,30,0.25);">
+            <div class="s10-tech-header">
+              <div class="s10-tech-logos">
+                <span class="s10-logo" style="background:#e34c26;">HTML</span>
+                <span class="s10-logo" style="background:#264de4;">CSS</span>
+                <span class="s10-logo" style="background:#f7df1e;color:#000;">JS</span>
+              </div>
+              <div class="s10-tech-component">Frontend</div>
+            </div>
+            <div class="s10-tech-name">HTML · CSS · JavaScript</div>
+            <p class="s10-tech-desc">Tecnologías utilizadas para desarrollar la interfaz gráfica del sistema, permitiendo la interacción del usuario con la plataforma, visualización de información, formularios y paneles de control.</p>
+            <div class="tag-list">
+              <span class="tag">Interfaz de usuario</span>
+              <span class="tag">Formularios</span>
+              <span class="tag">Dashboard</span>
+              <span class="tag">Reportes visuales</span>
+            </div>
+          </div>
+
+          <div class="s10-tech-card" style="--tc:#3572A5;--tb:rgba(53,114,165,0.1);--tbr:rgba(53,114,165,0.25);">
+            <div class="s10-tech-header">
+              <div class="s10-tech-logos">
+                <span class="s10-logo" style="background:#f89820;">Java</span>
+                <span class="s10-logo" style="background:#3572A5;">Py</span>
+              </div>
+              <div class="s10-tech-component">Backend</div>
+            </div>
+            <div class="s10-tech-name">Java · Python</div>
+            <p class="s10-tech-desc">Lenguajes utilizados para la lógica del sistema, procesamiento de datos, autenticación y comunicación con la base de datos y dispositivos externos como la Raspberry Pi.</p>
+            <div class="tag-list">
+              <span class="tag">Lógica de negocio</span>
+              <span class="tag">API REST</span>
+              <span class="tag">Reconocimiento facial</span>
+              <span class="tag">Raspberry Pi</span>
+            </div>
+          </div>
+
+          <div class="s10-tech-card" style="--tc:#00758f;--tb:rgba(0,117,143,0.1);--tbr:rgba(0,117,143,0.25);">
+            <div class="s10-tech-header">
+              <div class="s10-tech-logos">
+                <span class="s10-logo" style="background:#00758f;">SQL</span>
+              </div>
+              <div class="s10-tech-component">Base de datos</div>
+            </div>
+            <div class="s10-tech-name">MySQL</div>
+            <p class="s10-tech-desc">Sistema de gestión de bases de datos relacional utilizado para almacenar y administrar información del sistema, como usuarios, registros de asistencia, horarios y configuraciones.</p>
+            <div class="tag-list">
+              <span class="tag">Relacional</span>
+              <span class="tag">27 tablas</span>
+              <span class="tag">Consultas SQL</span>
+              <span class="tag">Integridad referencial</span>
+            </div>
+          </div>
+
+          <div class="s10-tech-card" style="--tc:#f05032;--tb:rgba(240,80,50,0.1);--tbr:rgba(240,80,50,0.25);">
+            <div class="s10-tech-header">
+              <div class="s10-tech-logos">
+                <span class="s10-logo" style="background:#f05032;">Git</span>
+              </div>
+              <div class="s10-tech-component">Control de versiones</div>
+            </div>
+            <div class="s10-tech-name">Git</div>
+            <p class="s10-tech-desc">Herramienta utilizada para gestionar y controlar los cambios en el código fuente del proyecto, facilitando el trabajo colaborativo y el seguimiento de versiones del software.</p>
+            <div class="tag-list">
+              <span class="tag">Trabajo colaborativo</span>
+              <span class="tag">Historial de cambios</span>
+              <span class="tag">Branches</span>
+              <span class="tag">GitHub / GitLab</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TABLA RESUMEN -->
+      <div class="s1-block">
+        <div class="s1-block-label">📋 Tabla resumen</div>
+        <div class="s1-table-wrap">
+          <table class="s1-table">
+            <thead>
+              <tr><th>Componente</th><th>Tecnología</th><th>Definición</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Frontend</td>
+                <td>
+                  <span class="s10-badge" style="background:#e34c2620;color:#e34c26;border-color:#e34c2640;">HTML</span>
+                  <span class="s10-badge" style="background:#264de420;color:#7b9cff;border-color:#264de440;">CSS</span>
+                  <span class="s10-badge" style="background:#f7df1e20;color:#c9a800;border-color:#f7df1e40;">JavaScript</span>
+                </td>
+                <td>Interfaz gráfica, formularios y paneles de control del sistema.</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Backend</td>
+                <td>
+                  <span class="s10-badge" style="background:#f8982020;color:#f89820;border-color:#f8982040;">Java</span>
+                  <span class="s10-badge" style="background:#3572A520;color:#6fa8d4;border-color:#3572A540;">Python</span>
+                </td>
+                <td>Lógica del sistema, autenticación y comunicación con Raspberry Pi.</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Base de datos</td>
+                <td>
+                  <span class="s10-badge" style="background:#00758f20;color:#00b4d8;border-color:#00758f40;">MySQL</span>
+                </td>
+                <td>Almacenamiento relacional de usuarios, asistencia, horarios y configuraciones.</td>
+              </tr>
+              <tr>
+                <td style="color:var(--text);font-weight:600;">Control de versiones</td>
+                <td>
+                  <span class="s10-badge" style="background:#f0503220;color:#f05032;border-color:#f0503240;">Git</span>
+                </td>
+                <td>Gestión de cambios en el código fuente y trabajo colaborativo en equipo.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ─── SECCIÓN 11 ─── -->
+    <section class="section" id="s11">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div class="section-heading-area">
+          <div class="section-tag">Punto 11</div>
+          <h2>Consideraciones de Implementación</h2>
+        </div>
+      </div>
+
+      <div class="content-full" style="margin-bottom:32px;">
+        <p>Define los lineamientos, prácticas y estrategias que guiarán el <strong>proceso de desarrollo, despliegue y mantenimiento</strong> del sistema de gestión de asistencia por reconocimiento facial.</p>
+      </div>
+
+      <!-- OVERVIEW CHIPS -->
+      <div class="s11-overview">
+        <div class="s11-ov-chip" style="--oc:#4fffb0;"><span>📐</span><span>Estándares de codificación</span></div>
+        <div class="s11-ov-chip" style="--oc:#00c3ff;"><span>🗂️</span><span>Estructura del proyecto</span></div>
+        <div class="s11-ov-chip" style="--oc:#fb923c;"><span>⚠️</span><span>Manejo de errores</span></div>
+        <div class="s11-ov-chip" style="--oc:#a78bfa;"><span>🧪</span><span>Pruebas del sistema</span></div>
+      </div>
+
+      <!-- 1. ESTÁNDARES DE CODIFICACIÓN -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#4fffb0;">📐 Estándares de Codificación</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>El desarrollo seguirá <strong>estándares y buenas prácticas de programación</strong> para garantizar la calidad, mantenibilidad y escalabilidad del software.</p>
+        </div>
+        <div class="s11-standards-grid">
+          <div class="s11-std-card">
+            <div class="s11-std-icon">🏷️</div>
+            <div class="s11-std-title">Convenciones de nombres</div>
+            <p>Nombres claros, descriptivos y consistentes para variables, funciones, clases y archivos en todo el proyecto.</p>
+          </div>
+          <div class="s11-std-card">
+            <div class="s11-std-icon">🧹</div>
+            <div class="s11-std-title">Organización del código</div>
+            <p>Código limpio, bien comentado y estructurado siguiendo los principios de responsabilidad única y separación de capas.</p>
+          </div>
+          <div class="s11-std-card">
+            <div class="s11-std-icon">🔁</div>
+            <div class="s11-std-title">Control de versiones con Git</div>
+            <p>Uso de ramas (<em>branches</em>), commits descriptivos y Pull Requests para gestionar el trabajo colaborativo y el historial de cambios.</p>
+          </div>
+          <div class="s11-std-card">
+            <div class="s11-std-icon">📦</div>
+            <div class="s11-std-title">Reutilización y modularidad</div>
+            <p>Componentes y funciones reutilizables que reduzcan la duplicación de código y faciliten futuras modificaciones.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. ESTRUCTURA DEL PROYECTO -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#00c3ff;">🗂️ Estructura del Proyecto</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>El sistema se organizará en <strong>módulos funcionales</strong>, separando cada área de responsabilidad para facilitar el mantenimiento, la reutilización y la integración con dispositivos externos como la Raspberry Pi.</p>
+        </div>
+        <div class="s11-tree">
+          <div class="s11-tree-root">📁 Sistema de Asistencia</div>
+          <div class="s11-tree-children">
+            <div class="s11-tree-item s11-ti-green"><span>🔐</span><span>Autenticación y seguridad</span></div>
+            <div class="s11-tree-item s11-ti-blue"><span>👥</span><span>Gestión de usuarios y roles</span></div>
+            <div class="s11-tree-item s11-ti-purple"><span>📷</span><span>Reconocimiento facial (Raspberry Pi)</span></div>
+            <div class="s11-tree-item s11-ti-orange"><span>✅</span><span>Control de asistencia</span></div>
+            <div class="s11-tree-item s11-ti-pink"><span>📊</span><span>Generación de reportes</span></div>
+            <div class="s11-tree-item s11-ti-yellow"><span>🔔</span><span>Notificaciones</span></div>
+            <div class="s11-tree-item s11-ti-green"><span>⚙️</span><span>Configuración y personalización</span></div>
+            <div class="s11-tree-item s11-ti-blue"><span>📋</span><span>Auditoría y bitácoras</span></div>
+          </div>
+        </div>
+        <div class="highlight-box" style="border-color:#00c3ff;margin-top:16px;">
+          Esta estructura facilita el <strong>mantenimiento del sistema</strong>, la reutilización del código y la integración con dispositivos como la Raspberry Pi mediante APIs bien definidas.
+        </div>
+      </div>
+
+      <!-- 3. MANEJO DE ERRORES -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#fb923c;">⚠️ Manejo de Errores</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>El sistema implementará mecanismos de <strong>detección y manejo de errores</strong> para garantizar estabilidad durante su funcionamiento sin comprometer la seguridad.</p>
+        </div>
+        <div class="s11-error-flow">
+          <div class="s11-err-step">
+            <div class="s11-err-icon" style="border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.08);">🔴</div>
+            <div class="s11-err-content">
+              <div class="s11-err-title">Ocurre un error</div>
+              <div class="s11-err-desc">Error de sistema, fallo de conexión, reconocimiento fallido, credenciales inválidas, etc.</div>
+            </div>
+          </div>
+          <div class="s11-err-connector"></div>
+          <div class="s11-err-step">
+            <div class="s11-err-icon" style="border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.08);">📋</div>
+            <div class="s11-err-content">
+              <div class="s11-err-title">Registro en bitácora</div>
+              <div class="s11-err-desc">Se almacena en <code>Log_Errores</code>: fecha, usuario, tipo de error y descripción.</div>
+            </div>
+          </div>
+          <div class="s11-err-connector"></div>
+          <div class="s11-err-step">
+            <div class="s11-err-icon" style="border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.08);">💬</div>
+            <div class="s11-err-content">
+              <div class="s11-err-title">Mensaje claro al usuario</div>
+              <div class="s11-err-desc">Se muestra un mensaje informativo sin exponer detalles internos ni comprometer la seguridad.</div>
+            </div>
+          </div>
+          <div class="s11-err-connector"></div>
+          <div class="s11-err-step">
+            <div class="s11-err-icon" style="border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.08);">✅</div>
+            <div class="s11-err-content">
+              <div class="s11-err-title">Sistema continúa operando</div>
+              <div class="s11-err-desc">El error se maneja de forma controlada para que no afecte el funcionamiento general del sistema.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. PRUEBAS -->
+      <div class="s1-block">
+        <div class="s1-block-label" style="color:#a78bfa;">🧪 Pruebas del Sistema</div>
+        <div class="content-full" style="margin-bottom:20px;">
+          <p>Se realizarán <strong>pruebas funcionales y de integración</strong> para verificar el correcto funcionamiento de los módulos, detectar fallos, validar requisitos y asegurar que el sistema opere correctamente en diferentes condiciones.</p>
+        </div>
+        <div class="s11-tests-grid">
+          <div class="s11-test-card">
+            <div class="s11-test-type" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.08);">Funcionales</div>
+            <div class="s11-test-module">🔐 Autenticación</div>
+            <p>Verificar inicio de sesión, bloqueo por intentos fallidos y recuperación de contraseña.</p>
+          </div>
+          <div class="s11-test-card">
+            <div class="s11-test-type" style="color:#a78bfa;border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.08);">Funcionales</div>
+            <div class="s11-test-module">📷 Reconocimiento facial</div>
+            <p>Validar la detección, comparación e identificación del aprendiz en tiempo real con precisión.</p>
+          </div>
+          <div class="s11-test-card">
+            <div class="s11-test-type" style="color:#00c3ff;border-color:rgba(0,195,255,0.3);background:rgba(0,195,255,0.08);">Integración</div>
+            <div class="s11-test-module">✅ Registro de asistencia</div>
+            <p>Verificar que el reconocimiento facial genera correctamente el registro en la base de datos.</p>
+          </div>
+          <div class="s11-test-card">
+            <div class="s11-test-type" style="color:#00c3ff;border-color:rgba(0,195,255,0.3);background:rgba(0,195,255,0.08);">Integración</div>
+            <div class="s11-test-module">📊 Generación de reportes</div>
+            <p>Comprobar que los reportes reflejan datos correctos y se exportan en PDF y Excel sin errores.</p>
+          </div>
+          <div class="s11-test-card">
+            <div class="s11-test-type" style="color:#4fffb0;border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.08);">Seguridad</div>
+            <div class="s11-test-module">🛡️ Control de acceso</div>
+            <p>Confirmar que cada rol solo accede a sus módulos permitidos y que las bitácoras se registran correctamente.</p>
+          </div>
+          <div class="s11-test-card">
+            <div class="s11-test-type" style="color:#fb923c;border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.08);">Rendimiento</div>
+            <div class="s11-test-module">⚡ Carga del sistema</div>
+            <p>Evaluar el comportamiento del sistema con múltiples usuarios simultáneos y eventos faciales concurrentes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CIERRE / COMPLETADO -->
+      <div class="s11-complete-banner">
+        <div class="s11-complete-icon">🎉</div>
+        <div class="s11-complete-text">
+          <div class="s11-complete-title">¡Taller completado!</div>
+          <div class="s11-complete-sub">Los 11 puntos del taller "Interpretar Informe de Diseño" han sido desarrollados.</div>
+        </div>
+        <div class="s11-complete-badge">11 / 11 ✓</div>
+      </div>
+
+    </section>
+
+    </div><!-- end #t1-content -->
+
+    <!-- ─── TALLER 2 CONTENT WRAPPER ─── -->
+    <div id="t2-content" style="display:none;">
+
+      <!-- T2 HOME -->
+      <section class="section active" id="t2-home">
+        <div class="content-full" style="margin-bottom:28px;">
+          <p>Selecciona cualquier punto del índice lateral para ver su desarrollo. Los puntos del Taller 02 se irán completando a medida que avancemos.</p>
+        </div>
+        <div class="points-overview">
+          <a class="point-card t2-point-card" href="#" data-target="t2-s1">
+            <span class="point-card-num" style="color:var(--accent2);">01</span>
+            <span class="point-card-icon">🔍</span>
+            <span class="point-card-label">Analizar el diseño del sistema</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+          <a class="point-card t2-point-card" href="#" data-target="t2-s2">
+            <span class="point-card-num" style="color:var(--accent2);">02</span>
+            <span class="point-card-icon">🛠️</span>
+            <span class="point-card-label">Identificar herramientas necesarias</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+          <a class="point-card t2-point-card" href="#" data-target="t2-s3">
+            <span class="point-card-num" style="color:var(--accent2);">03</span>
+            <span class="point-card-icon">⚡</span>
+            <span class="point-card-label">Seleccionar herramientas de desarrollo</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+          <a class="point-card t2-point-card" href="#" data-target="t2-s4">
+            <span class="point-card-num" style="color:var(--accent2);">04</span>
+            <span class="point-card-icon">📝</span>
+            <span class="point-card-label">Justificar la selección de herramientas</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+          <a class="point-card t2-point-card" href="#" data-target="t2-s5">
+            <span class="point-card-num" style="color:var(--accent2);">05</span>
+            <span class="point-card-icon">🔗</span>
+            <span class="point-card-label">Relacionar herramientas con actividad</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- T2 SECCIÓN 1 -->
+      <section class="section" id="t2-s1">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(0,195,255,0.08);">01</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:var(--accent2);">Punto 01</div>
+            <h2>Analizar el Diseño del Sistema</h2>
+          </div>
+        </div>
+
+        <div class="content-full" style="margin-bottom:32px;">
+          <p>Análisis del diseño general del sistema de gestión de asistencia, identificando el tipo de sistema, la arquitectura propuesta, el lenguaje de programación y los componentes principales que lo conforman.</p>
+        </div>
+
+        <!-- TABLA DE CARACTERÍSTICAS -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">📋 Características del sistema</div>
+          <div class="t2s1-specs">
+
+            <div class="t2s1-spec-row">
+              <div class="t2s1-spec-key">
+                <span class="t2s1-key-icon">🌐</span>
+                <span>Tipo de sistema</span>
+              </div>
+              <div class="t2s1-spec-val">
+                <span class="t2s1-badge" style="--bc:#4fffb0;">Web</span>
+                <span class="t2s1-badge" style="--bc:#a78bfa;">Móvil para Android</span>
+              </div>
+            </div>
+
+            <div class="t2s1-spec-row">
+              <div class="t2s1-spec-key">
+                <span class="t2s1-key-icon">🏗️</span>
+                <span>Arquitectura de Software</span>
+              </div>
+              <div class="t2s1-spec-val">
+                <span class="t2s1-badge" style="--bc:#00c3ff;">N - Capas</span>
+              </div>
+            </div>
+
+            <div class="t2s1-spec-row">
+              <div class="t2s1-spec-key">
+                <span class="t2s1-key-icon">☕</span>
+                <span>Lenguaje de programación</span>
+              </div>
+              <div class="t2s1-spec-val">
+                <span class="t2s1-badge" style="--bc:#f89820;">Java</span>
+              </div>
+            </div>
+
+            <div class="t2s1-spec-row">
+              <div class="t2s1-spec-key">
+                <span class="t2s1-key-icon">🗄️</span>
+                <span>Base de datos</span>
+              </div>
+              <div class="t2s1-spec-val">
+                <span class="t2s1-badge" style="--bc:#336791;">PostgreSQL</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- COMPONENTES -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">🧩 Componentes del sistema</div>
+          <div class="t2s1-components">
+
+            <div class="t2s1-comp" style="--cc:#4fffb0;">
+              <span class="t2s1-comp-icon">🖥️</span>
+              <span class="t2s1-comp-name">Interfaz Web</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#a78bfa;">
+              <span class="t2s1-comp-icon">📱</span>
+              <span class="t2s1-comp-name">Aplicación Móvil Android</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#00c3ff;">
+              <span class="t2s1-comp-icon">🔌</span>
+              <span class="t2s1-comp-name">API REST</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#fb923c;">
+              <span class="t2s1-comp-icon">⚙️</span>
+              <span class="t2s1-comp-name">Lógica de Negocio</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#facc15;">
+              <span class="t2s1-comp-icon">🔗</span>
+              <span class="t2s1-comp-name">Acceso a Datos</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#336791;">
+              <span class="t2s1-comp-icon">🗄️</span>
+              <span class="t2s1-comp-name">Base de Datos PostgreSQL</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#f472b6;">
+              <span class="t2s1-comp-icon">🔐</span>
+              <span class="t2s1-comp-name">Módulo de Autenticación</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#4fffb0;">
+              <span class="t2s1-comp-icon">🖥️</span>
+              <span class="t2s1-comp-name">Implementación de Raspberry Pi</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#00c3ff;">
+              <span class="t2s1-comp-icon">📡</span>
+              <span class="t2s1-comp-name">Enviar datos al servidor</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#a78bfa;">
+              <span class="t2s1-comp-icon">📊</span>
+              <span class="t2s1-comp-name">Reportes y consultas</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#fb923c;">
+              <span class="t2s1-comp-icon">🔔</span>
+              <span class="t2s1-comp-name">Notificaciones</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#facc15;">
+              <span class="t2s1-comp-icon">🏛️</span>
+              <span class="t2s1-comp-name">Gestionar ambientes, horarios y lo académico</span>
+            </div>
+            <div class="t2s1-comp" style="--cc:#f472b6;">
+              <span class="t2s1-comp-icon">✅</span>
+              <span class="t2s1-comp-name">Validaciones</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RESUMEN VISUAL -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">📊 Resumen del diseño</div>
+          <div class="t2s1-summary">
+            <div class="t2s1-sum-card" style="--sc:#4fffb0;">
+              <div class="t2s1-sum-icon">🌐</div>
+              <div class="t2s1-sum-label">Tipo</div>
+              <div class="t2s1-sum-val">Web + Android</div>
+            </div>
+            <div class="t2s1-sum-card" style="--sc:#00c3ff;">
+              <div class="t2s1-sum-icon">🏗️</div>
+              <div class="t2s1-sum-label">Arquitectura</div>
+              <div class="t2s1-sum-val">N-Capas</div>
+            </div>
+            <div class="t2s1-sum-card" style="--sc:#f89820;">
+              <div class="t2s1-sum-icon">☕</div>
+              <div class="t2s1-sum-label">Lenguaje</div>
+              <div class="t2s1-sum-val">Java</div>
+            </div>
+            <div class="t2s1-sum-card" style="--sc:#336791;">
+              <div class="t2s1-sum-icon">🗄️</div>
+              <div class="t2s1-sum-label">Base de datos</div>
+              <div class="t2s1-sum-val">PostgreSQL</div>
+            </div>
+            <div class="t2s1-sum-card" style="--sc:#a78bfa;">
+              <div class="t2s1-sum-icon">🧩</div>
+              <div class="t2s1-sum-label">Componentes</div>
+              <div class="t2s1-sum-val">13</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- T2 SECCIÓN 2 -->
+      <section class="section" id="t2-s2">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(0,195,255,0.08);">02</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:var(--accent2);">Punto 02</div>
+            <h2>Identificar las Herramientas Necesarias</h2>
+          </div>
+        </div>
+
+        <div class="content-full" style="margin-bottom:32px;">
+          <p>Para construir el sistema de gestión de asistencia se identificaron las <strong>categorías de herramientas esenciales</strong>, cada una cumpliendo una función específica dentro del proceso de desarrollo del software.</p>
+        </div>
+
+        <!-- HERRAMIENTAS CARDS -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">🗂️ Tipos de herramientas</div>
+          <div class="t2s2-tools-list">
+
+            <div class="t2s2-tool-card" style="--tc:#4fffb0;">
+              <div class="t2s2-tool-left">
+                <div class="t2s2-tool-icon">💻</div>
+                <div class="t2s2-tool-info">
+                  <div class="t2s2-tool-type">IDE</div>
+                  <div class="t2s2-tool-function">Programar el software</div>
+                </div>
+              </div>
+              <div class="t2s2-tool-desc">
+                Entorno de Desarrollo Integrado que proporciona las herramientas necesarias para escribir, editar, depurar y ejecutar el código del sistema en un solo lugar.
+              </div>
+            </div>
+
+            <div class="t2s2-tool-card" style="--tc:#f89820;">
+              <div class="t2s2-tool-left">
+                <div class="t2s2-tool-icon">☕</div>
+                <div class="t2s2-tool-info">
+                  <div class="t2s2-tool-type">Lenguaje de programación</div>
+                  <div class="t2s2-tool-function">Construir lógica del sistema</div>
+                </div>
+              </div>
+              <div class="t2s2-tool-desc">
+                Herramienta con la que se implementan las reglas de negocio, los módulos funcionales, los servicios y toda la lógica que hace operar el sistema.
+              </div>
+            </div>
+
+            <div class="t2s2-tool-card" style="--tc:#336791;">
+              <div class="t2s2-tool-left">
+                <div class="t2s2-tool-icon">🗄️</div>
+                <div class="t2s2-tool-info">
+                  <div class="t2s2-tool-type">Base de datos</div>
+                  <div class="t2s2-tool-function">Almacenar la información</div>
+                </div>
+              </div>
+              <div class="t2s2-tool-desc">
+                Sistema gestor que permite almacenar, organizar y consultar de forma eficiente toda la información del sistema: usuarios, asistencia, horarios, reportes y más.
+              </div>
+            </div>
+
+            <div class="t2s2-tool-card" style="--tc:#f05032;">
+              <div class="t2s2-tool-left">
+                <div class="t2s2-tool-icon">🔁</div>
+                <div class="t2s2-tool-info">
+                  <div class="t2s2-tool-type">Control de versiones</div>
+                  <div class="t2s2-tool-function">Gestionar cambios de código</div>
+                </div>
+              </div>
+              <div class="t2s2-tool-desc">
+                Permite registrar el historial de cambios del código fuente, trabajar de forma colaborativa en equipo y mantener un control ordenado de las versiones del proyecto.
+              </div>
+            </div>
+
+            <div class="t2s2-tool-card" style="--tc:#a78bfa;">
+              <div class="t2s2-tool-left">
+                <div class="t2s2-tool-icon">📐</div>
+                <div class="t2s2-tool-info">
+                  <div class="t2s2-tool-type">Herramientas de modelado</div>
+                  <div class="t2s2-tool-function">Diseñar diagramas del sistema</div>
+                </div>
+              </div>
+              <div class="t2s2-tool-desc">
+                Facilitan la creación de diagramas UML, esquemas de base de datos, flujos de navegación y arquitecturas del sistema para documentar el diseño antes de implementarlo.
+              </div>
+            </div>
+
+            <div class="t2s2-tool-card" style="--tc:#00c3ff;">
+              <div class="t2s2-tool-left">
+                <div class="t2s2-tool-icon">🧪</div>
+                <div class="t2s2-tool-info">
+                  <div class="t2s2-tool-type">Herramientas de pruebas</div>
+                  <div class="t2s2-tool-function">Verificar funcionamiento</div>
+                </div>
+              </div>
+              <div class="t2s2-tool-desc">
+                Permiten ejecutar pruebas funcionales, de integración y de rendimiento para verificar que cada módulo del sistema opera correctamente bajo distintas condiciones.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TABLA RESUMEN -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">📋 Tabla resumen</div>
+          <div class="s1-table-wrap">
+            <table class="s1-table">
+              <thead>
+                <tr><th>#</th><th>Tipo de herramienta</th><th>Función</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">01</td>
+                  <td style="color:var(--text);font-weight:600;">💻 IDE</td>
+                  <td>Programar el software</td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">02</td>
+                  <td style="color:var(--text);font-weight:600;">☕ Lenguaje de programación</td>
+                  <td>Construir lógica del sistema</td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">03</td>
+                  <td style="color:var(--text);font-weight:600;">🗄️ Base de datos</td>
+                  <td>Almacenar la información</td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">04</td>
+                  <td style="color:var(--text);font-weight:600;">🔁 Control de versiones</td>
+                  <td>Gestionar cambios de código</td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">05</td>
+                  <td style="color:var(--text);font-weight:600;">📐 Herramientas de modelado</td>
+                  <td>Diseñar diagramas del sistema</td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">06</td>
+                  <td style="color:var(--text);font-weight:600;">🧪 Herramientas de pruebas</td>
+                  <td>Verificar funcionamiento</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- T2 SECCIÓN 3 -->
+      <section class="section" id="t2-s3">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(0,195,255,0.08);">03</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:var(--accent2);">Punto 03</div>
+            <h2>Seleccionar Herramientas de Desarrollo</h2>
+          </div>
+        </div>
+
+        <div class="content-full" style="margin-bottom:32px;">
+          <p>Luego de identificar las categorías necesarias, se seleccionaron las <strong>herramientas específicas</strong> que se utilizarán para construir el sistema, evaluando su compatibilidad, rendimiento y soporte con el stack tecnológico propuesto.</p>
+        </div>
+
+        <!-- HERRAMIENTAS SELECCIONADAS -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">⚡ Herramientas seleccionadas</div>
+          <div class="t2s3-grid">
+
+            <!-- VS Code -->
+            <div class="t2s3-card" style="--hc:#007acc;">
+              <div class="t2s3-card-top">
+                <div class="t2s3-logo" style="background:#007acc;">
+                  <svg width="22" height="22" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M74.9 4.5L51.1 30.2 31.2 14.3 6.8 23.5v53l24.4 9.2 19.9-15.9 23.8 25.7L94 87V13L74.9 4.5zm0 67.5L56.6 50 75 28V72z" fill="white"/>
+                  </svg>
+                </div>
+                <div class="t2s3-type-badge" style="--tb:#007acc;">IDE</div>
+              </div>
+              <div class="t2s3-name">Visual Studio Code</div>
+              <div class="t2s3-desc">Editor de código ligero y potente con soporte para extensiones, depuración, control de versiones integrado y compatibilidad con Java y Spring Boot.</div>
+              <div class="t2s3-tags">
+                <span class="t2s3-tag">Microsoft</span>
+                <span class="t2s3-tag">Open Source</span>
+                <span class="t2s3-tag">Multiplataforma</span>
+              </div>
+            </div>
+
+            <!-- Java -->
+            <div class="t2s3-card" style="--hc:#f89820;">
+              <div class="t2s3-card-top">
+                <div class="t2s3-logo" style="background:#f89820;">
+                  <span style="font-size:22px;font-family:'Syne',sans-serif;font-weight:800;color:#fff;">J</span>
+                </div>
+                <div class="t2s3-type-badge" style="--tb:#f89820;">Lenguaje</div>
+              </div>
+              <div class="t2s3-name">Java</div>
+              <div class="t2s3-desc">Lenguaje de programación orientado a objetos, robusto y multiplataforma. Ideal para construir la lógica del sistema, servicios backend y la integración con la Raspberry Pi.</div>
+              <div class="t2s3-tags">
+                <span class="t2s3-tag">OOP</span>
+                <span class="t2s3-tag">Multiplataforma</span>
+                <span class="t2s3-tag">JVM</span>
+              </div>
+            </div>
+
+            <!-- Spring Boot -->
+            <div class="t2s3-card" style="--hc:#6db33f;">
+              <div class="t2s3-card-top">
+                <div class="t2s3-logo" style="background:#6db33f;">
+                  <span style="font-size:20px;">🍃</span>
+                </div>
+                <div class="t2s3-type-badge" style="--tb:#6db33f;">Backend</div>
+              </div>
+              <div class="t2s3-name">Spring Boot</div>
+              <div class="t2s3-desc">Framework de Java para crear aplicaciones backend y APIs REST de forma rápida y eficiente. Facilita la configuración, seguridad y la conexión con la base de datos.</div>
+              <div class="t2s3-tags">
+                <span class="t2s3-tag">Framework Java</span>
+                <span class="t2s3-tag">API REST</span>
+                <span class="t2s3-tag">Spring Security</span>
+              </div>
+            </div>
+
+            <!-- PostgreSQL -->
+            <div class="t2s3-card" style="--hc:#336791;">
+              <div class="t2s3-card-top">
+                <div class="t2s3-logo" style="background:#336791;">
+                  <span style="font-size:14px;font-family:'Syne',sans-serif;font-weight:800;color:#fff;letter-spacing:-0.5px;">SQL</span>
+                </div>
+                <div class="t2s3-type-badge" style="--tb:#336791;">Base de datos</div>
+              </div>
+              <div class="t2s3-name">PostgreSQL</div>
+              <div class="t2s3-desc">Sistema gestor de bases de datos relacional de código abierto, con alto rendimiento, soporte a transacciones complejas y excelente compatibilidad con Spring Boot.</div>
+              <div class="t2s3-tags">
+                <span class="t2s3-tag">Relacional</span>
+                <span class="t2s3-tag">Open Source</span>
+                <span class="t2s3-tag">ACID</span>
+              </div>
+            </div>
+
+            <!-- Git -->
+            <div class="t2s3-card" style="--hc:#f05032;">
+              <div class="t2s3-card-top">
+                <div class="t2s3-logo" style="background:#f05032;">
+                  <span style="font-size:14px;font-family:'Syne',sans-serif;font-weight:800;color:#fff;">Git</span>
+                </div>
+                <div class="t2s3-type-badge" style="--tb:#f05032;">Control de versiones</div>
+              </div>
+              <div class="t2s3-name">Git</div>
+              <div class="t2s3-desc">Sistema distribuido de control de versiones que permite gestionar cambios en el código, trabajar en equipo con ramas y mantener un historial detallado del proyecto.</div>
+              <div class="t2s3-tags">
+                <span class="t2s3-tag">Distribuido</span>
+                <span class="t2s3-tag">Branches</span>
+                <span class="t2s3-tag">GitHub / GitLab</span>
+              </div>
+            </div>
+
+            <!-- Draw.io -->
+            <div class="t2s3-card" style="--hc:#a78bfa;">
+              <div class="t2s3-card-top">
+                <div class="t2s3-logo" style="background:#a78bfa;">
+                  <span style="font-size:20px;">📐</span>
+                </div>
+                <div class="t2s3-type-badge" style="--tb:#a78bfa;">Modelado</div>
+              </div>
+              <div class="t2s3-name">Draw.io</div>
+              <div class="t2s3-desc">Herramienta gratuita de diagramación online para crear diagramas UML, esquemas de base de datos, flujos de proceso y arquitecturas del sistema de forma visual e intuitiva.</div>
+              <div class="t2s3-tags">
+                <span class="t2s3-tag">UML</span>
+                <span class="t2s3-tag">Gratuito</span>
+                <span class="t2s3-tag">Online / Desktop</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TABLA RESUMEN -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">📋 Tabla resumen</div>
+          <div class="s1-table-wrap">
+            <table class="s1-table">
+              <thead>
+                <tr><th>#</th><th>Tipo</th><th>Herramienta</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">01</td>
+                  <td style="color:var(--text);font-weight:600;">💻 IDE</td>
+                  <td><span style="color:#007acc;font-weight:600;">Visual Studio Code</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">02</td>
+                  <td style="color:var(--text);font-weight:600;">☕ Lenguaje</td>
+                  <td><span style="color:#f89820;font-weight:600;">Java</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">03</td>
+                  <td style="color:var(--text);font-weight:600;">🍃 Backend</td>
+                  <td><span style="color:#6db33f;font-weight:600;">Spring Boot</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">04</td>
+                  <td style="color:var(--text);font-weight:600;">🗄️ Base de datos</td>
+                  <td><span style="color:#336791;font-weight:600;">PostgreSQL</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">05</td>
+                  <td style="color:var(--text);font-weight:600;">🔁 Control de versiones</td>
+                  <td><span style="color:#f05032;font-weight:600;">Git</span></td>
+                </tr>
+                <tr>
+                  <td style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:11px;">06</td>
+                  <td style="color:var(--text);font-weight:600;">📐 Modelado</td>
+                  <td><span style="color:#a78bfa;font-weight:600;">Draw.io</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- T2 SECCIÓN 4 -->
+      <section class="section" id="t2-s4">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(0,195,255,0.08);">04</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:var(--accent2);">Punto 04</div>
+            <h2>Justificar la Selección de Herramientas</h2>
+          </div>
+        </div>
+
+        <div class="content-full" style="margin-bottom:32px;">
+          <p>A continuación se presenta la <strong>justificación técnica</strong> de cada herramienta seleccionada, explicando por qué es la más adecuada para el desarrollo del sistema de gestión de asistencia por reconocimiento facial.</p>
+        </div>
+
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">📝 Justificaciones</div>
+          <div class="t2s4-list">
+
+            <!-- VS Code -->
+            <div class="t2s4-item" style="--ic:#007acc;">
+              <div class="t2s4-header">
+                <div class="t2s4-logo" style="background:#007acc;">
+                  <svg width="18" height="18" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M74.9 4.5L51.1 30.2 31.2 14.3 6.8 23.5v53l24.4 9.2 19.9-15.9 23.8 25.7L94 87V13L74.9 4.5zm0 67.5L56.6 50 75 28V72z" fill="white"/>
+                  </svg>
+                </div>
+                <div class="t2s4-tool-info">
+                  <div class="t2s4-name">Visual Studio Code</div>
+                  <div class="t2s4-category" style="color:#007acc;">IDE</div>
+                </div>
+                <div class="t2s4-check">✓</div>
+              </div>
+              <div class="t2s4-justification">
+                Se utilizará como entorno de desarrollo por ser un editor <strong>ligero y multiplataforma</strong>, con gran cantidad de extensiones que facilitan la programación en Java, la gestión de proyectos y la integración con herramientas de control de versiones como Git.
+              </div>
+              <div class="t2s4-keywords">
+                <span class="t2s4-kw" style="--kc:#007acc;">Ligero</span>
+                <span class="t2s4-kw" style="--kc:#007acc;">Multiplataforma</span>
+                <span class="t2s4-kw" style="--kc:#007acc;">Extensiones</span>
+                <span class="t2s4-kw" style="--kc:#007acc;">Integración Git</span>
+              </div>
+            </div>
+
+            <!-- Java -->
+            <div class="t2s4-item" style="--ic:#f89820;">
+              <div class="t2s4-header">
+                <div class="t2s4-logo" style="background:#f89820;">
+                  <span style="font-size:18px;font-family:'Syne',sans-serif;font-weight:800;color:#fff;">J</span>
+                </div>
+                <div class="t2s4-tool-info">
+                  <div class="t2s4-name">Java</div>
+                  <div class="t2s4-category" style="color:#f89820;">Lenguaje de programación</div>
+                </div>
+                <div class="t2s4-check">✓</div>
+              </div>
+              <div class="t2s4-justification">
+                Se utilizará como lenguaje principal para el desarrollo del backend debido a su <strong>robustez, portabilidad y seguridad</strong>, con amplia adopción en aplicaciones empresariales y sistemas web de alto rendimiento.
+              </div>
+              <div class="t2s4-keywords">
+                <span class="t2s4-kw" style="--kc:#f89820;">Robusto</span>
+                <span class="t2s4-kw" style="--kc:#f89820;">Portable</span>
+                <span class="t2s4-kw" style="--kc:#f89820;">Seguro</span>
+                <span class="t2s4-kw" style="--kc:#f89820;">Empresarial</span>
+              </div>
+            </div>
+
+            <!-- Spring Boot -->
+            <div class="t2s4-item" style="--ic:#6db33f;">
+              <div class="t2s4-header">
+                <div class="t2s4-logo" style="background:#6db33f;">
+                  <span style="font-size:18px;">🍃</span>
+                </div>
+                <div class="t2s4-tool-info">
+                  <div class="t2s4-name">Spring Boot</div>
+                  <div class="t2s4-category" style="color:#6db33f;">Backend / Framework</div>
+                </div>
+                <div class="t2s4-check">✓</div>
+              </div>
+              <div class="t2s4-justification">
+                Se emplea para el desarrollo del backend y la creación de la <strong>API REST</strong>, ya que facilita la construcción de aplicaciones Java de manera rápida, permite implementar arquitecturas en capas y ofrece integración sencilla con bases de datos y servicios web.
+              </div>
+              <div class="t2s4-keywords">
+                <span class="t2s4-kw" style="--kc:#6db33f;">API REST</span>
+                <span class="t2s4-kw" style="--kc:#6db33f;">N-Capas</span>
+                <span class="t2s4-kw" style="--kc:#6db33f;">Rápido</span>
+                <span class="t2s4-kw" style="--kc:#6db33f;">Integración BD</span>
+              </div>
+            </div>
+
+            <!-- PostgreSQL -->
+            <div class="t2s4-item" style="--ic:#336791;">
+              <div class="t2s4-header">
+                <div class="t2s4-logo" style="background:#336791;">
+                  <span style="font-size:13px;font-family:'Syne',sans-serif;font-weight:800;color:#fff;">SQL</span>
+                </div>
+                <div class="t2s4-tool-info">
+                  <div class="t2s4-name">PostgreSQL</div>
+                  <div class="t2s4-category" style="color:#336791;">Base de datos</div>
+                </div>
+                <div class="t2s4-check">✓</div>
+              </div>
+              <div class="t2s4-justification">
+                Se utilizará como sistema gestor de base de datos por su <strong>alto rendimiento, confiabilidad</strong> y soporte para grandes volúmenes de información, con cumplimiento de estándares SQL que garantiza una adecuada gestión y almacenamiento de los datos del sistema.
+              </div>
+              <div class="t2s4-keywords">
+                <span class="t2s4-kw" style="--kc:#336791;">Alto rendimiento</span>
+                <span class="t2s4-kw" style="--kc:#336791;">Confiable</span>
+                <span class="t2s4-kw" style="--kc:#336791;">Estándar SQL</span>
+                <span class="t2s4-kw" style="--kc:#336791;">Gran volumen</span>
+              </div>
+            </div>
+
+            <!-- Git -->
+            <div class="t2s4-item" style="--ic:#f05032;">
+              <div class="t2s4-header">
+                <div class="t2s4-logo" style="background:#f05032;">
+                  <span style="font-size:13px;font-family:'Syne',sans-serif;font-weight:800;color:#fff;">Git</span>
+                </div>
+                <div class="t2s4-tool-info">
+                  <div class="t2s4-name">Git</div>
+                  <div class="t2s4-category" style="color:#f05032;">Control de versiones</div>
+                </div>
+                <div class="t2s4-check">✓</div>
+              </div>
+              <div class="t2s4-justification">
+                Se emplea como sistema de control de versiones para <strong>gestionar los cambios en el código fuente</strong>, permitiendo el trabajo colaborativo, el seguimiento de modificaciones y la recuperación de versiones anteriores del proyecto.
+              </div>
+              <div class="t2s4-keywords">
+                <span class="t2s4-kw" style="--kc:#f05032;">Colaborativo</span>
+                <span class="t2s4-kw" style="--kc:#f05032;">Historial</span>
+                <span class="t2s4-kw" style="--kc:#f05032;">Recuperación</span>
+                <span class="t2s4-kw" style="--kc:#f05032;">Branches</span>
+              </div>
+            </div>
+
+            <!-- Draw.io -->
+            <div class="t2s4-item" style="--ic:#a78bfa;">
+              <div class="t2s4-header">
+                <div class="t2s4-logo" style="background:#a78bfa;">
+                  <span style="font-size:18px;">📐</span>
+                </div>
+                <div class="t2s4-tool-info">
+                  <div class="t2s4-name">Draw.io</div>
+                  <div class="t2s4-category" style="color:#a78bfa;">Modelado</div>
+                </div>
+                <div class="t2s4-check">✓</div>
+              </div>
+              <div class="t2s4-justification">
+                Se utilizará para la elaboración de <strong>diagramas del sistema</strong> — arquitectura, flujo, componentes y modelos UML — facilitando la documentación y comprensión del diseño del software de forma visual e intuitiva.
+              </div>
+              <div class="t2s4-keywords">
+                <span class="t2s4-kw" style="--kc:#a78bfa;">Diagramas UML</span>
+                <span class="t2s4-kw" style="--kc:#a78bfa;">Arquitectura</span>
+                <span class="t2s4-kw" style="--kc:#a78bfa;">Documentación</span>
+                <span class="t2s4-kw" style="--kc:#a78bfa;">Visual</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- T2 SECCIÓN 5 -->
+      <section class="section" id="t2-s5">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(0,195,255,0.08);">05</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:var(--accent2);">Punto 05</div>
+            <h2>Relacionar Herramientas con Actividad de Desarrollo</h2>
+          </div>
+        </div>
+
+        <div class="content-full" style="margin-bottom:32px;">
+          <p>Se relaciona cada herramienta seleccionada con su <strong>actividad de desarrollo correspondiente</strong>, indicando su tipo, función dentro del proyecto y la justificación de su elección.</p>
+        </div>
+
+        <!-- TABLA PRINCIPAL -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">📋 Relación herramienta — actividad</div>
+          <div class="s1-table-wrap">
+            <table class="s1-table s5-table">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Herramienta</th>
+                  <th>Función</th>
+                  <th>Justificación</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="s5-type-pill" style="--tp:#007acc;">💻 IDE</span></td>
+                  <td class="s5-tool-name" style="color:#007acc;">VS Code</td>
+                  <td>Programación</td>
+                  <td>Fácil uso</td>
+                </tr>
+                <tr>
+                  <td><span class="s5-type-pill" style="--tp:#f89820;">☕ Lenguaje</span></td>
+                  <td class="s5-tool-name" style="color:#f89820;">Java</td>
+                  <td>Sintaxis</td>
+                  <td>Fácil de usar. Altamente tipado.</td>
+                </tr>
+                <tr>
+                  <td><span class="s5-type-pill" style="--tp:#6db33f;">🍃 Backend</span></td>
+                  <td class="s5-tool-name" style="color:#6db33f;">Spring Boot</td>
+                  <td>Lógica del Negocio</td>
+                  <td>Muy utilizada en proyectos relacionados a Java.</td>
+                </tr>
+                <tr>
+                  <td><span class="s5-type-pill" style="--tp:#336791;">🗄️ Base de datos</span></td>
+                  <td class="s5-tool-name" style="color:#336791;">PostgreSQL</td>
+                  <td>Almacenar datos</td>
+                  <td>Fácil de usar tanto por terminal como por interfaz.</td>
+                </tr>
+                <tr>
+                  <td><span class="s5-type-pill" style="--tp:#f05032;">🔁 Control de versiones</span></td>
+                  <td class="s5-tool-name" style="color:#f05032;">Git</td>
+                  <td>Controlar las versiones</td>
+                  <td>Muy utilizada.</td>
+                </tr>
+                <tr>
+                  <td><span class="s5-type-pill" style="--tp:#a78bfa;">📐 Modelado</span></td>
+                  <td class="s5-tool-name" style="color:#a78bfa;">Draw.io</td>
+                  <td>Diseñar diagramas</td>
+                  <td>Facilita la comprensión de la documentación y comprensión de los proyectos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- CARDS VISUALES -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:var(--accent2);">🔗 Vista por actividad</div>
+          <div class="t2s5-activity-grid">
+
+            <div class="t2s5-activity-card" style="--ac:#007acc;">
+              <div class="t2s5-act-header">
+                <span class="t2s5-act-icon">💻</span>
+                <div>
+                  <div class="t2s5-act-type">IDE</div>
+                  <div class="t2s5-act-tool">VS Code</div>
+                </div>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Función</span>
+                <span class="t2s5-act-val">Programación</span>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Por qué</span>
+                <span class="t2s5-act-val">Fácil uso</span>
+              </div>
+            </div>
+
+            <div class="t2s5-activity-card" style="--ac:#f89820;">
+              <div class="t2s5-act-header">
+                <span class="t2s5-act-icon">☕</span>
+                <div>
+                  <div class="t2s5-act-type">Lenguaje</div>
+                  <div class="t2s5-act-tool">Java</div>
+                </div>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Función</span>
+                <span class="t2s5-act-val">Sintaxis</span>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Por qué</span>
+                <span class="t2s5-act-val">Fácil de usar · Altamente tipado</span>
+              </div>
+            </div>
+
+            <div class="t2s5-activity-card" style="--ac:#6db33f;">
+              <div class="t2s5-act-header">
+                <span class="t2s5-act-icon">🍃</span>
+                <div>
+                  <div class="t2s5-act-type">Backend</div>
+                  <div class="t2s5-act-tool">Spring Boot</div>
+                </div>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Función</span>
+                <span class="t2s5-act-val">Lógica del Negocio</span>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Por qué</span>
+                <span class="t2s5-act-val">Muy utilizada en proyectos Java</span>
+              </div>
+            </div>
+
+            <div class="t2s5-activity-card" style="--ac:#336791;">
+              <div class="t2s5-act-header">
+                <span class="t2s5-act-icon">🗄️</span>
+                <div>
+                  <div class="t2s5-act-type">Base de datos</div>
+                  <div class="t2s5-act-tool">PostgreSQL</div>
+                </div>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Función</span>
+                <span class="t2s5-act-val">Almacenar datos</span>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Por qué</span>
+                <span class="t2s5-act-val">Fácil por terminal e interfaz</span>
+              </div>
+            </div>
+
+            <div class="t2s5-activity-card" style="--ac:#f05032;">
+              <div class="t2s5-act-header">
+                <span class="t2s5-act-icon">🔁</span>
+                <div>
+                  <div class="t2s5-act-type">Control de versiones</div>
+                  <div class="t2s5-act-tool">Git</div>
+                </div>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Función</span>
+                <span class="t2s5-act-val">Controlar las versiones</span>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Por qué</span>
+                <span class="t2s5-act-val">Muy utilizada</span>
+              </div>
+            </div>
+
+            <div class="t2s5-activity-card" style="--ac:#a78bfa;">
+              <div class="t2s5-act-header">
+                <span class="t2s5-act-icon">📐</span>
+                <div>
+                  <div class="t2s5-act-type">Modelado</div>
+                  <div class="t2s5-act-tool">Draw.io</div>
+                </div>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Función</span>
+                <span class="t2s5-act-val">Diseñar diagramas</span>
+              </div>
+              <div class="t2s5-act-row">
+                <span class="t2s5-act-label">Por qué</span>
+                <span class="t2s5-act-val">Facilita la comprensión de documentación y proyectos</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </div><!-- end #t2-content -->
+
+    <!-- ═══════════════════════════════════════════
+         TALLER 3 CONTENT
+    ═══════════════════════════════════════════ -->
+    <div id="t3-content" style="display:none;">
+
+      <!-- T3 HOME -->
+      <section class="section active" id="t3-home">
+        <div class="content-full" style="margin-bottom:28px;">
+          <p>Configuración del entorno de desarrollo. Selecciona un punto del índice para explorar las características o los procedimientos de instalación de cada herramienta.</p>
+        </div>
+        <div class="t3-info-row">
+          <div class="s5-info-chip">📚 <strong>Competencia:</strong> Construcción del Software</div>
+          <div class="s5-info-chip">🎯 <strong>Actividad:</strong> Configurar herramientas de desarrollo</div>
+          <div class="s5-info-chip">👨‍🏫 <strong>Instructor:</strong> José de Jesús Motta Vargas</div>
+          <div class="s5-info-chip">👩‍💻 <strong>Autoras:</strong> M. Rodriguez · V. Trujillo · M. Valenzuela</div>
+        </div>
+        <div class="points-overview">
+          <a class="point-card t3-point-card" href="#" data-target="t3-s1">
+            <span class="point-card-num" style="color:#a78bfa;">01</span>
+            <span class="point-card-icon">🔎</span>
+            <span class="point-card-label">Características de cada herramienta</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+          <a class="point-card t3-point-card" href="#" data-target="t3-s2">
+            <span class="point-card-num" style="color:#a78bfa;">02</span>
+            <span class="point-card-icon">📦</span>
+            <span class="point-card-label">Instalación y configuración</span>
+            <span class="point-card-status status-done">✓ Completado</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ─── T3 SECCIÓN 1: CARACTERÍSTICAS ─── -->
+      <section class="section" id="t3-s1">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(167,139,250,0.08);">01</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:#a78bfa;">Punto 01</div>
+            <h2>Características de Cada Herramienta</h2>
+          </div>
+        </div>
+        <div class="content-full" style="margin-bottom:28px;">
+          <p>Consulta de las <strong>características específicas</strong> de cada herramienta que se utilizará para el desarrollo del proyecto y su entorno.</p>
+        </div>
+
+        <div class="t3-tools-grid">
+
+          <div class="t3-tool-card" style="--tc:#007acc;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#007acc;">
+                <svg width="18" height="18" viewBox="0 0 100 100" fill="none"><path d="M74.9 4.5L51.1 30.2 31.2 14.3 6.8 23.5v53l24.4 9.2 19.9-15.9 23.8 25.7L94 87V13L74.9 4.5zm0 67.5L56.6 50 75 28V72z" fill="white"/></svg>
+              </div>
+              <div>
+                <div class="t3-tc-name">Visual Studio Code</div>
+                <div class="t3-tc-type" style="color:#007acc;">IDE</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Editor de código ligero y extensible, soporte para múltiples lenguajes, gran ecosistema de extensiones, integración con Git, depuración integrada y terminal incorporada.</p>
+            <div class="t3-tc-tags"><span style="--kt:#007acc;" class="t3-kw">Ligero</span><span style="--kt:#007acc;" class="t3-kw">Extensible</span><span style="--kt:#007acc;" class="t3-kw">Git integrado</span><span style="--kt:#007acc;" class="t3-kw">Depuración</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#f89820;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#f89820;"><span style="font-size:16px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;">J</span></div>
+              <div>
+                <div class="t3-tc-name">Java</div>
+                <div class="t3-tc-type" style="color:#f89820;">Lenguaje</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Lenguaje orientado a objetos, multiplataforma gracias a la JVM, tipado estático, muy usado en aplicaciones empresariales y backend.</p>
+            <div class="t3-tc-tags"><span style="--kt:#f89820;" class="t3-kw">OOP</span><span style="--kt:#f89820;" class="t3-kw">JVM</span><span style="--kt:#f89820;" class="t3-kw">Tipado estático</span><span style="--kt:#f89820;" class="t3-kw">Empresarial</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#3572A5;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#3572A5;"><span style="font-size:14px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;">Py</span></div>
+              <div>
+                <div class="t3-tc-name">Python</div>
+                <div class="t3-tc-type" style="color:#3572A5;">Lenguaje</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Lenguaje interpretado, sintaxis simple y legible, multiparadigma, ampliamente usado en backend, automatización, ciencia de datos e IA.</p>
+            <div class="t3-tc-tags"><span style="--kt:#3572A5;" class="t3-kw">Interpretado</span><span style="--kt:#3572A5;" class="t3-kw">Simple</span><span style="--kt:#3572A5;" class="t3-kw">IA / Data</span><span style="--kt:#3572A5;" class="t3-kw">Multiparadigma</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#6db33f;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#6db33f;"><span style="font-size:18px;">🍃</span></div>
+              <div>
+                <div class="t3-tc-name">Spring Boot</div>
+                <div class="t3-tc-type" style="color:#6db33f;">Back-end</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Framework para crear aplicaciones backend en Java rápidamente, configuración automática, arquitectura basada en microservicios, integración con bases de datos y APIs REST.</p>
+            <div class="t3-tc-tags"><span style="--kt:#6db33f;" class="t3-kw">API REST</span><span style="--kt:#6db33f;" class="t3-kw">Microservicios</span><span style="--kt:#6db33f;" class="t3-kw">Auto-config</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#61dafb;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#20232a;border:1px solid #61dafb;"><span style="font-size:18px;">⚛️</span></div>
+              <div>
+                <div class="t3-tc-name">React 19</div>
+                <div class="t3-tc-type" style="color:#61dafb;">Front-end</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Biblioteca para construir interfaces de usuario con componentes reutilizables, virtual DOM para mejor rendimiento y gran ecosistema.</p>
+            <div class="t3-tc-tags"><span style="--kt:#61dafb;" class="t3-kw">Componentes</span><span style="--kt:#61dafb;" class="t3-kw">Virtual DOM</span><span style="--kt:#61dafb;" class="t3-kw">Ecosistema</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#646cff;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#646cff;"><span style="font-size:16px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;">V</span></div>
+              <div>
+                <div class="t3-tc-name">Vite</div>
+                <div class="t3-tc-type" style="color:#646cff;">Front-end</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Herramienta de desarrollo frontend rápida, servidor de desarrollo instantáneo, recarga en caliente (HMR) y optimización de builds.</p>
+            <div class="t3-tc-tags"><span style="--kt:#646cff;" class="t3-kw">HMR</span><span style="--kt:#646cff;" class="t3-kw">Rápido</span><span style="--kt:#646cff;" class="t3-kw">Builds optimizados</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#38bdf8;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#0ea5e9;"><span style="font-size:13px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;">TW</span></div>
+              <div>
+                <div class="t3-tc-name">Tailwind CSS</div>
+                <div class="t3-tc-type" style="color:#38bdf8;">Front-end</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Framework CSS basado en clases utilitarias, permite diseñar interfaces rápidas sin escribir mucho CSS personalizado.</p>
+            <div class="t3-tc-tags"><span style="--kt:#38bdf8;" class="t3-kw">Utilitario</span><span style="--kt:#38bdf8;" class="t3-kw">Rápido</span><span style="--kt:#38bdf8;" class="t3-kw">Responsivo</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#336791;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#336791;"><span style="font-size:12px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;">SQL</span></div>
+              <div>
+                <div class="t3-tc-name">PostgreSQL</div>
+                <div class="t3-tc-type" style="color:#336791;">Base de datos</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Sistema de gestión de bases de datos relacional, open source, muy robusto, soporta SQL avanzado, alta integridad de datos y extensibilidad.</p>
+            <div class="t3-tc-tags"><span style="--kt:#336791;" class="t3-kw">Open Source</span><span style="--kt:#336791;" class="t3-kw">ACID</span><span style="--kt:#336791;" class="t3-kw">SQL avanzado</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#f05032;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#f05032;"><span style="font-size:13px;font-weight:800;color:#fff;font-family:'Syne',sans-serif;">Git</span></div>
+              <div>
+                <div class="t3-tc-name">Git</div>
+                <div class="t3-tc-type" style="color:#f05032;">Control de versiones</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Sistema distribuido de control de versiones, permite rastrear cambios en el código, trabajar en equipo mediante ramas y mantener historial del proyecto.</p>
+            <div class="t3-tc-tags"><span style="--kt:#f05032;" class="t3-kw">Distribuido</span><span style="--kt:#f05032;" class="t3-kw">Ramas</span><span style="--kt:#f05032;" class="t3-kw">Historial</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#a78bfa;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#a78bfa;"><span style="font-size:18px;">📐</span></div>
+              <div>
+                <div class="t3-tc-name">Draw.io</div>
+                <div class="t3-tc-type" style="color:#a78bfa;">Modelado</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Herramienta para crear diagramas y modelos visuales como diagramas UML, arquitecturas de software, flujos de procesos y modelos de bases de datos.</p>
+            <div class="t3-tc-tags"><span style="--kt:#a78bfa;" class="t3-kw">UML</span><span style="--kt:#a78bfa;" class="t3-kw">Arquitectura</span><span style="--kt:#a78bfa;" class="t3-kw">Flujos</span></div>
+          </div>
+
+          <div class="t3-tool-card" style="--tc:#2496ed;">
+            <div class="t3-tc-header">
+              <div class="t3-tc-logo" style="background:#2496ed;"><span style="font-size:18px;">🐳</span></div>
+              <div>
+                <div class="t3-tc-name">Docker</div>
+                <div class="t3-tc-type" style="color:#2496ed;">Contenedorización</div>
+              </div>
+            </div>
+            <p class="t3-tc-desc">Plataforma para crear y ejecutar aplicaciones en contenedores, permite portabilidad entre entornos, aislamiento de dependencias y despliegue consistente.</p>
+            <div class="t3-tc-tags"><span style="--kt:#2496ed;" class="t3-kw">Contenedores</span><span style="--kt:#2496ed;" class="t3-kw">Portabilidad</span><span style="--kt:#2496ed;" class="t3-kw">Aislamiento</span></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─── T3 SECCIÓN 2: INSTALACIÓN ─── -->
+      <section class="section" id="t3-s2">
+        <div class="section-header">
+          <div class="section-num" style="color:rgba(167,139,250,0.08);">02</div>
+          <div class="section-heading-area">
+            <div class="section-tag" style="color:#a78bfa;">Punto 02</div>
+            <h2>Instalación y Configuración</h2>
+          </div>
+        </div>
+        <div class="content-full" style="margin-bottom:28px;">
+          <p>Procedimientos paso a paso para instalar y configurar cada herramienta del entorno de desarrollo del proyecto.</p>
+        </div>
+
+        <!-- VS CODE -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#007acc;">💻 Visual Studio Code — IDE</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#007acc;">Instalación</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">1</span><div><strong>Descargar</strong> desde <code>https://code.visualstudio.com</code> → clic en <em>Download for Windows</em>.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">2</span><div><strong>Ejecutar el instalador</strong> (.exe) · Aceptar términos · <em>Next</em> en todo.</div></div>
+                <div class="t3-step t3-step-warn"><span class="t3-step-num" style="--sc:#facc15;">!</span><div>Marcar: <code>Add to PATH</code> · <code>Create a desktop icon</code> · <code>Open with Code</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">3</span><div>Clic en <strong>Install</strong> → <strong>Finish</strong>. VS Code se abre automáticamente.</div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#007acc;">Configuración inicial</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">1</span><div><strong>Idioma:</strong> Extensiones (<code>Ctrl+Shift+X</code>) → buscar <em>Spanish Language Pack</em> → instalar → reiniciar.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">2</span><div><strong>Tema:</strong> <code>Ctrl+K</code> luego <code>Ctrl+T</code> → elegir tema (ej: Dark+).</div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#007acc;">Configuración para Java</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">1</span><div>Instalar el <strong>JDK 17 o 21</strong> (ver sección Java abajo).</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">2</span><div>Configurar <code>JAVA_HOME</code> en variables de entorno del sistema.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#007acc;">3</span><div>Verificar en consola: <code>java -version</code> · <code>javac -version</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- JAVA -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#f89820;">☕ Java — Lenguaje de programación</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#f89820;">Instalar JDK</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f89820;">1</span><div><strong>Descargar</strong> desde Oracle o OpenJDK. URL: <code>https://www.oracle.com/java/technologies/downloads/</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f89820;">2</span><div>Ejecutar instalador → <em>Next → Next → Install</em> (ruta por defecto recomendada).</div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#f89820;">Variables de entorno (Windows)</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f89820;">1</span><div>Buscar <em>"Variables de entorno"</em> → <em>Editar variables del sistema</em>.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f89820;">2</span><div>Nueva variable: <code>JAVA_HOME</code> = <code>C:\Program Files\Java\jdk-21</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f89820;">3</span><div>Editar <code>Path</code> → agregar <code>%JAVA_HOME%\bin</code></div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#f89820;">Verificación y Hola Mundo</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f89820;">1</span><div>En CMD: <code>java -version</code> · <code>javac -version</code> → si sale la versión ✓</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#4fffb0;">✓</span><div class="t3-code-block"><pre>// HolaMundo.java
+public class HolaMundo {
+  public static void main(String[] args) {
+    System.out.println("Hola mundo");
+  }
+}</pre><div class="t3-code-cmds"><code>javac HolaMundo.java</code> → <code>java HolaMundo</code></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PYTHON -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#3572A5;">🐍 Python — Lenguaje de programación</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#3572A5;">Instalación</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#3572A5;">1</span><div><strong>Descargar</strong> desde <code>https://python.org</code> la última versión.</div></div>
+                <div class="t3-step t3-step-warn"><span class="t3-step-num" style="--sc:#facc15;">!</span><div>Marcar obligatoriamente: <code>Add Python to PATH</code> → <em>Install Now</em>.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#3572A5;">2</span><div>Verificar: <code>python --version</code> · <code>pip --version</code></div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#3572A5;">Entorno virtual y librerías</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#3572A5;">1</span><div>Crear entorno: <code>python -m venv mi_entorno</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#3572A5;">2</span><div>Activar (Windows): <code>mi_entorno\Scripts\activate</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#3572A5;">3</span><div>Instalar librerías: <code>pip install numpy</code> · <code>pip install pandas</code></div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#3572A5;">Hola Mundo</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#4fffb0;">✓</span><div class="t3-code-block"><pre># hola.py
+print("Hola mundo")</pre><div class="t3-code-cmds"><code>python hola.py</code></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPRING BOOT -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#6db33f;">🍃 Spring Boot — Backend</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#6db33f;">Creación del proyecto (recomendado)</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#6db33f;">1</span><div>Ir a <code>https://start.spring.io</code> (Spring Initializr).</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#6db33f;">2</span><div>Configurar: <strong>Project:</strong> Maven · <strong>Language:</strong> Java · <strong>Dependencies:</strong> Spring Web, DevTools.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#6db33f;">3</span><div>Clic en <strong>Generate</strong> → descargar ZIP → descomprimir → abrir en IDE.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#6db33f;">4</span><div>Ejecutar: <code>mvn spring-boot:run</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REACT + VITE + TAILWIND -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#61dafb;">⚛️ React 19 + Vite + Tailwind CSS — Frontend</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#646cff;">Requisito: Node.js</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#646cff;">1</span><div>Descargar versión <strong>LTS</strong> desde <code>https://nodejs.org</code>.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#646cff;">2</span><div>Verificar: <code>node -v</code> · <code>npm -v</code></div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#61dafb;">Crear proyecto React + Vite</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#61dafb;">1</span><div><code>npm create vite@latest</code> → nombre: <em>mi-app</em> · framework: <em>React</em> · variante: <em>JavaScript</em></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#61dafb;">2</span><div><code>cd mi-app</code> → <code>npm install</code> → <code>npm run dev</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#61dafb;">3</span><div>Abrir en navegador: <code>http://localhost:5173</code></div></div>
+              </div>
+            </div>
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#38bdf8;">Instalar Tailwind CSS</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#38bdf8;">1</span><div><code>npm install -D tailwindcss postcss autoprefixer</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#38bdf8;">2</span><div><code>npx tailwindcss init -p</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#38bdf8;">3</span><div>En <code>tailwind.config.js</code>: agregar <code>"./src/**/*.{js,ts,jsx,tsx}"</code> en <code>content</code>.</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#38bdf8;">4</span><div>En <code>src/index.css</code>: <code>@tailwind base; @tailwind components; @tailwind utilities;</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POSTGRESQL -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#336791;">🗄️ PostgreSQL — Base de Datos</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#336791;">Instalación</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#336791;">1</span><div><strong>Descargar</strong> desde <code>https://www.postgresql.org/download/</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#336791;">2</span><div>Ejecutar instalador → seguir pasos.</div></div>
+                <div class="t3-step t3-step-warn"><span class="t3-step-num" style="--sc:#facc15;">!</span><div>Definir contraseña del usuario <code>postgres</code> · Puerto: <strong>5432</strong> (por defecto).</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#336791;">3</span><div>Incluye: <strong>pgAdmin</strong> (interfaz gráfica) + <strong>psql</strong> (línea de comandos).</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#336791;">4</span><div>Verificar: <code>psql --version</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GIT -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#f05032;">🔁 Git — Control de Versiones</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#f05032;">Instalación y configuración</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f05032;">1</span><div><strong>Descargar</strong> desde <code>https://git-scm.com/downloads</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f05032;">2</span><div>Instalar → configuración inicial:</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#4fffb0;">✓</span><div class="t3-code-block"><pre>git config --global user.name "Tu nombre"
+git config --global user.email "tu@email.com"</pre></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#f05032;">3</span><div>Verificar: <code>git --version</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRAW.IO -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#a78bfa;">📐 Draw.io — Modelado</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#a78bfa;">Uso online o escritorio</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#a78bfa;">1</span><div><strong>Online (recomendado):</strong> <code>https://app.diagrams.net/</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#a78bfa;">2</span><div><strong>Desktop:</strong> <code>https://github.com/jgraph/drawio-desktop/releases</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#a78bfa;">✓</span><div>Permite: diagramas UML · modelado de BD · arquitectura de sistemas.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DOCKER -->
+        <div class="s1-block">
+          <div class="s1-block-label" style="color:#2496ed;">🐳 Docker — Contenedorización</div>
+          <div class="t3-install-group">
+            <div class="t3-install-phase">
+              <div class="t3-phase-title" style="--pc:#2496ed;">Instalación</div>
+              <div class="t3-steps">
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#2496ed;">1</span><div><strong>Descargar Docker Desktop</strong> desde <code>https://www.docker.com/products/docker-desktop/</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#2496ed;">2</span><div>Instalar: <em>Next → Next → Finish</em> → reiniciar el equipo (Windows).</div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#2496ed;">3</span><div>Verificar: <code>docker --version</code></div></div>
+                <div class="t3-step"><span class="t3-step-num" style="--sc:#4fffb0;">✓</span><div>Probar: <code>docker run hello-world</code></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div><!-- end #t3-content -->
+
+  </main>
+</div>
+
+
+<script src="js/main.js"></script>
+</body>
+</html>
