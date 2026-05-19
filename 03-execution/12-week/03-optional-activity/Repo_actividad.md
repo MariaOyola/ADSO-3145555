@@ -4,7 +4,7 @@ Repositorio de Documentación Grupo 6: https://github.com/Hotel-system-group-6/d
 
 ## Integrantes:
 
-Maria Jose Oyolá
-Kevin Andrey Culma Gómez
-Laura Vanesa Perdomo
-Daniel Vargas
+- Maria Jose Oyolá
+- Kevin Andrey Culma Gómez
+- Laura Vanesa Perdomo
+- Daniel Vargas
