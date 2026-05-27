@@ -238,8 +238,8 @@ design-software-docs/
 │   │   ├── README.md
 │   │   ├── config-strategy.md
 │   │   ├── secrets-management.md
-│   │   ├── feature-flags.md
-│   │   └── environments-config.md
+│   │   
+│   │   
 │   │
 │   └── 99-archive/
 │       ├── README.md
