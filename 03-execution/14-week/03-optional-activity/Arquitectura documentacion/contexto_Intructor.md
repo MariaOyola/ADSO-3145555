@@ -130,14 +130,30 @@ Contiene el catálogo de todos los microservicios y una plantilla que cada servi
 
 Documentación operacional: runbooks (procedimientos paso a paso), gestión de incidentes, backup/restore, monitoreo y alertas, y modelo de soporte. En producción con microservicios esto es crítico porque un incidente puede involucrar múltiples servicios a la vez.
 
+-  No es para construir el sistema, es para cuando el sistema ya está vivo en producción y algo sale mal (o hay que mantenerlo).
+
+En microservicios esto es crítico porque si falla algo, no sabes de entrada cuál de los 10 o 20 servicios está fallando. Entonces esta carpeta tiene:
+
+Runbooks: procedimientos paso a paso. "Si el servicio X cae, haz esto → luego esto → luego esto"
+
 ##  Importante, adaptable
 
 -------------------------------------------------------
-##    14-training-and-adoption
+##    14-training-and-adoption - Capacitación 
 
 -    como se opera y enseña el sistema
 
 Manual de usuario, guía del instructor, guía del administrador, onboarding y FAQ. Útil cuando el sistema tiene usuarios finales no técnicos que necesitan capacitación. En proyectos puramente técnicos (microservicios internos) puede reducirse al onboarding para desarrolladores y el FAQ.
+
+Es el manual del usuario final y del equipo. Aplica cuando hay personas que van a usar el sistema sin ser desarrolladores.
+
+- User manual: cómo usa el sistema un usuario normal.
+- Instructor guide: si hay que capacitar grupos (como en el SENA).
+- Administrator guide: cómo administra el sistema el encargado técnico del cliente.
+- Onboarding: cómo se integra un desarrollador nuevo al proyecto.
+- FAQ: preguntas frecuentes.
+
+La diferencia con la 13: la 13 es para el equipo técnico cuando el sistema falla. La 14 es para enseñarle a la gente cómo usarlo cuando funciona bien.
 
 ##  Opcional según proyecto
 
