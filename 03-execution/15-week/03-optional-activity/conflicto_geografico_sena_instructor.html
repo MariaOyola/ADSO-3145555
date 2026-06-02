@@ -1,0 +1,286 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sora',sans-serif}
+
+.page{padding:2rem 1.25rem 3rem}
+
+.badge-top{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#1D9E75;background:#E1F5EE;border:0.5px solid #5DCAA5;border-radius:4px;padding:4px 10px;margin-bottom:1.2rem;letter-spacing:.04em}
+.badge-top i{font-size:13px}
+
+h1{font-size:20px;font-weight:600;color:var(--color-text-primary);line-height:1.3;margin-bottom:6px}
+.sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:2rem;line-height:1.6}
+
+.scenario-card{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);background:var(--color-background-primary);overflow:hidden;margin-bottom:1.5rem}
+.sc-header{padding:14px 18px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:10px}
+.sc-avatar{width:38px;height:38px;border-radius:50%;background:#E1F5EE;border:0.5px solid #5DCAA5;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.sc-name{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.sc-role{font-size:12px;color:var(--color-text-secondary)}
+
+.timeline{padding:18px}
+.tl-row{display:flex;gap:12px;align-items:stretch;margin-bottom:10px}
+.tl-row:last-child{margin-bottom:0}
+.tl-time{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;min-width:80px;padding-top:11px;color:var(--color-text-secondary)}
+.tl-block{flex:1;border-radius:10px;padding:10px 14px;border:0.5px solid}
+.tl-sede{font-size:13px;font-weight:500;margin-bottom:2px}
+.tl-dir{font-size:11px;opacity:.7}
+.block-ok{background:#E1F5EE;border-color:#5DCAA5}
+.block-ok .tl-sede{color:#085041}
+.block-ok .tl-dir{color:#085041}
+.block-err{background:#FCEBEB;border-color:#F09595}
+.block-err .tl-sede{color:#501313}
+.block-err .tl-dir{color:#501313}
+.block-travel{background:#FAEEDA;border-color:#EF9F27;display:flex;align-items:center;gap:10px;padding:8px 14px}
+.block-travel span{font-size:12px;color:#633806}
+.block-travel i{font-size:15px;color:#BA7517}
+
+.verdict{border-radius:10px;padding:14px 16px;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:12px}
+.verdict.fail{background:#FCEBEB;border:0.5px solid #F09595}
+.verdict.ok{background:#E1F5EE;border:0.5px solid #5DCAA5}
+.verdict i{font-size:20px;margin-top:1px;flex-shrink:0}
+.verdict.fail i{color:#A32D2D}
+.verdict.ok i{color:#085041}
+.verdict-title{font-size:13px;font-weight:500;margin-bottom:3px}
+.verdict.fail .verdict-title{color:#501313}
+.verdict.ok .verdict-title{color:#04342C}
+.verdict-desc{font-size:12px;line-height:1.6}
+.verdict.fail .verdict-desc{color:#A32D2D}
+.verdict.ok .verdict-desc{color:#0F6E56}
+
+.section-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-secondary);margin-bottom:10px}
+
+.conflicts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:1.5rem}
+.cf-card{border-radius:10px;padding:14px;border:0.5px solid;cursor:pointer;transition:transform .12s}
+.cf-card:hover{transform:translateY(-2px)}
+.cf-card.active{border-width:1.5px}
+.cf-num{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;margin-bottom:6px}
+.cf-title{font-size:13px;font-weight:500;margin-bottom:4px}
+.cf-ex{font-size:11px;line-height:1.5;opacity:.75}
+
+.cf-card.c1{background:#E6F1FB;border-color:#85B7EB}
+.cf-card.c1 .cf-num{color:#378ADD}
+.cf-card.c1 .cf-title{color:#0C447C}
+.cf-card.c1 .cf-ex{color:#0C447C}
+.cf-card.c2{background:#FAEEDA;border-color:#EF9F27}
+.cf-card.c2 .cf-num{color:#BA7517}
+.cf-card.c2 .cf-title{color:#633806}
+.cf-card.c2 .cf-ex{color:#633806}
+.cf-card.c3{background:#FCEBEB;border-color:#F09595}
+.cf-card.c3 .cf-num{color:#E24B4A}
+.cf-card.c3 .cf-title{color:#501313}
+.cf-card.c3 .cf-ex{color:#501313}
+.cf-card.c3.active{background:#FCEBEB;border-color:#A32D2D}
+
+.detail-box{border-radius:var(--border-radius-lg);padding:16px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);margin-bottom:1.5rem;font-size:13px;color:var(--color-text-secondary);line-height:1.7;transition:opacity .2s}
+.detail-box.hidden{opacity:0;height:0;padding:0;overflow:hidden;margin:0;border:none}
+
+.rule-box{border-radius:var(--border-radius-lg);border:0.5px solid #AFA9EC;background:#EEEDFE;padding:16px 18px;margin-bottom:1.5rem}
+.rule-box .rule-label{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:#534AB7;margin-bottom:6px}
+.rule-box p{font-size:13px;color:#26215C;line-height:1.7}
+.rule-box strong{font-weight:500;color:#26215C}
+
+.data-flow{border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);overflow:hidden;margin-bottom:1.5rem}
+.df-header{padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em}
+.df-row{display:flex;align-items:center;padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary);gap:12px}
+.df-row:last-child{border-bottom:none}
+.df-mod{font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.mod-estr{background:#E6F1FB;color:#185FA5;border:0.5px solid #85B7EB}
+.mod-hor{background:#EEEDFE;color:#534AB7;border:0.5px solid #AFA9EC}
+.df-arrow{color:var(--color-text-tertiary);font-size:13px;flex-shrink:0}
+.df-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5;flex:1}
+.df-pill{font-size:11px;padding:2px 8px;border-radius:20px;font-family:'IBM Plex Mono',monospace;flex-shrink:0}
+.pill-critical{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595}
+.pill-ok{background:#E1F5EE;color:#0F6E56;border:0.5px solid #5DCAA5}
+
+.sim-section{border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);overflow:hidden}
+.sim-header{padding:12px 16px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em}
+.sim-body{padding:16px}
+.sim-row{display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.sim-row:last-child{margin-bottom:0}
+.sim-label{font-size:13px;color:var(--color-text-secondary);min-width:110px}
+.sim-row input[type=range]{flex:1;min-width:100px}
+.sim-val{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--color-text-primary);min-width:44px;text-align:right}
+.sim-result{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:13px;font-weight:500;transition:all .2s}
+.sim-ok{background:#E1F5EE;border:0.5px solid #5DCAA5;color:#085041}
+.sim-fail{background:#FCEBEB;border:0.5px solid #F09595;color:#501313}
+</style>
+
+<div class="page">
+  <h2 class="sr-only">Conflicto geográfico de instructor SENA — explicación visual interactiva</h2>
+
+  <div class="badge-top"><i class="ti ti-map-pin" aria-hidden="true"></i>MÓDULO 2 · ESTRUCTURA INSTITUCIONAL</div>
+  <h1>¿Por qué la ubicación es un dato crítico?</h1>
+  <p class="sub">El escenario del instructor que no puede estar en dos lugares a la vez — y cómo el sistema lo detecta automáticamente.</p>
+
+  <div class="section-title">El escenario real</div>
+  <div class="scenario-card">
+    <div class="sc-header">
+      <div class="sc-avatar"><i class="ti ti-user" aria-hidden="true"></i></div>
+      <div>
+        <div class="sc-name">Carlos Sarasty</div>
+        <div class="sc-role">Instructor de Programación · Planta</div>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-time">06:00 – 09:00</div>
+        <div class="tl-block block-ok">
+          <div class="tl-sede"><i class="ti ti-building" aria-hidden="true" style="font-size:13px;margin-right:5px"></i>Sede Neiva Norte</div>
+          <div class="tl-dir">Calle 15 #8-40, Neiva · Huila</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">desplazamiento</div>
+        <div class="tl-block block-travel">
+          <i class="ti ti-car" aria-hidden="true"></i>
+          <span>Campo Alegre está a <strong>~45 minutos</strong> de Neiva Norte</span>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">09:00 – 12:00</div>
+        <div class="tl-block block-err">
+          <div class="tl-sede"><i class="ti ti-building" aria-hidden="true" style="font-size:13px;margin-right:5px"></i>Sede Campo Alegre</div>
+          <div class="tl-dir">Carrera 4 #3-10, Campo Alegre · Huila</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="verdict fail">
+    <i class="ti ti-circle-x" aria-hidden="true"></i>
+    <div>
+      <div class="verdict-title">Conflicto geográfico detectado</div>
+      <div class="verdict-desc">El instructor termina a las 09:00 en Neiva Norte y necesita estar a las 09:00 en Campo Alegre. El desplazamiento (~45 min) hace este horario físicamente imposible.</div>
+    </div>
+  </div>
+
+  <div class="section-title">Los 3 tipos de conflicto en el sistema</div>
+  <div class="conflicts-grid">
+    <div class="cf-card c1" onclick="showDetail(1)" id="card1">
+      <div class="cf-num">#01</div>
+      <div class="cf-title"><i class="ti ti-user-x" aria-hidden="true" style="margin-right:5px"></i>Instructor duplicado</div>
+      <div class="cf-ex">Mismo instructor asignado a dos clases en el mismo horario</div>
+    </div>
+    <div class="cf-card c2" onclick="showDetail(2)" id="card2">
+      <div class="cf-num">#02</div>
+      <div class="cf-title"><i class="ti ti-door" aria-hidden="true" style="margin-right:5px"></i>Ambiente ocupado</div>
+      <div class="cf-ex">Mismo salón con dos grupos al mismo tiempo</div>
+    </div>
+    <div class="cf-card c3 active" onclick="showDetail(3)" id="card3">
+      <div class="cf-num">#03 · NUEVO</div>
+      <div class="cf-title"><i class="ti ti-map-2" aria-hidden="true" style="margin-right:5px"></i>Conflicto geográfico</div>
+      <div class="cf-ex">Instructor en dos sedes sin tiempo suficiente para desplazarse</div>
+    </div>
+  </div>
+
+  <div class="detail-box" id="detailBox">
+    <strong style="color:var(--color-text-primary)">Conflicto geográfico (#03)</strong> — Este conflicto no existía en los sistemas anteriores. Solo es detectable cuando la tabla <code style="font-size:11px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px">Sede</code> almacena coordenadas GPS. El módulo de Horarios calcula la distancia entre dos sedes y compara el tiempo de desplazamiento estimado con el lapso disponible entre clases. Si el lapso es insuficiente, el horario se rechaza automáticamente.
+  </div>
+
+  <div class="section-title">¿Qué datos provee este módulo para detectarlo?</div>
+  <div class="data-flow">
+    <div class="df-header">Flujo de datos entre módulos</div>
+    <div class="df-row">
+      <div class="df-mod mod-estr">Estructura Institucional</div>
+      <i class="ti ti-arrow-right df-arrow" aria-hidden="true"></i>
+      <div class="df-desc">Entrega <code style="font-size:11px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px">latitud</code> y <code style="font-size:11px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px">longitud</code> de cada sede, ciudad, departamento y nombre visible</div>
+      <div class="df-pill pill-critical">dato funcional</div>
+    </div>
+    <div class="df-row">
+      <div class="df-mod mod-hor">Horarios</div>
+      <i class="ti ti-arrow-right df-arrow" aria-hidden="true"></i>
+      <div class="df-desc">Usa las coordenadas para calcular distancia entre sedes y estimar tiempo de desplazamiento</div>
+      <div class="df-pill pill-ok">usa el dato</div>
+    </div>
+    <div class="df-row">
+      <div class="df-mod mod-hor">Horarios</div>
+      <i class="ti ti-arrow-right df-arrow" aria-hidden="true"></i>
+      <div class="df-desc">Compara tiempo de desplazamiento con el lapso entre clases. Si no alcanza → conflicto geográfico</div>
+      <div class="df-pill pill-critical">valida</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <div class="rule-label"><i class="ti ti-gavel" aria-hidden="true" style="margin-right:4px"></i>Regla de negocio formal</div>
+    <p>Si un instructor tiene dos clases en <strong>sedes distintas</strong>, debe existir un <strong>lapso mínimo de tiempo</strong> entre el fin de la primera clase y el inicio de la segunda, proporcional a la distancia entre ambas sedes.<br><br>Las coordenadas GPS en la tabla <strong>Sede</strong> no son un dato decorativo — son un dato <strong>funcional y crítico</strong> para validar la viabilidad física de cualquier asignación de horario.</p>
+  </div>
+
+  <div class="section-title">Simulador — prueba el conflicto</div>
+  <div class="sim-section">
+    <div class="sim-header"><i class="ti ti-adjustments-horizontal" aria-hidden="true" style="margin-right:6px"></i>Parámetros de la asignación</div>
+    <div class="sim-body">
+      <div class="sim-row">
+        <span class="sim-label">Fin clase 1</span>
+        <input type="range" min="600" max="720" value="540" step="5" id="endTime" oninput="simulate()">
+        <span class="sim-val" id="endVal">09:00</span>
+      </div>
+      <div class="sim-row">
+        <span class="sim-label">Inicio clase 2</span>
+        <input type="range" min="600" max="780" value="540" step="5" id="startTime" oninput="simulate()">
+        <span class="sim-val" id="startVal">09:00</span>
+      </div>
+      <div class="sim-row">
+        <span class="sim-label">Distancia (km)</span>
+        <input type="range" min="1" max="100" value="45" step="1" id="dist" oninput="simulate()">
+        <span class="sim-val" id="distVal">45 km</span>
+      </div>
+      <div id="simResult" class="sim-result sim-fail"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DETAILS = {
+  1: '<strong style="color:var(--color-text-primary)">Instructor duplicado (#01)</strong> — El sistema verifica que el mismo instructor no aparezca asignado a dos horarios que se solapan, sin importar en qué sede o ambiente. Es la validación más básica y la primera que existió en los sistemas de horarios.',
+  2: '<strong style="color:var(--color-text-primary)">Ambiente ocupado (#02)</strong> — Un aula o laboratorio no puede tener dos grupos distintos al mismo tiempo. El sistema verifica que el <code style="font-size:11px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px">ambiente_id</code> no se repita en horarios solapados. Requiere datos del módulo de Infraestructura.',
+  3: '<strong style="color:var(--color-text-primary)">Conflicto geográfico (#03)</strong> — Este conflicto no existía en los sistemas anteriores. Solo es detectable cuando la tabla <code style="font-size:11px;background:var(--color-background-secondary);padding:1px 5px;border-radius:4px">Sede</code> almacena coordenadas GPS. El módulo de Horarios calcula la distancia entre dos sedes y compara el tiempo de desplazamiento estimado con el lapso disponible entre clases. Si el lapso es insuficiente, el horario se rechaza automáticamente.'
+};
+
+function showDetail(n) {
+  [1,2,3].forEach(i=>{
+    const c = document.getElementById('card'+i);
+    c.classList.remove('active');
+    c.style.borderWidth='0.5px';
+  });
+  const active = document.getElementById('card'+n);
+  active.classList.add('active');
+  active.style.borderWidth='1.5px';
+  const box = document.getElementById('detailBox');
+  box.classList.remove('hidden');
+  box.innerHTML = DETAILS[n];
+}
+
+function toHHMM(mins) {
+  const h = Math.floor(mins/60);
+  const m = mins%60;
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+
+function simulate() {
+  const end   = parseInt(document.getElementById('endTime').value);
+  const start = parseInt(document.getElementById('startTime').value);
+  const dist  = parseInt(document.getElementById('dist').value);
+
+  document.getElementById('endVal').textContent   = toHHMM(end);
+  document.getElementById('startVal').textContent = toHHMM(start);
+  document.getElementById('distVal').textContent  = dist+' km';
+
+  const lapso   = Math.max(0, start - end);
+  const travelMin = Math.round(dist * 1.2 + 10);
+  const result = document.getElementById('simResult');
+
+  if(start <= end) {
+    result.className='sim-result sim-fail';
+    result.innerHTML='<i class="ti ti-circle-x" aria-hidden="true" style="margin-right:6px"></i>Clase 2 inicia antes o igual que termina clase 1 — conflicto de tiempo directo';
+  } else if(lapso < travelMin) {
+    result.className='sim-result sim-fail';
+    result.innerHTML=`<i class="ti ti-circle-x" aria-hidden="true" style="margin-right:6px"></i>Conflicto geográfico — lapso disponible: ${lapso} min · tiempo estimado de viaje: ~${travelMin} min`;
+  } else {
+    result.className='sim-result sim-ok';
+    result.innerHTML=`<i class="ti ti-circle-check" aria-hidden="true" style="margin-right:6px"></i>Horario viable — lapso: ${lapso} min · viaje estimado: ~${travelMin} min · sobran ${lapso-travelMin} min`;
+  }
+}
+
+simulate();
+</script>
