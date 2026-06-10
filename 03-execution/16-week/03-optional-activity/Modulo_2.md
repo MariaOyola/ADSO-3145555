@@ -1,2 +1,2 @@
 Link 
-https://discord.com/channels/@me/1387915536968716451/1514285286295605430
+https://github.com/pemarival/15-week_02-06-26_modulo_estructura_institucional_del_sena
