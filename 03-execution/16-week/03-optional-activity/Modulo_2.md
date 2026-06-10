@@ -1,5 +1,5 @@
 # Link de MD: 
-https://github.com/pemarival/15-week_02-06-26_modulo_estructura_institucional_del_sena
+https://app.diagrams.net/#G1C8BpEeTN-i8skcqpSMFzcjGZ85qTmOpN#%7B%22pageId%22%3A%22U3-DTlVCgUfVY0KYra09%22%7D
 
 # Diagramas de paquetes: 
 https://github.com/pemarival/15-week_02-06-26_modulo_estructura_institucional_del_sena
