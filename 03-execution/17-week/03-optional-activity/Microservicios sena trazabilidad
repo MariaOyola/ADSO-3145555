@@ -1,0 +1,71 @@
+# Microservicios — Proyecto SENA Trazabilidad Formativa
+
+## Fase 1 — MVP (construir primero)
+
+| Servicio | Para qué sirve |
+|---|---|
+| `pdf-worker-service` | Procesa los PDFs que suben los aprendices. Los lee, saca el texto y los prepara para que el sistema los entienda. |
+| `workflow-service` | Es el "director de orquesta". Controla el orden de los pasos: primero esto, luego aquello, si falla haz esto otro. |
+| `run-state-service` | Es como un tablero de seguimiento. Dice en qué paso va cada proceso: pendiente, en curso, completado o fallido. |
+| `tool-gateway-service` | Es la puerta de entrada a herramientas externas (APIs, buscadores, calculadoras). Todo pasa por aquí. |
+| `control-plane-service` | Es el administrador general. Controla permisos, configuraciones y quién puede hacer qué. |
+
+## Fase 2 — Después del MVP
+
+| Servicio | Para qué sirve |
+|---|---|
+| `eval-lab-service` | Evalúa automáticamente las evidencias de aprendizaje usando IA. Como un corrector automático. |
+| `model-router-service` | Decide qué modelo de IA usar para cada tarea. Escoge el más rápido, barato o preciso según lo que se necesite. |
+| `observability-service` | Es el sistema de monitoreo. Registra errores, mide tiempos y avisa si algo sale mal. |
+| `secrets-vault-service` | Es la caja fuerte del sistema. Guarda todas las contraseñas y claves de forma segura. |
+| `memory-service` | Le da memoria a los agentes de IA. Así recuerdan qué hizo cada aprendiz en sesiones anteriores. |
+
+---
+
+## Módulo 2 — Estructura Institucional SENA
+
+### Mis entidades
+
+| Entidad | Qué representa |
+|---|---|
+| `MACROREGION` | Las grandes regiones naturales de Colombia (Andina, Caribe, Pacífica, etc.) |
+| `MICROREGION` | Los departamentos dentro de cada macroregión |
+| `DEPARTMENT` | Departamento geográfico |
+| `MUNICIPALITY` | Municipio dentro de un departamento |
+| `LOCATION` | Dirección física con coordenadas (latitud, longitud) |
+| `TRAINING_CENTER` | Centro de formación SENA (Industrial, Comercial, etc.) |
+| `INSTITUTIONAL_UNIT` | Sede, tecnoacademia o tecnoparque en un municipio |
+| `INSTRUCTOR_ASSIGNMENT` | Asignación de un instructor a una unidad institucional |
+
+---
+
+### Dependencias del módulo
+
+#### ✅ Lo que YO necesito de otros módulos
+
+| Módulo | Entidad que necesito | Para qué |
+|---|---|---|
+| M7 Instructores | `instructor_id` | Para registrar a qué instructor se asigna en `INSTRUCTOR_ASSIGNMENT` |
+| M1 Seguridad | `Usuario_Sede` | M1 usa `INSTITUTIONAL_UNIT` como sede para controlar accesos |
+
+#### 📤 Quién depende de MI módulo
+
+| Módulo | Entidades que consumen | Por qué me necesitan |
+|---|---|---|
+| M3 Infraestructura | `TRAINING_CENTER`, `INSTITUTIONAL_UNIT`, `LOCATION` | Necesita saber en qué centro y unidad están los ambientes físicos |
+| M7 Actores | `TRAINING_CENTER`, `INSTITUTIONAL_UNIT`, `MUNICIPALITY`, `INSTRUCTOR_ASSIGNMENT` | Necesita saber a qué unidad está asignado cada instructor |
+| M8 Horarios | `TRAINING_CENTER`, `INSTITUTIONAL_UNIT`, `LOCATION` | Los horarios siempre están atados a un lugar físico |
+| M1 Seguridad | `INSTITUTIONAL_UNIT` | La usa como "sede" en la tabla `Usuario_Sede` |
+
+#### ⚪ Módulos sin relación directa
+
+| Módulo | Razón |
+|---|---|
+| M4 Parametrización | Maneja catálogos genéricos, no depende de ubicaciones |
+| M5 Programas de Formación | Trabaja con competencias y programas, no con lugares |
+| M6 Oferta y Programas | Podría relacionarse indirectamente vía M3 o M7 |
+| M9 Proyectos Formativos | Sin información suficiente aún |
+
+---
+
+> ⚠️ Este sistema se **integra** con SOFIA Plus, no lo reemplaza.
